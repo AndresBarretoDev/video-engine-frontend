@@ -61,7 +61,20 @@ export const layoutTextMap = {
   userSection: {
     logout: 'Log out',
     profile: 'Profile',
-    settings: 'Settings'
+    settings: 'Settings',
+    logoutTitle: 'Close session',
+    logoutDescription: 'You are about to sign out. Any unsaved changes will be lost.',
+    logoutConfirm: 'Sign out',
+    logoutCancel: 'Stay',
+  },
+
+  /* Image upload */
+  imageUpload: {
+    clickToSelect: 'Click to select',
+    dragAndDrop: 'or drag and drop file here',
+    supportedFormats: 'JPG, PNG, WebP, SVG or GIF',
+    changeImage: 'Change image',
+    uploadFailed: 'Failed to upload file',
   },
 
   /* Role display names */

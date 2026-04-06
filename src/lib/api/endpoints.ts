@@ -123,5 +123,10 @@ export const API_ENDPOINTS = {
     approve: (id: string) => `/reviews/${id}/approve`,
     reject: (id: string) => `/reviews/${id}/reject`,
     comments: (id: string) => `/reviews/${id}/comments`
-  }
+  },
+
+  /* Uploads Module */
+  uploads: {
+    upload: '/uploads',
+  },
 } as const;
