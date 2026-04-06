@@ -1,0 +1,74 @@
+/*
+ * Vibe Coding Design System — Motion
+ * Source: motion_system.json v1.0.0
+ *
+ * Hierarchy of "Shine": what matters more animates slower and smoother.
+ * Performance: only animate opacity, transform, background-position, color, box-shadow.
+ * Never animate: width, height, top, left, margin, padding.
+ */
+
+:root {
+  /* ========================================
+   * Raw Durations
+   * ======================================== */
+  --duration-fast: 120ms;
+  --duration-standard: 300ms;
+  --duration-slow: 400ms;
+  --duration-story: 600ms;
+
+  /* ========================================
+   * Easings
+   * ======================================== */
+  --easing-ui: cubic-bezier(0.2, 0, 0, 1);
+  --easing-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --easing-editorial: cubic-bezier(0, 0, 0.58, 1);
+
+  /* ========================================
+   * Semantic Transitions — Button
+   * ======================================== */
+  --transition-btn-hover-bg: background-position var(--duration-slow) var(--easing-premium),
+    box-shadow var(--duration-slow) var(--easing-premium),
+    opacity var(--duration-slow) var(--easing-premium);
+  --transition-btn-hover-content: color var(--duration-standard) var(--easing-ui),
+    transform var(--duration-standard) var(--easing-ui);
+  --transition-btn-press: transform var(--duration-fast) var(--easing-ui),
+    background-color var(--duration-fast) var(--easing-ui);
+
+  /* ========================================
+   * Semantic Transitions — Card
+   * ======================================== */
+  --transition-card-hover: transform var(--duration-standard) var(--easing-ui),
+    box-shadow var(--duration-standard) var(--easing-ui);
+  --transition-card-featured: background-position var(--duration-slow) var(--easing-premium),
+    box-shadow var(--duration-slow) var(--easing-premium);
+
+  /* ========================================
+   * Semantic Transitions — Modal/Drawer
+   * ======================================== */
+  --transition-modal-container: var(--duration-slow) var(--easing-premium);
+  --transition-modal-overlay: var(--duration-standard) var(--easing-ui);
+
+  /* ========================================
+   * Semantic Transitions — Dropdown/Accordion
+   * ======================================== */
+  --transition-dropdown-toggle: var(--duration-standard) var(--easing-premium);
+  --transition-dropdown-item: var(--duration-fast) var(--easing-ui);
+
+  /* ========================================
+   * Semantic Transitions — Tooltip
+   * ======================================== */
+  --transition-tooltip: var(--duration-fast) var(--easing-ui);
+}
+
+/* ========================================
+ * Accessibility: prefers-reduced-motion
+ * Override all motion except color fades.
+ * ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-standard: 0ms;
+    --duration-slow: 0ms;
+    --duration-story: 0ms;
+  }
+}

@@ -1,0 +1,105 @@
+/*
+ * Button Component Styles — Vibe Coding Design System
+ *
+ * ALL colors come from CSS variables defined in /src/styles/tokens/colors.css
+ * Source of truth: /src/styles/tokens/source/colors_system.json
+ *
+ * RULE: NEVER hardcode hex colors here. Always use var(--token-name).
+ *
+ * Token mapping:
+ *   Principal button → --btn-principal-* (light, light-medium, medium, dark, text)
+ *   Disabled button  → --btn-disable-* (light, dark, text)
+ *   Secondary action → --secondary-fill-*, --secondary-stroke-*
+ *   Motion           → --transition-btn-*, --duration-fast, --easing-ui
+ *   Radius           → --radius-* scale from borders.css
+ */
+
+/* ========================================
+ * Primary Button
+ *
+ * Uses OP Blue gradient from the button principal palette.
+ * Gradient: light (#6689F4) → light-medium (#4361EF) → medium (#2C40E4)
+ * ======================================== */
+.primary-button {
+  background: linear-gradient(
+    135deg,
+    var(--btn-principal-light) 0%,
+    var(--btn-principal-light-medium) 50%,
+    var(--btn-principal-medium) 100%
+  );
+  color: var(--btn-principal-text);
+  border: none;
+  border-radius: var(--radius-infinite);
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition-btn-press);
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      var(--btn-principal-light-medium) 0%,
+      var(--btn-principal-medium) 50%,
+      var(--btn-principal-dark) 100%
+    );
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    background: linear-gradient(
+      135deg,
+      var(--btn-disable-light) 0%,
+      var(--btn-disable-dark) 100%
+    );
+    color: var(--btn-disable-text);
+    cursor: not-allowed;
+  }
+}
+
+/* ========================================
+ * Secondary Button
+ *
+ * Glass-like effect with transparency fills
+ * from the secondary_actions palette.
+ * ======================================== */
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius-infinite);
+  border: 1px solid var(--secondary-stroke-default-light);
+  color: var(--surface-level-0-contrast);
+  background: linear-gradient(
+    270deg,
+    var(--secondary-fill-invisible) 0%,
+    var(--secondary-fill-default) 50%,
+    var(--secondary-fill-invisible) 100%
+  );
+  box-shadow:
+    2px 2px 4px 0px var(--white-alpha-25) inset,
+    0px 0px 3px 0px var(--white-alpha-65);
+  backdrop-filter: blur(2px);
+  cursor: pointer;
+  transition: var(--transition-btn-hover-content);
+
+  &:hover {
+    border-color: var(--secondary-stroke-hover-light);
+    background: linear-gradient(
+      270deg,
+      var(--secondary-fill-invisible) 0%,
+      var(--secondary-fill-hover) 50%,
+      var(--secondary-fill-invisible) 100%
+    );
+    box-shadow:
+      2px 2px 4px 0px var(--white-alpha-25) inset,
+      0px 0px 3px 0px var(--white-alpha-65);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}

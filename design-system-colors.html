@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding — Color System Reference</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Mulish', system-ui, sans-serif; background: #000; color: #F5F5F5; padding: 32px; }
+  h1 { font-size: 40px; font-weight: 700; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #8C8C8C; margin-bottom: 48px; }
+  h2 { font-size: 24px; font-weight: 600; margin-bottom: 24px; color: #DCDCDC; }
+  h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #8C8C8C; }
+  .section { margin-bottom: 48px; }
+  .color-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .swatch {
+    width: 80px; height: 80px; border-radius: 12px; display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-end; padding: 6px 4px; font-size: 10px;
+    font-weight: 500; position: relative; border: 1px solid rgba(255,255,255,0.1);
+  }
+  .swatch .label { font-size: 10px; font-weight: 700; opacity: 0.9; }
+  .swatch .hex { font-size: 9px; opacity: 0.7; font-family: monospace; }
+  .surface-pair {
+    display: flex; align-items: center; gap: 0; margin-bottom: 8px; border-radius: 12px;
+    overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+  }
+  .surface-bg {
+    width: 120px; height: 64px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; font-size: 10px;
+  }
+  .surface-contrast {
+    width: 120px; height: 64px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; font-size: 10px;
+  }
+  .surface-label { font-weight: 700; font-size: 11px; margin-bottom: 2px; }
+  .surface-hex { font-size: 9px; font-family: monospace; opacity: 0.8; }
+  .component-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .component-swatch {
+    min-width: 100px; height: 56px; border-radius: 10px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-size: 10px; padding: 4px 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .component-swatch .label { font-weight: 700; font-size: 10px; }
+  .component-swatch .hex { font-size: 9px; font-family: monospace; opacity: 0.7; margin-top: 2px; }
+  .status-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .status-badge {
+    display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 9999px;
+    font-size: 13px; font-weight: 600; border-width: 1px; border-style: solid;
+  }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .transparency-row { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 16px; }
+  .alpha-swatch {
+    width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 9px; font-weight: 600; font-family: monospace;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .trans-label { font-size: 12px; font-weight: 600; color: #6E6E6E; margin-bottom: 8px; }
+  .validation-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .validation-badge {
+    padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 32px 0; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<h1>Vibe Coding <span style="color: #4361EF;">Color System</span></h1>
+<p class="subtitle">Design System v2.0.0 — OP Video Engine — Source of Truth</p>
+
+<!-- OP BLUE SCALE -->
+<div class="section">
+  <h2>OP Blue Scale</h2>
+  <h3>Color principal: #4361EF (600)</h3>
+  <div class="color-row">
+    <div class="swatch" style="background:#F6F8FF; color:#191A52;"><span class="label">50</span><span class="hex">#F6F8FF</span></div>
+    <div class="swatch" style="background:#F0F3FE; color:#191A52;"><span class="label">100</span><span class="hex">#F0F3FE</span></div>
+    <div class="swatch" style="background:#DCE3FD; color:#191A52;"><span class="label">200</span><span class="hex">#DCE3FD</span></div>
+    <div class="swatch" style="background:#C1CFFC; color:#191A52;"><span class="label">300</span><span class="hex">#C1CFFC</span></div>
+    <div class="swatch" style="background:#97B1F9; color:#191A52;"><span class="label">400</span><span class="hex">#97B1F9</span></div>
+    <div class="swatch" style="background:#6689F4; color:#FFFFFF;"><span class="label">500</span><span class="hex">#6689F4</span></div>
+    <div class="swatch" style="background:#4361EF; color:#FFFFFF; border: 2px solid #6689F4;"><span class="label">600 *</span><span class="hex">#4361EF</span></div>
+    <div class="swatch" style="background:#2C40E4; color:#FFFFFF;"><span class="label">700</span><span class="hex">#2C40E4</span></div>
+    <div class="swatch" style="background:#242DD1; color:#FFFFFF;"><span class="label">800</span><span class="hex">#242DD1</span></div>
+    <div class="swatch" style="background:#2327AA; color:#FFFFFF;"><span class="label">900</span><span class="hex">#2327AA</span></div>
+    <div class="swatch" style="background:#191A52; color:#FFFFFF;"><span class="label">950</span><span class="hex">#191A52</span></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- GENERAL SURFACES -->
+<div class="section">
+  <h2>General Surfaces (Dark Mode First)</h2>
+  <h3>Pares de fondo + contraste por nivel de jerarquia</h3>
+
+  <div class="surface-pair">
+    <div class="surface-bg" style="background:#000000; color:#FFFFFF;">
+      <span class="surface-label">Level 0 BG</span><span class="surface-hex">#000000</span>
+    </div>
+    <div class="surface-contrast" style="background:#FFFFFF; color:#000000;">
+      <span class="surface-label">Level 0 Contrast</span><span class="surface-hex">#FFFFFF</span>
+    </div>
+  </div>
+  <div class="surface-pair">
+    <div class="surface-bg" style="background:#080808; color:#F5F5F5;">
+      <span class="surface-label">Level 1 BG</span><span class="surface-hex">#080808</span>
+    </div>
+    <div class="surface-contrast" style="background:#F5F5F5; color:#080808;">
+      <span class="surface-label">Level 1 Contrast</span><span class="surface-hex">#F5F5F5</span>
+    </div>
+  </div>
+  <div class="surface-pair">
+    <div class="surface-bg" style="background:#0D0D0D; color:#DCDCDC;">
+      <span class="surface-label">Level 2 BG</span><span class="surface-hex">#0D0D0D</span>
+    </div>
+    <div class="surface-contrast" style="background:#DCDCDC; color:#0D0D0D;">
+      <span class="surface-label">Level 2 Contrast</span><span class="surface-hex">#DCDCDC</span>
+    </div>
+  </div>
+  <div class="surface-pair">
+    <div class="surface-bg" style="background:#131313; color:#8C8C8C;">
+      <span class="surface-label">Level 3 BG</span><span class="surface-hex">#131313</span>
+    </div>
+    <div class="surface-contrast" style="background:#8C8C8C; color:#131313;">
+      <span class="surface-label">Level 3 Contrast</span><span class="surface-hex">#8C8C8C</span>
+    </div>
+  </div>
+  <div class="surface-pair">
+    <div class="surface-bg" style="background:#191919; color:#6E6E6E;">
+      <span class="surface-label">Level 4 BG</span><span class="surface-hex">#191919</span>
+    </div>
+    <div class="surface-contrast" style="background:#6E6E6E; color:#191919;">
+      <span class="surface-label">Level 4 Contrast</span><span class="surface-hex">#6E6E6E</span>
+    </div>
+  </div>
+  <div class="surface-pair">
+    <div class="surface-bg" style="background:#202020; color:#545454;">
+      <span class="surface-label">Level 5 BG</span><span class="surface-hex">#202020</span>
+    </div>
+    <div class="surface-contrast" style="background:#545454; color:#202020;">
+      <span class="surface-label">Level 5 Contrast</span><span class="surface-hex">#545454</span>
+    </div>
+  </div>
+  <div class="surface-pair">
+    <div class="surface-bg" style="background:#3B3B3B; color:#3B3B3B;">
+      <span class="surface-label">Level 6 BG</span><span class="surface-hex">#3B3B3B</span>
+    </div>
+    <div class="surface-contrast" style="background:#3B3B3B; color:#FFFFFF;">
+      <span class="surface-label">Level 6 Contrast</span><span class="surface-hex">#3B3B3B</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- COMPONENT COLORS -->
+<div class="section">
+  <h2>Component Colors</h2>
+
+  <h3>Button — Principal</h3>
+  <div class="component-group">
+    <div class="component-swatch" style="background:#6689F4; color:#FFF;"><span class="label">Light</span><span class="hex">#6689F4</span></div>
+    <div class="component-swatch" style="background:#4361EF; color:#FFF;"><span class="label">Light Medium</span><span class="hex">#4361EF</span></div>
+    <div class="component-swatch" style="background:#2C40E4; color:#FFF;"><span class="label">Medium</span><span class="hex">#2C40E4</span></div>
+    <div class="component-swatch" style="background:#2327AA; color:#FFF;"><span class="label">Dark</span><span class="hex">#2327AA</span></div>
+    <div class="component-swatch" style="background:#FFFFFF; color:#000;"><span class="label">Text</span><span class="hex">#FFFFFF</span></div>
+  </div>
+
+  <h3>Button — Disabled</h3>
+  <div class="component-group">
+    <div class="component-swatch" style="background:#545454; color:#FFF;"><span class="label">Light</span><span class="hex">#545454</span></div>
+    <div class="component-swatch" style="background:#202020; color:#545454;"><span class="label">Dark</span><span class="hex">#202020</span></div>
+    <div class="component-swatch" style="background:#131313; color:#545454; border: 1px solid #545454;"><span class="label">Text</span><span class="hex">#545454</span></div>
+  </div>
+
+  <h3>Secondary Actions — Fill</h3>
+  <div class="component-group">
+    <div class="component-swatch" style="background:rgba(255,255,255,0); color:#FFF; border: 1px dashed #545454;"><span class="label">Invisible</span><span class="hex">white/0</span></div>
+    <div class="component-swatch" style="background:rgba(255,255,255,0.15); color:#FFF;"><span class="label">Default</span><span class="hex">white/15%</span></div>
+    <div class="component-swatch" style="background:rgba(255,255,255,0.25); color:#FFF;"><span class="label">Hover</span><span class="hex">white/25%</span></div>
+  </div>
+
+  <h3>Secondary Actions — Stroke</h3>
+  <div class="component-group">
+    <div class="component-swatch" style="background:#131313; color:#DCDCDC; border: 1px solid #DCDCDC;"><span class="label">Default</span><span class="hex">#DCDCDC / #131313</span></div>
+    <div class="component-swatch" style="background:#202020; color:#FFFFFF; border: 1px solid #FFFFFF;"><span class="label">Hover</span><span class="hex">#FFFFFF / #202020</span></div>
+  </div>
+
+  <h3>Card</h3>
+  <div class="component-group">
+    <div class="component-swatch" style="background:#0D0D0D; color:#FFF;"><span class="label">Background</span><span class="hex">#0D0D0D</span></div>
+    <div class="component-swatch" style="background:linear-gradient(135deg, #131313, #191919); color:#FFF;"><span class="label">Gradient</span><span class="hex">#131313 → #191919</span></div>
+    <div class="component-swatch" style="background:#FFF; color:#000;"><span class="label">Foreground</span><span class="hex">#FFFFFF</span></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- STATUS COLORS -->
+<div class="section">
+  <h2>Status Colors</h2>
+  <h3>Flujo de QC, render jobs, y aprobacion del cliente</h3>
+
+  <div class="status-row">
+    <div class="status-badge" style="background:rgba(34,197,94,0.15); color:#22C55E; border-color:rgba(34,197,94,0.3);">
+      <div class="status-dot" style="background:#22C55E;"></div> Approved
+    </div>
+    <div class="status-badge" style="background:rgba(21,128,61,0.15); color:#15803D; border-color:rgba(21,128,61,0.3);">
+      <div class="status-dot" style="background:#15803D;"></div> Client Approved
+    </div>
+    <div class="status-badge" style="background:rgba(239,68,68,0.15); color:#EF4444; border-color:rgba(239,68,68,0.3);">
+      <div class="status-dot" style="background:#EF4444;"></div> Rejected
+    </div>
+    <div class="status-badge" style="background:rgba(245,158,11,0.15); color:#F59E0B; border-color:rgba(245,158,11,0.3);">
+      <div class="status-dot" style="background:#F59E0B;"></div> Warning
+    </div>
+    <div class="status-badge" style="background:rgba(107,114,128,0.15); color:#9CA3AF; border-color:rgba(107,114,128,0.3);">
+      <div class="status-dot" style="background:#9CA3AF;"></div> Pending
+    </div>
+    <div class="status-badge" style="background:rgba(139,92,246,0.15); color:#8B5CF6; border-color:rgba(139,92,246,0.3);">
+      <div class="status-dot" style="background:#8B5CF6;"></div> In Review
+    </div>
+    <div class="status-badge" style="background:rgba(67,97,239,0.15); color:#4361EF; border-color:rgba(67,97,239,0.3);">
+      <div class="status-dot" style="background:#4361EF;"></div> Delivered
+    </div>
+  </div>
+
+  <h3>Validation Check Colors</h3>
+  <div class="validation-row">
+    <div class="validation-badge" style="background:rgba(239,68,68,0.10); color:#EF4444;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      Critical (bloquea)
+    </div>
+    <div class="validation-badge" style="background:rgba(245,158,11,0.10); color:#F59E0B;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Important (no bloquea)
+    </div>
+    <div class="validation-badge" style="background:rgba(34,197,94,0.10); color:#22C55E;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Info (cumple)
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- TRANSPARENCIES -->
+<div class="section">
+  <h2>Transparencies</h2>
+  <h3>5 escalas alpha (0% → 95%)</h3>
+
+  <p class="trans-label">White (#FFFFFF)</p>
+  <div class="transparency-row">
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0); color:#545454;">0</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.05); color:#888;">5</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.15); color:#aaa;">15</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.25); color:#bbb;">25</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.35); color:#ccc;">35</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.45); color:#ddd;">45</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.55); color:#eee;">55</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.65); color:#fff;">65</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.75); color:#000;">75</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.85); color:#000;">85</div>
+    <div class="alpha-swatch" style="background:rgba(255,255,255,0.95); color:#000;">95</div>
+  </div>
+
+  <p class="trans-label">Black (#000000)</p>
+  <div class="transparency-row">
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0); color:#545454; border:1px dashed #333;">0</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.05); color:#aaa;">5</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.15); color:#aaa;">15</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.25); color:#aaa;">25</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.35); color:#ccc;">35</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.45); color:#ccc;">45</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.55); color:#ddd;">55</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.65); color:#eee;">65</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.75); color:#fff;">75</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.85); color:#fff;">85</div>
+    <div class="alpha-swatch" style="background:rgba(0,0,0,0.95); color:#fff;">95</div>
+  </div>
+
+  <p class="trans-label">OP Blue (#4361EF)</p>
+  <div class="transparency-row">
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0); color:#545454;">0</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.05); color:#aaa;">5</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.15); color:#aaa;">15</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.25); color:#ccc;">25</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.35); color:#ddd;">35</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.45); color:#eee;">45</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.55); color:#fff;">55</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.65); color:#fff;">65</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.75); color:#fff;">75</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.85); color:#fff;">85</div>
+    <div class="alpha-swatch" style="background:rgba(67,97,239,0.95); color:#fff;">95</div>
+  </div>
+
+  <p class="trans-label">Neutral 300 (#6E6E6E)</p>
+  <div class="transparency-row">
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0); color:#545454;">0</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.05); color:#888;">5</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.15); color:#aaa;">15</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.25); color:#bbb;">25</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.35); color:#ccc;">35</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.45); color:#ddd;">45</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.55); color:#eee;">55</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.65); color:#fff;">65</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.75); color:#fff;">75</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.85); color:#fff;">85</div>
+    <div class="alpha-swatch" style="background:rgba(110,110,110,0.95); color:#fff;">95</div>
+  </div>
+
+  <p class="trans-label">Neutral 700 (#191919)</p>
+  <div class="transparency-row">
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0); color:#545454; border:1px dashed #333;">0</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.05); color:#888;">5</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.15); color:#888;">15</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.25); color:#aaa;">25</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.35); color:#aaa;">35</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.45); color:#bbb;">45</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.55); color:#ccc;">55</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.65); color:#ddd;">65</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.75); color:#eee;">75</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.85); color:#fff;">85</div>
+    <div class="alpha-swatch" style="background:rgba(25,25,25,0.95); color:#fff;">95</div>
+  </div>
+</div>
+
+<div style="text-align:center; padding: 32px 0; color: #3B3B3B; font-size: 12px;">
+  Vibe Coding Design System v2.0.0 — OP Video Engine — Omnicom Production
+</div>
+
+</body>
+</html>

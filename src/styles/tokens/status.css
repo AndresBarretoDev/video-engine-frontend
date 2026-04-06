@@ -1,0 +1,120 @@
+/*
+ * Vibe Coding Design System — Status Colors
+ * Source: status_colors.json v1.1.0
+ *
+ * Semantic status colors for OP Video Engine.
+ * Used in StatusBadge, render progress indicators, QC flow, client approval.
+ */
+
+:root {
+  /* ========================================
+   * Status: Approved (QC approved, validation passed)
+   * ======================================== */
+  --status-approved-bg: rgba(34, 197, 94, 0.15);
+  --status-approved-text: #22C55E;
+  --status-approved-border: rgba(34, 197, 94, 0.3);
+  --status-approved-icon: #22C55E;
+
+  /* ========================================
+   * Status: Client Approved (final client OK)
+   * ======================================== */
+  --status-client-approved-bg: rgba(21, 128, 61, 0.15);
+  --status-client-approved-text: #15803D;
+  --status-client-approved-border: rgba(21, 128, 61, 0.3);
+  --status-client-approved-icon: #15803D;
+
+  /* ========================================
+   * Status: Rejected (QC rejected, critical failures)
+   * ======================================== */
+  --status-rejected-bg: rgba(239, 68, 68, 0.15);
+  --status-rejected-text: #EF4444;
+  --status-rejected-border: rgba(239, 68, 68, 0.3);
+  --status-rejected-icon: #EF4444;
+
+  /* ========================================
+   * Status: Warning (needs fix, non-blocking)
+   * ======================================== */
+  --status-warning-bg: rgba(245, 158, 11, 0.15);
+  --status-warning-text: #F59E0B;
+  --status-warning-border: rgba(245, 158, 11, 0.3);
+  --status-warning-icon: #F59E0B;
+
+  /* ========================================
+   * Status: Pending (awaiting QC, uploaded)
+   * ======================================== */
+  --status-pending-bg: rgba(107, 114, 128, 0.15);
+  --status-pending-text: #9CA3AF;
+  --status-pending-border: rgba(107, 114, 128, 0.3);
+  --status-pending-icon: #9CA3AF;
+
+  /* ========================================
+   * Status: In Review (client review in progress)
+   * ======================================== */
+  --status-in-review-bg: rgba(139, 92, 246, 0.15);
+  --status-in-review-text: #8B5CF6;
+  --status-in-review-border: rgba(139, 92, 246, 0.3);
+  --status-in-review-icon: #8B5CF6;
+
+  /* ========================================
+   * Status: Delivered (final delivery, uses OP Blue)
+   * ======================================== */
+  --status-delivered-bg: rgba(67, 97, 239, 0.15);
+  --status-delivered-text: #4361EF;
+  --status-delivered-border: rgba(67, 97, 239, 0.3);
+  --status-delivered-icon: #4361EF;
+
+  /* ========================================
+   * Component Type Badge Colors
+   * Semantic tokens for atom/molecule/organism/template badges
+   * ======================================== */
+  --ctype-atom-bg: rgba(59, 130, 246, 0.10);
+  --ctype-atom-text: #3B82F6;
+  --ctype-atom-border: rgba(59, 130, 246, 0.20);
+
+  --ctype-molecule-bg: rgba(34, 197, 94, 0.10);
+  --ctype-molecule-text: #22C55E;
+  --ctype-molecule-border: rgba(34, 197, 94, 0.20);
+
+  --ctype-organism-bg: rgba(139, 92, 246, 0.10);
+  --ctype-organism-text: #8B5CF6;
+  --ctype-organism-border: rgba(139, 92, 246, 0.20);
+
+  --ctype-template-bg: rgba(249, 115, 22, 0.10);
+  --ctype-template-text: #F97316;
+  --ctype-template-border: rgba(249, 115, 22, 0.20);
+
+  /* ========================================
+   * Column Data Type Badge Colors
+   * Semantic tokens for column type indicators in data engine
+   * ======================================== */
+  --dtype-boolean-bg: rgba(34, 197, 94, 0.10);
+  --dtype-boolean-text: #16A34A;
+  --dtype-boolean-border: rgba(34, 197, 94, 0.25);
+
+  --dtype-date-bg: rgba(139, 92, 246, 0.10);
+  --dtype-date-text: #7C3AED;
+  --dtype-date-border: rgba(139, 92, 246, 0.25);
+
+  --dtype-image-bg: rgba(249, 115, 22, 0.10);
+  --dtype-image-text: #EA580C;
+  --dtype-image-border: rgba(249, 115, 22, 0.25);
+
+  --dtype-video-bg: rgba(236, 72, 153, 0.10);
+  --dtype-video-text: #DB2777;
+  --dtype-video-border: rgba(236, 72, 153, 0.25);
+
+  /* ========================================
+   * Validation Check Colors
+   * ======================================== */
+  --check-critical-bg: rgba(239, 68, 68, 0.10);
+  --check-critical-text: #EF4444;
+  --check-critical-icon: #EF4444;
+
+  --check-important-bg: rgba(245, 158, 11, 0.10);
+  --check-important-text: #F59E0B;
+  --check-important-icon: #F59E0B;
+
+  --check-info-bg: rgba(34, 197, 94, 0.10);
+  --check-info-text: #22C55E;
+  --check-info-icon: #22C55E;
+}

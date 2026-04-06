@@ -1,0 +1,47 @@
+{
+  "Grid layout definitions system": null,
+  "category": "Layout Grid (Updated)",
+  "version": "1.1.0",
+  "base_unit": "px",
+  "tokens": {
+    "grid": {
+      "columns": 12,
+      "description": "Sistema de 12 columnas estándar para máxima flexibilidad de diseño."
+    },
+    "containers": {
+      "main": {
+        "max_width": 1376,
+        "description": "Ancho máximo del contenedor principal para contenido expandido cuando el sidebar no esté presente."
+      },
+      "altern": {
+        "max_width": 1135,
+        "description": "Ancho máximo para contenedor principal para contenido en layout alternativo cuando el sidebar esté presente."
+      }
+    },
+    "margin": {
+      "desktop": {
+        "default": 32,
+        "compact": 24,
+        "description": "Márgenes laterales externos de la página en desktop."
+      }
+    },
+    "gutter": {
+      "default": 24,
+      "dense": 16,
+      "description": "Espaciado entre columnas (Medianil)."
+    },
+    "sidebar": {
+      "width": 141,
+      "layout": {
+        "gap": 0,
+        "margin": 32,
+        "gutter": 24
+      },
+      "description": "Especificaciones de navegación lateral fija."
+    }
+  },
+  "usage_guidelines": {
+    "grid_alignment": "El contenido debe alinearse siempre a las 12 columnas del contenedor activo (Main o Altern).",
+    "sidebar_behavior": "El sidebar de 141px es estático; el contenedor principal debe calcular su ancho restando este valor del viewport total cuando esté presente."
+  }
+}

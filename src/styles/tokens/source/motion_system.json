@@ -1,0 +1,158 @@
+{
+  "Motion definitions system": null,
+  "description": "Tokens de Animación y Micro-interacciones. Enfoque en performance, jerarquía de 'Shine' y tiempos compuestos.",
+  "version": "1.0.0",
+  "motion": {
+    "raw": {
+      "duration": {
+        "fast": {
+          "value": "120ms",
+          "usage": "Feedback táctil inmediato, cambios de estado (Checkboxes, Toggles).",
+          "comment": "Antiguo 'Quick'. Unificado para consistencia."
+        },
+        "standard": {
+          "value": "300ms",
+          "usage": "UI estándar: aperturas, cierres, cambios de layout suaves, Tabs.",
+          "comment": "El tiempo base del sistema."
+        },
+        "slow": {
+          "value": "400ms",
+          "usage": "Hover Premium (degradados), Modales grandes, recorridos de luz.",
+          "comment": "Necesario para que el ojo perciba el movimiento del degradado."
+        },
+        "story": {
+          "value": "600ms",
+          "usage": "Storytelling puntual. Raro y con intención (Onboarding).",
+          "comment": "No usar en navegación diaria."
+        }
+      },
+      "easing": {
+        "ui": {
+          "value": "cubic-bezier(0.2, 0, 0, 1)",
+          "usage": "Curva limpia y moderna. Usar en el 90% de la interfaz."
+        },
+        "premium": {
+          "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+          "usage": "Suave y lujosa. Para degradados, overlays y elementos destacados."
+        },
+        "editorial": {
+          "value": "cubic-bezier(0, 0, 0.58, 1)",
+          "usage": "Dramática. Exclusiva para momentos 'Story'."
+        }
+      }
+    },
+    "displacement": {
+      "description": "Escala de movimiento vinculada a la grilla de espaciado.",
+      "micro_shift": {
+        "value": "{sizing.spacing.xs}",
+        "usage": "Pequeños saltos en hover o iconos."
+      },
+      "enter_exit": {
+        "value": "{sizing.spacing.m}",
+        "usage": "Entrada estándar de Modales, Drawers o Toasts."
+      },
+      "page_transition": {
+        "value": "{sizing.spacing.xl}",
+        "usage": "Desplazamiento mayor entre pantallas (si aplica)."
+      }
+    },
+    "semantic": {
+      "button": {
+        "scope": ["component"],
+        "hover_complex": {
+          "description": "Regla Premium Compuesta: El fondo/glow viaja lento, el contenido responde rápido.",
+          "layers": [
+            {
+              "layer_name": "background_glow",
+              "properties": ["background-position", "box-shadow", "opacity"],
+              "token": "{motion.raw.duration.slow}",
+              "easing": "{motion.raw.easing.premium}",
+              "note": "El 'Shine' necesita 400ms para recorrer el espacio visualmente."
+            },
+            {
+              "layer_name": "content_response",
+              "properties": ["color", "transform", "scale"],
+              "token": "{motion.raw.duration.standard}",
+              "easing": "{motion.raw.easing.ui}",
+              "note": "El texto/icono responde en 300ms para no sentirse lento."
+            }
+          ]
+        },
+        "press": {
+          "description": "Feedback táctil inmediato.",
+          "properties": ["transform", "background-color"],
+          "token": "{motion.raw.duration.fast}",
+          "easing": "{motion.raw.easing.ui}"
+        },
+        "loading": {
+          "description": "Transición directa a estado de carga.",
+          "token": "{motion.raw.duration.fast}",
+          "easing": "{motion.raw.easing.ui}"
+        }
+      },
+      "card": {
+        "scope": ["component"],
+        "hover_default": {
+          "description": "Elevación ligera para cards estándar.",
+          "token": "{motion.raw.duration.standard}",
+          "easing": "{motion.raw.easing.ui}",
+          "properties": ["transform", "box-shadow"]
+        },
+        "hover_featured": {
+          "description": "Solo para Cards destacadas con degradado activo.",
+          "token": "{motion.raw.duration.slow}",
+          "easing": "{motion.raw.easing.premium}",
+          "properties": ["background-position", "box-shadow"]
+        }
+      },
+      "modal_drawer": {
+        "scope": ["pattern"],
+        "container_entry": {
+          "token": "{motion.raw.duration.slow}",
+          "easing": "{motion.raw.easing.premium}",
+          "description": "Entrada suave del panel principal."
+        },
+        "overlay_fade": {
+          "token": "{motion.raw.duration.standard}",
+          "easing": "{motion.raw.easing.ui}",
+          "description": "El fondo oscuro entra ligeramente más rápido para dar contexto."
+        }
+      },
+      "dropdown_accordion": {
+        "scope": ["pattern"],
+        "toggle": {
+          "token": "{motion.raw.duration.standard}",
+          "easing": "{motion.raw.easing.premium}",
+          "description": "Apertura fluida de contenido (evitar height:auto en CSS)."
+        },
+        "item_hover": {
+          "token": "{motion.raw.duration.fast}",
+          "easing": "{motion.raw.easing.ui}",
+          "description": "Selección rápida en listas de opciones."
+        }
+      },
+      "tooltip": {
+        "scope": ["component"],
+        "entry": {
+          "token": "{motion.raw.duration.fast}",
+          "easing": "{motion.raw.easing.ui}",
+          "description": "Aparición casi instantánea, sin teatralidad."
+        }
+      }
+    },
+    "implementation": {
+      "performance_guidelines": {
+        "allowed_properties": ["opacity", "transform", "background-position", "color", "box-shadow"],
+        "forbidden_properties": ["width", "height", "top", "left", "margin", "padding"],
+        "gradient_hack": "Para animar degradados performantes: usar background-size: 200% 200% y animar background-position."
+      },
+      "accessibility": {
+        "prefers_reduced_motion": {
+          "action": "override",
+          "value": "transition: opacity 0ms !important; animation: none !important;",
+          "exception": "Permitir cambios de color (fade) rápidos sin desplazamiento para mantener feedback de estado."
+        }
+      }
+    }
+  }
+}

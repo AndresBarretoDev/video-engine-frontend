@@ -1,0 +1,107 @@
+/*
+ * Vibe Coding Design System — Typography
+ * Source: typography_system.json v2.2.0
+ *
+ * Font family: Mulish (only font, no secondaries)
+ * Scales: display, headings, body, caption, CTA
+ */
+
+:root {
+  /* ========================================
+   * Font Family
+   * ======================================== */
+  --font-family-primary: 'Mulish', sans-serif;
+
+  /* ========================================
+   * Font Weights
+   * ======================================== */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* ========================================
+   * Display Scale — Hero sections, main titles
+   * ======================================== */
+  --display-xl-size: 60px;
+  --display-xl-line-height: 62px;
+  --display-xl-spacing: 60px;
+
+  --display-l-size: 40px;
+  --display-l-line-height: 42px;
+  --display-l-spacing: 40px;
+
+  --display-m-size: 32px;
+  --display-m-line-height: 34px;
+  --display-m-spacing: 32px;
+
+  /* ========================================
+   * Headings Scale
+   * ======================================== */
+  --heading-h1-size: 48px;
+  --heading-h1-line-height: 50px;
+  --heading-h1-spacing: 48px;
+  --heading-h1-weight: 700;
+
+  --heading-h2-size: 32px;
+  --heading-h2-line-height: 34px;
+  --heading-h2-spacing: 32px;
+  --heading-h2-weight: 700;
+
+  --heading-h3-size: 24px;
+  --heading-h3-line-height: 26px;
+  --heading-h3-spacing: 22px;
+  --heading-h3-weight: 600;
+
+  --heading-h4-size: 20px;
+  --heading-h4-line-height: 22px;
+  --heading-h4-spacing: 20px;
+  --heading-h4-weight: 600;
+
+  /* ========================================
+   * Body Scale
+   * ======================================== */
+  --body-large-size: 18px;
+  --body-large-line-height: 20px;
+  --body-large-spacing: 16px;
+
+  --body-regular-size: 16px;
+  --body-regular-line-height: 18px;
+  --body-regular-spacing: 16px;
+
+  --body-small-size: 14px;
+  --body-small-line-height: 16px;
+  --body-small-spacing: 14px;
+
+  --body-xsmall-size: 12px;
+  --body-xsmall-line-height: 14px;
+  --body-xsmall-spacing: 12px;
+
+  /* ========================================
+   * Caption Scale
+   * ======================================== */
+  --caption-size: 10px;
+  --caption-line-height: 12px;
+  --caption-spacing: 10px;
+
+  /* ========================================
+   * CTA Scale
+   * ======================================== */
+  --cta-primary-size: 16px;
+  --cta-primary-line-height: 18px;
+  --cta-primary-spacing: 16px;
+
+  --cta-small-size: 12px;
+  --cta-small-line-height: 14px;
+  --cta-small-spacing: 12px;
+
+  --cta-tertiary-medium-size: 14px;
+  --cta-tertiary-medium-line-height: 16px;
+  --cta-tertiary-medium-spacing: 14px;
+
+  --cta-tertiary-small-size: 12px;
+  --cta-tertiary-small-line-height: 14px;
+  --cta-tertiary-small-spacing: 12px;
+}

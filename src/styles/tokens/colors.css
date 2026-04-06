@@ -1,0 +1,150 @@
+/*
+ * Vibe Coding Design System — Colors
+ * Source: colors_system.json v2.0.0
+ *
+ * Platform Tokens for web UI.
+ * Brand Tokens for Remotion video components are separate (per-brand config).
+ */
+
+:root {
+  /* ========================================
+   * Raw Colors — OP Blue Scale
+   * Primary: op-blue-600 (#4361EF)
+   * ======================================== */
+  --color-op-blue-50: #F6F8FF;
+  --color-op-blue-100: #F0F3FE;
+  --color-op-blue-200: #DCE3FD;
+  --color-op-blue-300: #C1CFFC;
+  --color-op-blue-400: #97B1F9;
+  --color-op-blue-500: #6689F4;
+  --color-op-blue-600: #4361EF;
+  --color-op-blue-700: #2C40E4;
+  --color-op-blue-800: #242DD1;
+  --color-op-blue-900: #2327AA;
+  --color-op-blue-950: #191A52;
+
+  /* ========================================
+   * General Surfaces — Dark Mode First
+   * Pairs of background + contrast for hierarchy
+   * ======================================== */
+  --surface-level-0-bg: #000000;
+  --surface-level-0-contrast: #FFFFFF;
+  --surface-level-1-bg: #080808;
+  --surface-level-1-contrast: #F5F5F5;
+  --surface-level-2-bg: #0D0D0D;
+  --surface-level-2-contrast: #DCDCDC;
+  --surface-level-3-bg: #131313;
+  --surface-level-3-contrast: #8C8C8C;
+  --surface-level-4-bg: #191919;
+  --surface-level-4-contrast: #6E6E6E;
+  --surface-level-5-bg: #202020;
+  --surface-level-5-contrast: #545454;
+  --surface-level-6-bg: #3B3B3B;
+  --surface-level-6-contrast: #3B3B3B;
+
+  /* ========================================
+   * Component Colors — Button
+   * ======================================== */
+  --btn-principal-light: #6689F4;
+  --btn-principal-light-medium: #4361EF;
+  --btn-principal-medium: #2C40E4;
+  --btn-principal-dark: #2327AA;
+  --btn-principal-text: #FFFFFF;
+  --btn-disable-light: #545454;
+  --btn-disable-dark: #202020;
+  --btn-disable-text: #545454;
+
+  /* ========================================
+   * Component Colors — Secondary Actions
+   * ======================================== */
+  --secondary-fill-invisible: rgba(255, 255, 255, 0);
+  --secondary-fill-default: rgba(255, 255, 255, 0.15);
+  --secondary-fill-hover: rgba(255, 255, 255, 0.25);
+  --secondary-stroke-default-light: #DCDCDC;
+  --secondary-stroke-default-shadow: #131313;
+  --secondary-stroke-hover-light: #FFFFFF;
+  --secondary-stroke-hover-shadow: #202020;
+
+  /* ========================================
+   * Component Colors — Card
+   * ======================================== */
+  --card-bg: #0D0D0D;
+  --card-fg: #FFFFFF;
+  --card-gradient-shadow: #131313;
+  --card-gradient-light: #191919;
+
+  /* ========================================
+   * Transparencies — White
+   * ======================================== */
+  --white-alpha-0: rgba(255, 255, 255, 0);
+  --white-alpha-5: rgba(255, 255, 255, 0.05);
+  --white-alpha-15: rgba(255, 255, 255, 0.15);
+  --white-alpha-25: rgba(255, 255, 255, 0.25);
+  --white-alpha-35: rgba(255, 255, 255, 0.35);
+  --white-alpha-45: rgba(255, 255, 255, 0.45);
+  --white-alpha-55: rgba(255, 255, 255, 0.55);
+  --white-alpha-65: rgba(255, 255, 255, 0.65);
+  --white-alpha-75: rgba(255, 255, 255, 0.75);
+  --white-alpha-85: rgba(255, 255, 255, 0.85);
+  --white-alpha-95: rgba(255, 255, 255, 0.95);
+
+  /* ========================================
+   * Transparencies — Black
+   * ======================================== */
+  --black-alpha-0: rgba(0, 0, 0, 0);
+  --black-alpha-5: rgba(0, 0, 0, 0.05);
+  --black-alpha-15: rgba(0, 0, 0, 0.15);
+  --black-alpha-25: rgba(0, 0, 0, 0.25);
+  --black-alpha-35: rgba(0, 0, 0, 0.35);
+  --black-alpha-45: rgba(0, 0, 0, 0.45);
+  --black-alpha-55: rgba(0, 0, 0, 0.55);
+  --black-alpha-65: rgba(0, 0, 0, 0.65);
+  --black-alpha-75: rgba(0, 0, 0, 0.75);
+  --black-alpha-85: rgba(0, 0, 0, 0.85);
+  --black-alpha-95: rgba(0, 0, 0, 0.95);
+
+  /* ========================================
+   * Transparencies — Neutral 300 (#6E6E6E)
+   * ======================================== */
+  --neutral-300-alpha-0: rgba(110, 110, 110, 0);
+  --neutral-300-alpha-5: rgba(110, 110, 110, 0.05);
+  --neutral-300-alpha-15: rgba(110, 110, 110, 0.15);
+  --neutral-300-alpha-25: rgba(110, 110, 110, 0.25);
+  --neutral-300-alpha-35: rgba(110, 110, 110, 0.35);
+  --neutral-300-alpha-45: rgba(110, 110, 110, 0.45);
+  --neutral-300-alpha-55: rgba(110, 110, 110, 0.55);
+  --neutral-300-alpha-65: rgba(110, 110, 110, 0.65);
+  --neutral-300-alpha-75: rgba(110, 110, 110, 0.75);
+  --neutral-300-alpha-85: rgba(110, 110, 110, 0.85);
+  --neutral-300-alpha-95: rgba(110, 110, 110, 0.95);
+
+  /* ========================================
+   * Transparencies — Neutral 700 (#191919)
+   * ======================================== */
+  --neutral-700-alpha-0: rgba(25, 25, 25, 0);
+  --neutral-700-alpha-5: rgba(25, 25, 25, 0.05);
+  --neutral-700-alpha-15: rgba(25, 25, 25, 0.15);
+  --neutral-700-alpha-25: rgba(25, 25, 25, 0.25);
+  --neutral-700-alpha-35: rgba(25, 25, 25, 0.35);
+  --neutral-700-alpha-45: rgba(25, 25, 25, 0.45);
+  --neutral-700-alpha-55: rgba(25, 25, 25, 0.55);
+  --neutral-700-alpha-65: rgba(25, 25, 25, 0.65);
+  --neutral-700-alpha-75: rgba(25, 25, 25, 0.75);
+  --neutral-700-alpha-85: rgba(25, 25, 25, 0.85);
+  --neutral-700-alpha-95: rgba(25, 25, 25, 0.95);
+
+  /* ========================================
+   * Transparencies — OP Blue 600 (#4361EF)
+   * ======================================== */
+  --op-blue-alpha-0: rgba(67, 97, 239, 0);
+  --op-blue-alpha-5: rgba(67, 97, 239, 0.05);
+  --op-blue-alpha-15: rgba(67, 97, 239, 0.15);
+  --op-blue-alpha-25: rgba(67, 97, 239, 0.25);
+  --op-blue-alpha-35: rgba(67, 97, 239, 0.35);
+  --op-blue-alpha-45: rgba(67, 97, 239, 0.45);
+  --op-blue-alpha-55: rgba(67, 97, 239, 0.55);
+  --op-blue-alpha-65: rgba(67, 97, 239, 0.65);
+  --op-blue-alpha-75: rgba(67, 97, 239, 0.75);
+  --op-blue-alpha-85: rgba(67, 97, 239, 0.85);
+  --op-blue-alpha-95: rgba(67, 97, 239, 0.95);
+}

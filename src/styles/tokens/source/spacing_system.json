@@ -1,0 +1,46 @@
+{
+  "Spacing definitions system": null,
+  "category": "Spacing & Gapping (Semantic)",
+  "version": "1.0.0",
+  "tokens": {
+    "button": {
+      "padding": {
+        "x": { "xl": 80, "l": 32, "md": 24, "sm": 16, "xs": 8, "xxs": 4 },
+        "y": { "xl": 32, "l": 24, "md": 16, "sm": 8, "xs": 4 }
+      },
+      "gap": { "icon_text": 8 }
+    },
+    "card": {
+      "padding": { "xxl": 120, "xl": 36, "l": 32, "md": 24, "sm": 16, "xs": 8 },
+      "gap": { "xl": 24, "l": 16, "md": 8, "sm": 6, "xs": 4 }
+    },
+    "field": {
+      "padding": {
+        "x": { "l": 18, "md": 16, "sm2": 10, "sm": 8 },
+        "y": { "l": 22, "md": 12, "sm2": 10, "sm": 8 }
+      },
+      "gap": {
+        "label_input": 8,
+        "input_helper": 6,
+        "group_horizontal": 16,
+        "group_vertical": 16
+      }
+    },
+    "container": {
+      "padding": { "spacious": 32, "default": 24, "compact": 16 },
+      "gap": { "elements": 16, "sections": 48, "text_stack": 5 }
+    },
+    "navigation": {
+      "padding": { "x": 32 }
+    },
+    "utility_gaps": {
+      "positive": { "gap_4": 4, "gap_6": 6, "gap_8": 8, "gap_12": 12, "gap_16": 16, "gap_24": 24, "gap_32": 32 },
+      "negative": { "tight": -1, "overlap": -32 }
+    },
+    "usage_notes": {
+      "structural": "Los valores 141, 384 y 1376 están reservados para anchos de Sidebar, contenedores específicos y Max-Width general.",
+      "precision": "Los valores impares o de baja escala (1, 3, 5, 7) deben usarse únicamente para ajustes finos de alineación o strokes específicos.",
+      "infinite": "Utilizado exclusivamente para bordes totalmente redondeados (Pills o Círculos)."
+    }
+  }
+}

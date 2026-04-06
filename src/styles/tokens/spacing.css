@@ -1,0 +1,92 @@
+/*
+ * Vibe Coding Design System — Spacing
+ * Source: spacing_system.json v1.0.0
+ *
+ * Semantic padding and gap by context.
+ * Never use arbitrary spacing values — always reference these tokens.
+ */
+
+:root {
+  /* ========================================
+   * Button Padding
+   * ======================================== */
+  --btn-padding-x-xl: 80px;
+  --btn-padding-x-l: 32px;
+  --btn-padding-x-md: 24px;
+  --btn-padding-x-sm: 16px;
+  --btn-padding-x-xs: 8px;
+  --btn-padding-x-xxs: 4px;
+
+  --btn-padding-y-xl: 32px;
+  --btn-padding-y-l: 24px;
+  --btn-padding-y-md: 16px;
+  --btn-padding-y-sm: 8px;
+  --btn-padding-y-xs: 4px;
+
+  --btn-gap-icon-text: 8px;
+
+  /* ========================================
+   * Card Padding & Gaps
+   * ======================================== */
+  --card-padding-xxl: 120px;
+  --card-padding-xl: 36px;
+  --card-padding-l: 32px;
+  --card-padding-md: 24px;
+  --card-padding-sm: 16px;
+  --card-padding-xs: 8px;
+
+  --card-gap-xl: 24px;
+  --card-gap-l: 16px;
+  --card-gap-md: 8px;
+  --card-gap-sm: 6px;
+  --card-gap-xs: 4px;
+
+  /* ========================================
+   * Field Padding & Gaps
+   * ======================================== */
+  --field-padding-x-l: 18px;
+  --field-padding-x-md: 16px;
+  --field-padding-x-sm2: 10px;
+  --field-padding-x-sm: 8px;
+
+  --field-padding-y-l: 22px;
+  --field-padding-y-md: 12px;
+  --field-padding-y-sm2: 10px;
+  --field-padding-y-sm: 8px;
+
+  --field-gap-label-input: 8px;
+  --field-gap-input-helper: 6px;
+  --field-gap-group-h: 16px;
+  --field-gap-group-v: 16px;
+
+  /* ========================================
+   * Container Padding & Gaps
+   * ======================================== */
+  --container-padding-spacious: 32px;
+  --container-padding-default: 24px;
+  --container-padding-compact: 16px;
+
+  --container-gap-elements: 16px;
+  --container-gap-sections: 48px;
+  --container-gap-text-stack: 5px;
+
+  /* ========================================
+   * Navigation
+   * ======================================== */
+  --nav-padding-x: 32px;
+
+  /* ========================================
+   * Utility Gaps
+   * ======================================== */
+  --gap-4: 4px;
+  --gap-6: 6px;
+  --gap-8: 8px;
+  --gap-12: 12px;
+  --gap-16: 16px;
+  --gap-24: 24px;
+  --gap-32: 32px;
+
+  /* Negative gaps (for overlap effects) */
+  --gap-tight: -1px;
+  --gap-overlap: -32px;
+}

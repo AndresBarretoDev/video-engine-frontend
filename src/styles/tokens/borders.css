@@ -1,0 +1,34 @@
+/*
+ * Vibe Coding Design System — Strokes & Border Radius
+ * Source: strokes_and_radius_system.json v1.0.0
+ *
+ * Rules:
+ * - Default border: stroke-thin (1px)
+ * - Active/focus state: stroke-medium (2px)
+ * - Prioritize background-colors over borders for section separation
+ * - Nested radius: Outer Radius - Padding = Inner Radius
+ */
+
+:root {
+  /* ========================================
+   * Stroke Widths
+   * ======================================== */
+  --stroke-none: 0px;
+  --stroke-thin: 1px;
+  --stroke-medium: 2px;
+  --stroke-thick: 4px;
+
+  /* ========================================
+   * Border Radius Scale
+   * ======================================== */
+  --radius-2: 2px;   /* Micro elements, checkboxes, tiny badges */
+  --radius-4: 4px;   /* Compact internals, keyboard keys, small tags */
+  --radius-6: 6px;   /* Sub-containers, tooltips, dropdown items */
+  --radius-8: 8px;   /* Standard UI: small buttons, inputs, dense cards */
+  --radius-10: 10px; /* Modern variant: medium/large buttons */
+  --radius-12: 12px; /* Standard UI: cards, modals, sections */
+  --radius-16: 16px; /* Large containers, drawers, floating elements */
+  --radius-24: 24px; /* Large modals, hero sections */
+  --radius-32: 32px; /* Decorative large, ultra-soft containers */
+  --radius-infinite: 9999px; /* Pills, avatars, circles */
+}

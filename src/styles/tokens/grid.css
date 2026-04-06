@@ -1,0 +1,41 @@
+/*
+ * Vibe Coding Design System — Grid Layout
+ * Source: grid_system.json v1.1.0
+ *
+ * 12-column grid system.
+ * Main container: 1376px. Altern (with sidebar): 1135px.
+ * Sidebar: 141px fixed.
+ */
+
+:root {
+  /* ========================================
+   * Grid System
+   * ======================================== */
+  --grid-columns: 12;
+
+  /* ========================================
+   * Container Max Widths
+   * ======================================== */
+  --container-main-max-width: 1376px;
+  --container-altern-max-width: 1135px;
+
+  /* ========================================
+   * Margins
+   * ======================================== */
+  --margin-desktop-default: 32px;
+  --margin-desktop-compact: 24px;
+
+  /* ========================================
+   * Gutters (Column spacing)
+   * ======================================== */
+  --gutter-default: 24px;
+  --gutter-dense: 16px;
+
+  /* ========================================
+   * Sidebar
+   * ======================================== */
+  --sidebar-width: 141px;
+  --sidebar-gap: 0px;
+  --sidebar-margin: 32px;
+  --sidebar-gutter: 24px;
+}

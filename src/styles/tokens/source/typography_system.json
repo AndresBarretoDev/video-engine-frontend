@@ -1,0 +1,147 @@
+{
+  "design_system": "Vibe Coding",
+  "category": "Typography (Mulish) - Source of Truth",
+  "version": "2.2.0",
+  "source_file": "typography.tokens.json",
+  "settings": {
+    "font_family": "Mulish, sans-serif",
+    "base_unit": "px"
+  },
+  "tokens": {
+    "display": {
+      "settings": {
+        "weights": {
+          "bold": "700",
+          "extrabold": "800",
+          "medium": "500"
+        },
+        "description": "High impact typography for hero sections and main titles."
+      },
+      "xl": {
+        "font_size": 60,
+        "line_height": 62,
+        "paragraph_spacing": 60,
+        "letter_spacing": 0
+      },
+      "l": {
+        "font_size": 40,
+        "line_height": 42,
+        "paragraph_spacing": 40,
+        "letter_spacing": 0
+      },
+      "m": {
+        "font_size": 32,
+        "line_height": 34,
+        "paragraph_spacing": 32,
+        "letter_spacing": 0
+      }
+    },
+    "headings": {
+      "h1": {
+        "font_size": 48,
+        "line_height": 50,
+        "paragraph_spacing": 48,
+        "weight": "700",
+        "letter_spacing": 0
+      },
+      "h2": {
+        "font_size": 32,
+        "line_height": 34,
+        "paragraph_spacing": 32,
+        "weight": "700",
+        "letter_spacing": 0
+      },
+      "h3": {
+        "font_size": 24,
+        "line_height": 26,
+        "paragraph_spacing": 22,
+        "weight": "600",
+        "letter_spacing": 0
+      },
+      "h4": {
+        "font_size": 20,
+        "line_height": 22,
+        "paragraph_spacing": 20,
+        "weight": "600",
+        "letter_spacing": 0
+      }
+    },
+    "body": {
+      "weights": {
+        "bold": "700",
+        "medium": "500",
+        "regular": "400",
+        "light": "300"
+      },
+      "large": {
+        "font_size": 18,
+        "line_height": 20,
+        "paragraph_spacing": 16
+      },
+      "regular": {
+        "font_size": 16,
+        "line_height": 18,
+        "paragraph_spacing": 16
+      },
+      "small": {
+        "font_size": 14,
+        "line_height": 16,
+        "paragraph_spacing": 14
+      },
+      "x_small": {
+        "font_size": 12,
+        "line_height": 14,
+        "paragraph_spacing": 12
+      }
+    },
+    "caption": {
+      "base": {
+        "font_size": 10,
+        "line_height": 12,
+        "paragraph_spacing": 10,
+        "letter_spacing": 0
+      },
+      "variants": {
+        "bold": { "weight": "700" },
+        "medium": { "weight": "500" },
+        "light": { "weight": "300" }
+      }
+    },
+    "cta": {
+      "primary_secondary": {
+        "medium": {
+          "font_size": 16,
+          "line_height": 18,
+          "paragraph_spacing": 16,
+          "weight": "500"
+        },
+        "bold": {
+          "font_size": 16,
+          "line_height": 18,
+          "paragraph_spacing": 16,
+          "weight": "700"
+        }
+      },
+      "small": {
+        "font_size": 12,
+        "line_height": 14,
+        "paragraph_spacing": 12,
+        "weight": "500"
+      },
+      "tertiary": {
+        "medium": {
+          "font_size": 14,
+          "line_height": 16,
+          "paragraph_spacing": 14,
+          "weight": "300"
+        },
+        "small": {
+          "font_size": 12,
+          "line_height": 14,
+          "paragraph_spacing": 12,
+          "weight": "300"
+        }
+      }
+    }
+  }
+}

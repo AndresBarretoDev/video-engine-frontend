@@ -1,0 +1,188 @@
+/*
+ * OP Video Engine — Global Styles
+ * Design System: Vibe Coding
+ *
+ * Dark Mode First: The platform is dark by default.
+ * All tokens come from /src/styles/tokens/ (source of truth).
+ * shadcn/ui semantic variables map to Vibe Coding tokens.
+ */
+
+@import '../styles/main.css';
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ========================================
+ * Tailwind v4 Theme — Vibe Coding Tokens
+ *
+ * Maps CSS variables to Tailwind utility classes.
+ * Usage: bg-op-blue-600, text-surface-contrast-0, etc.
+ * ======================================== */
+@theme inline {
+  /* --- Font Family --- */
+  --font-sans: var(--font-family-primary);
+
+  /* --- OP Blue Scale (bg-op-blue-600, text-op-blue-300, etc.) --- */
+  --color-op-blue-50: var(--color-op-blue-50);
+  --color-op-blue-100: var(--color-op-blue-100);
+  --color-op-blue-200: var(--color-op-blue-200);
+  --color-op-blue-300: var(--color-op-blue-300);
+  --color-op-blue-400: var(--color-op-blue-400);
+  --color-op-blue-500: var(--color-op-blue-500);
+  --color-op-blue-600: var(--color-op-blue-600);
+  --color-op-blue-700: var(--color-op-blue-700);
+  --color-op-blue-800: var(--color-op-blue-800);
+  --color-op-blue-900: var(--color-op-blue-900);
+  --color-op-blue-950: var(--color-op-blue-950);
+
+  /* --- shadcn/ui Semantic Colors → Vibe Coding Mapping --- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* --- Sidebar (shadcn/ui sidebar component) --- */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* --- Chart Colors --- */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* --- Border Radius (Vibe Coding scale) --- */
+  --radius-sm: var(--radius-4);
+  --radius-md: var(--radius-8);
+  --radius-lg: var(--radius-12);
+  --radius-xl: var(--radius-16);
+
+  /* --- Grid Containers --- */
+  --container-main: var(--container-main-max-width);
+  --container-altern: var(--container-altern-max-width);
+
+  /* --- Spacing Utilities --- */
+  --spacing-gap-4: var(--gap-4);
+  --spacing-gap-6: var(--gap-6);
+  --spacing-gap-8: var(--gap-8);
+  --spacing-gap-12: var(--gap-12);
+  --spacing-gap-16: var(--gap-16);
+  --spacing-gap-24: var(--gap-24);
+  --spacing-gap-32: var(--gap-32);
+}
+
+/* ========================================
+ * Light Mode (Alternative)
+ *
+ * :root MUST come FIRST so .dark can override it.
+ * Same specificity (0,1,0) — last in source order wins.
+ * ======================================== */
+:root {
+  --background: var(--surface-level-0-contrast);
+  --foreground: var(--surface-level-0-bg);
+  --card: var(--surface-level-0-contrast);
+  --card-foreground: var(--surface-level-0-bg);
+  --popover: var(--surface-level-0-contrast);
+  --popover-foreground: var(--surface-level-0-bg);
+  --primary: var(--color-op-blue-600);
+  --primary-foreground: var(--btn-principal-text);
+  --secondary: var(--color-op-blue-50);
+  --secondary-foreground: var(--surface-level-0-bg);
+  --muted: var(--surface-level-2-contrast);
+  --muted-foreground: var(--surface-level-4-contrast);
+  --accent: var(--color-op-blue-50);
+  --accent-foreground: var(--surface-level-0-bg);
+  --destructive: var(--status-rejected-text);
+  --border: var(--black-alpha-15);
+  --input: var(--black-alpha-15);
+  --ring: var(--color-op-blue-500);
+  --chart-1: var(--color-op-blue-600);
+  --chart-2: var(--status-approved-text);
+  --chart-3: var(--status-warning-text);
+  --chart-4: var(--status-in-review-text);
+  --chart-5: var(--status-rejected-text);
+  --sidebar: var(--color-op-blue-50);
+  --sidebar-foreground: var(--surface-level-0-bg);
+  --sidebar-primary: var(--color-op-blue-600);
+  --sidebar-primary-foreground: var(--btn-principal-text);
+  --sidebar-accent: var(--color-op-blue-100);
+  --sidebar-accent-foreground: var(--surface-level-0-bg);
+  --sidebar-border: var(--black-alpha-15);
+  --sidebar-ring: var(--color-op-blue-500);
+}
+
+/* ========================================
+ * Dark Mode (Default) — Vibe Coding Surfaces
+ *
+ * The platform is dark-first per DESIGN-SYSTEM.md.
+ * .dark MUST come AFTER :root so it wins the cascade.
+ * Surfaces use levels 0-6 from colors_system.json.
+ * ======================================== */
+.dark {
+  --background: var(--surface-level-0-bg);
+  --foreground: var(--surface-level-0-contrast);
+  --card: var(--card-bg);
+  --card-foreground: var(--card-fg);
+  --popover: var(--surface-level-2-bg);
+  --popover-foreground: var(--surface-level-2-contrast);
+  --primary: var(--color-op-blue-600);
+  --primary-foreground: var(--btn-principal-text);
+  --secondary: var(--surface-level-4-bg);
+  --secondary-foreground: var(--surface-level-1-contrast);
+  --muted: var(--surface-level-5-bg);
+  --muted-foreground: var(--surface-level-3-contrast);
+  --accent: var(--surface-level-4-bg);
+  --accent-foreground: var(--surface-level-1-contrast);
+  --destructive: var(--status-rejected-text);
+  --border: var(--white-alpha-15);
+  --input: var(--white-alpha-15);
+  --ring: var(--color-op-blue-500);
+  --chart-1: var(--color-op-blue-600);
+  --chart-2: var(--status-approved-text);
+  --chart-3: var(--status-warning-text);
+  --chart-4: var(--status-in-review-text);
+  --chart-5: var(--status-rejected-text);
+  --sidebar: var(--surface-level-1-bg);
+  --sidebar-foreground: var(--surface-level-1-contrast);
+  --sidebar-primary: var(--color-op-blue-600);
+  --sidebar-primary-foreground: var(--btn-principal-text);
+  --sidebar-accent: var(--surface-level-3-bg);
+  --sidebar-accent-foreground: var(--surface-level-2-contrast);
+  --sidebar-border: var(--white-alpha-15);
+  --sidebar-ring: var(--color-op-blue-500);
+}
+
+/* ========================================
+ * Base Styles
+ * ======================================== */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-family-primary);
+  }
+}
