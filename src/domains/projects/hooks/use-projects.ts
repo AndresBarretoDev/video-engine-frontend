@@ -149,3 +149,27 @@ export function useReactivateProject() {
     }
   });
 }
+
+/**
+ * Update a project's status (workflow transition).
+ * On success: invalidates project detail + list + shows custom toast.
+ */
+export function useUpdateProjectStatus(id: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ status, successToast }: { status: string; successToast: string }) =>
+      apiClient<Project>(API_ENDPOINTS.projects.update(id), {
+        method: 'PATCH',
+        data: { status },
+      }).then((result) => ({ result, successToast })),
+    onSuccess: ({ result, successToast }) => {
+      queryClient.setQueryData(projectKeys.detail(id), result);
+      queryClient.invalidateQueries({ queryKey: projectKeys.lists() });
+      toast.success(successToast);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || projectsTextMaps.errorTransition);
+    },
+  });
+}

@@ -10,6 +10,26 @@ export const createBrandSchema = z.object({
 
 export type CreateBrandInput = z.infer<typeof createBrandSchema>;
 
+const hexColorField = z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a valid hex color').optional().or(z.literal(''));
+
+export const customColorSchema = z.object({
+  name: z.string().min(1, 'Color name is required').max(50),
+  hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a valid hex color'),
+});
+
+export type CustomColorInput = z.infer<typeof customColorSchema>;
+
+export const brandTokensEditSchema = z.object({
+  colorPrimary: hexColorField,
+  colorSecondary: hexColorField,
+  colorAccent: hexColorField,
+  customColors: z.array(customColorSchema).optional(),
+  fontHeading: z.string().max(100).optional(),
+  fontBody: z.string().max(100).optional(),
+});
+
+export type BrandTokensEditInput = z.infer<typeof brandTokensEditSchema>;
+
 export const brandTokensSchema = z.object({
   colorPrimary: z.string().regex(/^#[0-9A-F]{6}$/i),
   colorSecondary: z
