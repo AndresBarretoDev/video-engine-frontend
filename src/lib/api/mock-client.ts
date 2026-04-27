@@ -23,6 +23,12 @@ import {
   mockRules,
   mockVariations
 } from './mocks/data-engine.mock';
+import {
+  mockRenderJobs,
+  mockRenderBatches,
+  mockRenderOutputs,
+  mockRenderProgress
+} from './mocks/render-jobs.mock';
 
 const IS_MOCK = process.env.NEXT_PUBLIC_USE_MOCKS === 'true';
 
@@ -473,6 +479,150 @@ export function getMockResponse(
   if (projectVariationPropsMatch && normalizedMethod === 'GET') {
     const index = parseInt(projectVariationPropsMatch[1], 10);
     return mockVariations[index] ?? null;
+  }
+
+  // ── Render Jobs (project-scoped) ────────────────────────────────────────────
+
+  // GET /projects/:id/render-jobs
+  const projectRenderJobsMatch = url.match(
+    /^\/projects\/([^/]+)\/render-jobs$/
+  );
+  if (projectRenderJobsMatch && normalizedMethod === 'GET') {
+    const projectId = projectRenderJobsMatch[1];
+    let filtered = mockRenderJobs.filter(j => j.projectId === projectId);
+
+    if (params?.status && params.status !== 'all') {
+      filtered = filtered.filter(j => j.status === params.status);
+    }
+
+    if (params?.search) {
+      const q = String(params.search).toLowerCase();
+      filtered = filtered.filter(j => j.name.toLowerCase().includes(q));
+    }
+
+    return filtered;
+  }
+
+  // GET /render-jobs/:id
+  const renderJobByIdMatch = url.match(/^\/render-jobs\/([^/]+)$/);
+  if (renderJobByIdMatch && normalizedMethod === 'GET') {
+    const id = renderJobByIdMatch[1];
+    return mockRenderJobs.find(j => j.id === id) ?? null;
+  }
+
+  // GET /render-jobs/:id/progress
+  const renderJobProgressMatch = url.match(
+    /^\/render-jobs\/([^/]+)\/progress$/
+  );
+  if (renderJobProgressMatch && normalizedMethod === 'GET') {
+    const id = renderJobProgressMatch[1];
+    return mockRenderProgress[id] ?? null;
+  }
+
+  // GET /render-jobs/:id/outputs
+  const renderJobOutputsMatch = url.match(
+    /^\/render-jobs\/([^/]+)\/outputs$/
+  );
+  if (renderJobOutputsMatch && normalizedMethod === 'GET') {
+    const jobId = renderJobOutputsMatch[1];
+    return mockRenderOutputs.filter(o => o.jobId === jobId);
+  }
+
+  // POST /projects/:id/render-jobs/batch — create batch from variations
+  const createBatchMatch = url.match(
+    /^\/projects\/([^/]+)\/render-jobs\/batch$/
+  );
+  if (createBatchMatch && normalizedMethod === 'POST') {
+    const projectId = createBatchMatch[1];
+    const body = params as {
+      name?: string;
+      variationIndices?: number[];
+      priority?: string;
+    } | undefined;
+    const count = body?.variationIndices?.length ?? 0;
+    return {
+      id: `rb-${Date.now()}`,
+      name: body?.name ?? 'New Batch',
+      projectId,
+      organizationId: 'org-001',
+      jobIds: Array.from({ length: count }, (_, i) => `rj-new-${i}`),
+      status: 'pending',
+      priority: body?.priority ?? 'normal',
+      createdBy: 'user-002',
+      createdAt: new Date().toISOString(),
+      totalJobs: count,
+      completedJobs: 0,
+      failedJobs: 0,
+    };
+  }
+
+  // POST /render-jobs/:id/cancel
+  const cancelJobMatch = url.match(/^\/render-jobs\/([^/]+)\/cancel$/);
+  if (cancelJobMatch && normalizedMethod === 'POST') {
+    const id = cancelJobMatch[1];
+    const existing = mockRenderJobs.find(j => j.id === id);
+    return existing ? { ...existing, status: 'cancelled' } : null;
+  }
+
+  // POST /render-jobs/:id/retry
+  const retryJobMatch = url.match(/^\/render-jobs\/([^/]+)\/retry$/);
+  if (retryJobMatch && normalizedMethod === 'POST') {
+    const id = retryJobMatch[1];
+    const existing = mockRenderJobs.find(j => j.id === id);
+    return existing
+      ? { ...existing, status: 'queued', progress: 0 }
+      : null;
+  }
+
+  // GET /projects/:id/render-batches
+  const projectBatchesMatch = url.match(
+    /^\/projects\/([^/]+)\/render-batches$/
+  );
+  if (projectBatchesMatch && normalizedMethod === 'GET') {
+    const projectId = projectBatchesMatch[1];
+    let filtered = mockRenderBatches.filter(b => b.projectId === projectId);
+
+    if (params?.status && params.status !== 'all') {
+      filtered = filtered.filter(b => b.status === params.status);
+    }
+
+    if (params?.search) {
+      const q = String(params.search).toLowerCase();
+      filtered = filtered.filter(b => b.name.toLowerCase().includes(q));
+    }
+
+    return filtered;
+  }
+
+  // GET /projects/:id/render-batches/:batchId
+  const batchByIdMatch = url.match(
+    /^\/projects\/([^/]+)\/render-batches\/([^/]+)$/
+  );
+  if (batchByIdMatch && normalizedMethod === 'GET') {
+    const batchId = batchByIdMatch[2];
+    return mockRenderBatches.find(b => b.id === batchId) ?? null;
+  }
+
+  // POST /projects/:id/render-batches/:batchId/cancel
+  const cancelBatchMatch = url.match(
+    /^\/projects\/[^/]+\/render-batches\/([^/]+)\/cancel$/
+  );
+  if (cancelBatchMatch && normalizedMethod === 'POST') {
+    const batchId = cancelBatchMatch[1];
+    const existing = mockRenderBatches.find(b => b.id === batchId);
+    return existing ? { ...existing, status: 'cancelled' } : null;
+  }
+
+  // POST /projects/:id/render-batches/:batchId/retry-failed
+  const retryBatchMatch = url.match(
+    /^\/projects\/[^/]+\/render-batches\/([^/]+)\/retry-failed$/
+  );
+  if (retryBatchMatch && normalizedMethod === 'POST') {
+    const batchId = retryBatchMatch[1];
+    const existing = mockRenderBatches.find(b => b.id === batchId);
+    return existing
+      ? { ...existing, status: 'processing', failedJobs: 0 }
+      : null;
   }
 
   // No match — let the real request through

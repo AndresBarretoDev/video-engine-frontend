@@ -328,5 +328,8 @@ export const dataEngineTextMaps = {
   errorSync: 'Failed to sync data source',
   errorSaveMappings: 'Failed to save column mappings',
   errorSaveRules: 'Failed to save conditional rules',
-  errorLoadVariations: 'Failed to load variations'
+  errorLoadVariations: 'Failed to load variations',
+
+  // ─── General ──────────────────────────────────────────────────────────────
+  cancel: 'Cancel',
 } as const;

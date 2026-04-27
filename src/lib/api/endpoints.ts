@@ -112,7 +112,24 @@ export const API_ENDPOINTS = {
     batch: '/render-jobs/batch',
     progress: (id: string) => `/render-jobs/${id}/progress`,
     cancel: (id: string) => `/render-jobs/${id}/cancel`,
-    retry: (id: string) => `/render-jobs/${id}/retry`
+    retry: (id: string) => `/render-jobs/${id}/retry`,
+    // Project-scoped
+    byProject: (projectId: string) => `/projects/${projectId}/render-jobs`,
+    batchByProject: (projectId: string) =>
+      `/projects/${projectId}/render-jobs/batch`,
+    batches: (projectId: string) =>
+      `/projects/${projectId}/render-batches`,
+    batchById: (projectId: string, batchId: string) =>
+      `/projects/${projectId}/render-batches/${batchId}`,
+    batchCancel: (projectId: string, batchId: string) =>
+      `/projects/${projectId}/render-batches/${batchId}/cancel`,
+    batchRetryFailed: (projectId: string, batchId: string) =>
+      `/projects/${projectId}/render-batches/${batchId}/retry-failed`,
+    outputs: (jobId: string) => `/render-jobs/${jobId}/outputs`,
+    download: (outputId: string) =>
+      `/render-jobs/outputs/${outputId}/download`,
+    batchDownload: (batchId: string) =>
+      `/render-batches/${batchId}/download`
   },
 
   /* Reviews Module */

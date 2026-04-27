@@ -18,7 +18,8 @@ import {
   Archive,
   ArchiveRestore,
   FolderKanban,
-  Database
+  Database,
+  Film,
 } from 'lucide-react';
 
 import {
@@ -179,6 +180,15 @@ export function ProjectCard({
                   >
                     <Database className="size-3.5" />
                     {projectsTextMaps.dataEngine}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={`/projects/${project.id}/render`}
+                    className="flex items-center gap-2"
+                  >
+                    <Film className="size-3.5" />
+                    {projectsTextMaps.renderJobs}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

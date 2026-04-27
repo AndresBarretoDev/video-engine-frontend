@@ -121,6 +121,7 @@ export const projectsTextMaps = {
 
   // ─── Actions ──────────────────────────────────────────────────────────────
   dataEngine: 'Data Engine',
+  renderJobs: 'Render Jobs',
   editProject: 'Edit Project',
   archiveProject: 'Archive Project',
   reactivateProject: 'Reactivate Project',

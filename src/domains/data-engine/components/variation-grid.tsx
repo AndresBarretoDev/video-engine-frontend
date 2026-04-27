@@ -159,7 +159,9 @@ export function VariationGrid({
 
       {/* Selection bar — fixed at bottom, only when selections > 0 */}
       <SelectionBar
+        projectId={projectId}
         selectedCount={selectedVariations.size}
+        selectedIndices={Array.from(selectedVariations)}
         totalCount={data?.total ?? 0}
         onSelectAll={handleSelectAll}
         onDeselectAll={handleDeselectAll}

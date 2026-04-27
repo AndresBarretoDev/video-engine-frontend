@@ -111,7 +111,64 @@ export const renderJobsTextMaps = {
   jobCompleted: 'Render job completed',
   jobFailed: 'Render job failed',
   jobCancelled: 'Render job cancelled',
-  batchCreated: 'Batch created',
+  batchCreated: 'Render batch created — jobs are now queued',
+  batchCancelled: 'Batch cancelled',
   outputReady: 'Output ready for download',
-  errorOccurred: 'An error occurred during rendering'
+  errorOccurred: 'An error occurred during rendering',
+
+  // Send to Render dialog
+  cancel: 'Cancel',
+  sendToRenderConfirm: 'Send to Render',
+  creatingBatch: 'Creating batch…',
+
+  // Dashboard
+  renderDashboard: 'Render Jobs',
+  noBatches: 'No render batches yet',
+  noBatchesDescription: 'Select variations in the Data Engine and click "Send to Render" to create your first batch.',
+  searchPlaceholder: 'Search batches…',
+  filterByStatus: 'Filter by status',
+  allStatuses: 'All statuses',
+  batchProgress: (completed: number, total: number) =>
+    `${completed} of ${total} jobs completed`,
+  jobsCount: (n: number) => `${n} job${n === 1 ? '' : 's'}`,
+
+  // Batch detail
+  batchDetail: 'Batch Detail',
+  cancelBatch: 'Cancel Batch',
+  retryFailed: 'Retry Failed',
+  downloadAll: 'Download All',
+  confirmCancelBatch: 'Are you sure you want to cancel all remaining jobs in this batch?',
+  confirmRetryFailed: 'This will retry all failed jobs in the batch. Continue?',
+  noJobs: 'No jobs in this batch',
+
+  // Job card
+  framesProgress: (current: number, total: number) =>
+    `${current} / ${total} frames`,
+  eta: (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return m > 0 ? `~${m}m ${s}s remaining` : `~${s}s remaining`;
+  },
+  renderSpeed: (fps: number) => `${fps.toFixed(1)} fps`,
+
+  // Job drawer
+  jobDetail: 'Job Detail',
+  jobConfiguration: 'Configuration',
+  logsSection: 'Logs',
+  errorsSection: 'Errors',
+  outputSection: 'Output',
+  noLogs: 'No logs available',
+  noErrors: 'No errors',
+  copyUrl: 'Copy URL',
+  urlCopied: 'URL copied',
+
+  // Output card
+  downloadFile: 'Download',
+  fileSizeLabel: (bytes: number) => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  },
+  resolutionLabel: (w: number, h: number) => `${w}×${h}`,
+  durationLabel: (seconds: number) => `${seconds}s`,
 } as const;

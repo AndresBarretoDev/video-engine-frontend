@@ -94,3 +94,19 @@ export const renderStatisticsSchema = z.object({
 });
 
 export type RenderStatisticsInput = z.infer<typeof renderStatisticsSchema>;
+
+// ─── Batch creation from Data Engine variations ─────────────────────────────
+
+export const createRenderBatchFromVariationsSchema = z.object({
+  name: z.string().min(1).max(255),
+  projectId: z.string().uuid(),
+  variationIndices: z.array(z.number().int().nonnegative()).min(1).max(500),
+  priority: z.enum(['low', 'normal', 'high', 'urgent']).default('normal'),
+  outputFormat: z
+    .enum(['mp4', 'webm', 'mov', 'prores', 'h264', 'png-sequence'])
+    .default('mp4')
+});
+
+export type CreateRenderBatchFromVariationsInput = z.infer<
+  typeof createRenderBatchFromVariationsSchema
+>;
