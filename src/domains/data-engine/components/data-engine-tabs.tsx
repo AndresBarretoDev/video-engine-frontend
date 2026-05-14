@@ -29,8 +29,7 @@ import { MappingTab } from './mapping-tab';
 import { RulesTab } from './rules-tab';
 import { PreviewTab } from './preview-tab';
 
-import { useDataSources } from '../hooks/use-data-sources';
-import { useMappings } from '../hooks/use-mappings';
+import { useDataEngineStore } from '../stores/data-engine-store';
 import { dataEngineTextMaps } from '../text-maps';
 import type { DataEngineTabId } from '../types';
 
@@ -74,12 +73,11 @@ export function DataEngineTabs({ projectId }: DataEngineTabsProps) {
     }
   });
 
-  // Server state for tab guards
-  const { data: sources } = useDataSources(projectId);
-  const { data: mappings } = useMappings(projectId);
+  // Client-side state for tab guards (no backend dependency)
+  const { parseStatus, parsedColumns, mappingDraft } = useDataEngineStore();
 
-  const hasDataSource = (sources?.length ?? 0) > 0;
-  const hasMappings = (mappings?.length ?? 0) > 0;
+  const hasDataSource = parseStatus === 'done' && parsedColumns.length > 0;
+  const hasMappings = mappingDraft.length > 0;
 
   function isTabDisabled(tabId: DataEngineTabId): boolean {
     if (tabId === 'mapping') return !hasDataSource;
@@ -165,7 +163,7 @@ export function DataEngineTabs({ projectId }: DataEngineTabsProps) {
             <Suspense fallback={<TabContentSkeleton />}>
               <ImportTab
                 projectId={projectId}
-                existingSource={sources?.[0] ?? null}
+                existingSource={null}
                 onDataSaved={() => setActiveTab('mapping')}
               />
             </Suspense>
@@ -173,10 +171,7 @@ export function DataEngineTabs({ projectId }: DataEngineTabsProps) {
 
           <TabsContent value="mapping" className="mt-0">
             <Suspense fallback={<TabContentSkeleton />}>
-              <MappingTab
-                projectId={projectId}
-                dataSource={sources?.[0] ?? null}
-              />
+              <MappingTab projectId={projectId} dataSource={null} />
             </Suspense>
           </TabsContent>
 

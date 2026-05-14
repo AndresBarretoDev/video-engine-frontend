@@ -1,0 +1,16 @@
+productName,productSubtitle,price,originalPrice,productImage,brand,ctaText,legalText,category,showDiscount
+Coca-Cola Zero 600ml,Sin azúcares añadidos,$2.990,$3.490,https://picsum.photos/seed/coke-zero/600/600,Coca-Cola,¡Llevá ya!,Promoción válida hasta agotar stock,Bebidas,true
+Sprite Lima Limón 600ml,Refrescante sabor cítrico,$2.790,$3.290,https://picsum.photos/seed/sprite/600/600,Coca-Cola,¡Aprovechá!,Promoción válida hasta agotar stock,Bebidas,true
+Fanta Naranja 1.5L,Pack familiar,$4.490,$5.290,https://picsum.photos/seed/fanta/600/600,Coca-Cola,¡Comprá hoy!,Stock limitado en sucursales,Bebidas,true
+Powerade Mountain Blast 500ml,Hidratación deportiva,$3.290,$3.890,https://picsum.photos/seed/powerade/600/600,Coca-Cola,¡Energizate!,Consumir antes del entrenamiento,Deportivas,true
+Aquarius Pomelo 600ml,Sabor natural,$2.490,$2.990,https://picsum.photos/seed/aquarius/600/600,Coca-Cola,¡Sumate!,Sin gas añadido,Bebidas,true
+Pringles Original 124g,Crujiente y delicioso,$3.890,$4.490,https://picsum.photos/seed/pringles/600/600,Kellogg,¡Probá ahora!,Producto de consumo final,Snacks,true
+Doritos Queso Nacho 150g,El sabor de la fiesta,$3.490,$3.990,https://picsum.photos/seed/doritos/600/600,PepsiCo,¡Compartilo!,Sin TACC,Snacks,true
+Lays Clásicas 200g,La papa perfecta,$3.290,$3.790,https://picsum.photos/seed/lays/600/600,PepsiCo,¡Probalas!,Producto sin gluten,Snacks,true
+Cheetos Crunchy 130g,Súper crocante,$2.890,$3.290,https://picsum.photos/seed/cheetos/600/600,PepsiCo,¡Sentí el sabor!,Apto vegetarianos,Snacks,true
+Oreo Original 117g,Tradición Oreo,$2.190,$2.490,https://picsum.photos/seed/oreo/600/600,Mondelez,¡Disfrutá!,Producto sin TACC,Galletitas,true
+Milka Leger 100g,Suave y cremoso,$3.690,$4.190,https://picsum.photos/seed/milka/600/600,Mondelez,¡Probá la suavidad!,Conservar en lugar fresco,Chocolates,true
+Pepsi Black 600ml,Cero azúcares,$2.890,$3.390,https://picsum.photos/seed/pepsi/600/600,PepsiCo,¡Refrescate!,Promoción válida hasta agotar stock,Bebidas,true
+Gatorade Tropical 500ml,Recarga total,$3.190,$3.690,https://picsum.photos/seed/gatorade/600/600,PepsiCo,¡Hidratate!,Recomendado para deportistas,Deportivas,true
+Twistos Mediterráneo 62g,Tostaditas crocantes,$2.490,$2.890,https://picsum.photos/seed/twistos/600/600,Mondelez,¡Picá rico!,Producto sin grasas trans,Snacks,true
+KitKat Original 41g,Una pausa perfecta,$1.990,$2.290,https://picsum.photos/seed/kitkat/600/600,Nestlé,¡Tomate un break!,Producto sin gluten,Chocolates,true

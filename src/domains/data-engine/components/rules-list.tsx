@@ -11,7 +11,7 @@
  */
 
 import { useCallback } from 'react';
-import { Plus, Save } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/shared/empty-state';
@@ -20,7 +20,6 @@ import { AlertTriangle } from 'lucide-react';
 
 import { RuleRow } from './rule-row';
 import { useDataEngineStore } from '../stores/data-engine-store';
-import { useSaveRules } from '../hooks/use-rules';
 import { dataEngineTextMaps } from '../text-maps';
 import type { ConditionalRuleDraft, DataColumn } from '../types';
 
@@ -38,13 +37,9 @@ interface RulesListProps {
 
 export function RulesList({ projectId, columns }: RulesListProps) {
   const rulesDraft = useDataEngineStore(s => s.rulesDraft);
-  const rulesIsDirty = useDataEngineStore(s => s.rulesIsDirty);
   const addRuleDraft = useDataEngineStore(s => s.addRuleDraft);
   const updateRuleDraft = useDataEngineStore(s => s.updateRuleDraft);
   const removeRuleDraft = useDataEngineStore(s => s.removeRuleDraft);
-  const markRulesClean = useDataEngineStore(s => s.markRulesClean);
-
-  const saveRulesMutation = useSaveRules(projectId);
 
   const handleAddRule = useCallback(() => {
     const newRule: ConditionalRuleDraft = {
@@ -63,13 +58,6 @@ export function RulesList({ projectId, columns }: RulesListProps) {
     };
     addRuleDraft(newRule);
   }, [addRuleDraft, columns, rulesDraft.length]);
-
-  const handleSave = useCallback(() => {
-    saveRulesMutation.mutate(
-      { rules: rulesDraft },
-      { onSuccess: () => markRulesClean() }
-    );
-  }, [saveRulesMutation, rulesDraft, markRulesClean]);
 
   const showMaxWarning = rulesDraft.length >= MAX_RULES_WARNING_THRESHOLD;
 
@@ -114,7 +102,7 @@ export function RulesList({ projectId, columns }: RulesListProps) {
       )}
 
       {/* Actions */}
-      <div className="flex items-center justify-between pt-2">
+      <div className="flex items-center pt-2">
         <Button
           variant="outline"
           size="sm"
@@ -124,18 +112,6 @@ export function RulesList({ projectId, columns }: RulesListProps) {
         >
           <Plus className="size-4" />
           {dataEngineTextMaps.addRule}
-        </Button>
-
-        <Button
-          size="sm"
-          onClick={handleSave}
-          disabled={!rulesIsDirty || saveRulesMutation.isPending}
-          className="gap-2"
-        >
-          <Save className="size-4" />
-          {saveRulesMutation.isPending
-            ? dataEngineTextMaps.savingRules
-            : dataEngineTextMaps.saveRules}
         </Button>
       </div>
     </div>

@@ -91,7 +91,12 @@ export function SendToRenderDialog({
   }, [open, projectId, selectedIndices, form]);
 
   function onSubmit(data: CreateRenderBatchFromVariationsInput) {
-    createBatch(data, {
+    const payload = {
+      ...data,
+      priority: data.priority.toUpperCase() as typeof data.priority,
+      outputFormat: data.outputFormat.toUpperCase() as typeof data.outputFormat,
+    };
+    createBatch(payload, {
       onSuccess: () => {
         onOpenChange(false);
       },

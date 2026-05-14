@@ -107,10 +107,7 @@ export function VariationCard({
         {/* Checkbox — top right */}
         <div
           className="absolute top-2 right-2"
-          onClick={e => {
-            e.stopPropagation();
-            onSelect(variation.index);
-          }}
+          onClick={e => e.stopPropagation()}
         >
           <Checkbox
             checked={isSelected}

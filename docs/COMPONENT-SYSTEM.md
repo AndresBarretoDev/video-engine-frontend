@@ -1,7 +1,8 @@
 # OP Video Engine — Sistema de Componentes
 
-**Version:** 1.0
-**Fecha:** Marzo 2026
+**Version:** 1.1
+**Fecha:** Abril 2026
+**Cambio v1.1:** Agregado estado de implementacion por componente
 
 ---
 
@@ -10,17 +11,77 @@
 El sistema de componentes de OP Video Engine sigue el modelo de Atomic Design adaptado a video. La idea central es que cualquier video puede descomponerse en piezas reutilizables que se ensamblan como bloques de LEGO.
 
 ```
-ATOMO          →  Pieza minima, no se divide mas
+ATOMO          ->  Pieza minima, no se divide mas
                   Ejemplo: un texto animado, un badge de precio
 
-MOLECULA       →  Combinacion de atomos con una funcion
+MOLECULA       ->  Combinacion de atomos con una funcion
                   Ejemplo: una cortinilla de entrada (logo + texto + transicion)
 
-ORGANISMO      →  Template completo de video
+ORGANISMO      ->  Template completo de video
                   Ejemplo: video promocional (intro + contenido + overlays + cierre)
 ```
 
 Este modelo reemplaza lo que AtomX provee en After Effects, pero en codigo (Remotion/React), lo que permite parametrizacion por datos, rendering en la nube, y escala ilimitada.
+
+---
+
+## Estado de Implementacion
+
+### Ubicacion en el repositorio
+
+```
+src/remotion/
+  components/
+    atoms/          -> TextBlock, LogoReveal, ShapeElement, PricePatch, VideoClip, AudioTrack, SubtitleTrack
+    molecules/      -> CortinillaEntrada, CortinillaCierre, ProductOverlay, PromoBar, LowerThird
+  compositions/     -> atom-previews, molecule-previews, organism-previews, format-showcase
+  schemas/          -> Zod schemas para props de cada componente
+  types/            -> Tipos TypeScript especificos de video
+  utils/
+    timing-utils.ts       -> Calculos de frames, delays
+    animation-helpers.ts  -> Spring, easing, transiciones
+    format-utils.ts       -> Conversion de resolucion (1:1, 9:16, 16:9)
+```
+
+### Estado por componente
+
+| Tipo | Componente | Scaffolded | Implementado | Animaciones | Multi-formato |
+|------|-----------|:----------:|:------------:|:-----------:|:-------------:|
+| Atomo | TextBlock | Si | Pendiente | Pendiente | Pendiente |
+| Atomo | PricePatch | Si | Pendiente | Pendiente | Pendiente |
+| Atomo | LogoReveal | Si | Pendiente | Pendiente | Pendiente |
+| Atomo | ImageFrame | No | Pendiente | Pendiente | Pendiente |
+| Atomo | ShapeElement | Si | Pendiente | Pendiente | Pendiente |
+| Atomo | VideoClip | Si | Pendiente | N/A | Pendiente |
+| Atomo | AudioTrack | Si | Pendiente | N/A | N/A |
+| Atomo | SubtitleTrack | Si | Pendiente | Pendiente | Pendiente |
+| Molecula | CortinillaEntrada | Si | Pendiente | Pendiente | Pendiente |
+| Molecula | CortinillaCierre | Si | Pendiente | Pendiente | Pendiente |
+| Molecula | ProductOverlay | Si | Pendiente | Pendiente | Pendiente |
+| Molecula | PromoBar | Si | Pendiente | Pendiente | Pendiente |
+| Molecula | LowerThird | Si | Pendiente | Pendiente | Pendiente |
+| Organismo | PromoVideoTemplate | Composicion | Pendiente | Pendiente | Pendiente |
+| Organismo | StoryTemplate | Composicion | Pendiente | Pendiente | Pendiente |
+| Organismo | CTVTemplate | Composicion | Pendiente | Pendiente | Pendiente |
+| Organismo | BannerVideoTemplate | Composicion | Pendiente | Pendiente | Pendiente |
+
+**"Scaffolded"** = archivos creados con tipos, props interface, y schema Zod definido.
+**"Composicion"** = existe como composicion en Remotion Studio para preview, pero sin logica interna completa.
+**"Implementado"** = logica de rendering, animaciones, y adaptacion de formato funcional.
+
+### Remotion Studio & Preview
+
+- `remotion.config.ts` configurado en el frontend
+- Scripts: `pnpm remotion:studio` y `pnpm remotion:preview`
+- Composiciones de preview: atom-previews, molecule-previews, organism-previews, format-showcase
+- Storybook (v10.3) disponible para componentes UI (no Remotion)
+
+### Skills de Remotion Best Practices
+
+Documentadas en `.agents/skills/remotion-best-practices/` con reglas para:
+- Imagenes, text animations, assets, captions
+- Light leaks, measuring text, parameters, Tailwind
+- Get video duration, transcribe captions
 
 ---
 
@@ -29,34 +90,34 @@ Este modelo reemplaza lo que AtomX provee en After Effects, pero en codigo (Remo
 Todo video producido por la plataforma sigue una estructura modular:
 
 ```
-┌─────────────────────────────────────────────────┐
-│  INTRO (Cortinilla de Entrada)                  │
-│  Molecula: logo + transicion + jingle           │
-│  Duracion tipica: 1-3 segundos                  │
-├─────────────────────────────────────────────────┤
-│  CONTENIDO PRINCIPAL                            │
-│  Video base / clip / secuencia de imagenes      │
-│  Duracion: variable (5-60 segundos)             │
-│                                                 │
-│  ┌─────────────────────────┐                    │
-│  │  OVERLAY: ProductOverlay │  ← aparece en     │
-│  │  (imagen + precio)       │    momento X      │
-│  └─────────────────────────┘                    │
-│                                                 │
-│  ┌─────────────────────────┐                    │
-│  │  OVERLAY: PromoBar       │  ← aparece en     │
-│  │  (mensaje promocional)   │    momento Y      │
-│  └─────────────────────────┘                    │
-│                                                 │
-│  ┌─────────────────────────┐                    │
-│  │  OVERLAY: LowerThird    │  ← aparece en     │
-│  │  (titulo + subtitulo)    │    momento Z      │
-│  └─────────────────────────┘                    │
-├─────────────────────────────────────────────────┤
-│  OUTRO (Cortinilla de Cierre / EndCard)         │
-│  Molecula: logo + CTA + legal                   │
-│  Duracion tipica: 2-4 segundos                  │
-└─────────────────────────────────────────────────┘
++-------------------------------------------------+
+|  INTRO (Cortinilla de Entrada)                  |
+|  Molecula: logo + transicion + jingle           |
+|  Duracion tipica: 1-3 segundos                  |
++-------------------------------------------------+
+|  CONTENIDO PRINCIPAL                            |
+|  Video base / clip / secuencia de imagenes      |
+|  Duracion: variable (5-60 segundos)             |
+|                                                 |
+|  +-------------------------+                    |
+|  |  OVERLAY: ProductOverlay |  <- aparece en    |
+|  |  (imagen + precio)       |    momento X      |
+|  +-------------------------+                    |
+|                                                 |
+|  +-------------------------+                    |
+|  |  OVERLAY: PromoBar       |  <- aparece en    |
+|  |  (mensaje promocional)   |    momento Y      |
+|  +-------------------------+                    |
+|                                                 |
+|  +-------------------------+                    |
+|  |  OVERLAY: LowerThird    |  <- aparece en     |
+|  |  (titulo + subtitulo)    |    momento Z      |
+|  +-------------------------+                    |
++-------------------------------------------------+
+|  OUTRO (Cortinilla de Cierre / EndCard)         |
+|  Molecula: logo + CTA + legal                   |
+|  Duracion tipica: 2-4 segundos                  |
++-------------------------------------------------+
 ```
 
 ---
@@ -299,7 +360,9 @@ Video corto para display ads animados.
 
 ## Sistema de Brand Config
 
-Cada marca tiene un archivo de configuracion que define sus tokens y componentes predeterminados:
+Cada marca tiene un archivo de configuracion que define sus tokens y componentes predeterminados.
+
+En el backend, los Brand Tokens se almacenan como JSON en el campo `tokens` del modelo Brand (Prisma). Se acceden via `GET /api/brands/:id/tokens`.
 
 ```typescript
 interface BrandConfig {
@@ -321,8 +384,8 @@ interface BrandConfig {
       body: { family: string, weights: number[] }
     }
     animation: {
-      defaultEasing: string       // "spring" | "ease-out" | "ease-in-out"
-      defaultDuration: number     // frames
+      defaultEasing: string
+      defaultDuration: number
       springConfig: { damping: number, stiffness: number, mass: number }
     }
     spacing: {
@@ -335,14 +398,14 @@ interface BrandConfig {
   assets: {
     logo: { url: string, width: number, height: number }
     logoWhite?: { url: string, width: number, height: number }
-    jingle?: string     // URL audio
+    jingle?: string
     sfxTransition?: string
-    fonts: string[]     // URLs de fuentes custom
+    fonts: string[]
   }
 
   // Componentes predeterminados de la marca
   defaults: {
-    cortinillaEntrada: string    // ID de molecula
+    cortinillaEntrada: string
     cortinillaCierre: string
     promoBarStyle: "top" | "bottom"
     productOverlayPosition: "bottom-right" | "bottom-left" | "center"

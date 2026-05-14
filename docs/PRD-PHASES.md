@@ -1,7 +1,7 @@
 # OP Video Engine — PRD por Fases
 
-**Version:** 2.0
-**Fecha:** Abril 2026
+**Version:** 2.1
+**Fecha:** Abril 2026 (updated 2026-05-13 con Estrategia Híbrida AE)
 **Estado:** Planificacion confirmada
 
 ---
@@ -13,11 +13,34 @@
 | 0 | Fundamentos | Documentacion, design system, estructura base | Base |
 | 1 | Motor de Video | Componentes Remotion (atomos, moleculas, organismos) | 2 |
 | 2 | Application Shell | Plataforma web: dashboard, navegacion, CRUD de marcas, catalogo | Base web |
-| 3 | Data Engine | Conexion de datos, mapeo, logica condicional, variaciones | 1 |
+| 3 | Data Engine | Conexion de datos, mapeo, logica condicional, variaciones + **Exportador JSON AE (Camino A)** | 1 |
 | 4 | Rendering Pipeline | Rendering en la nube, colas, storage, monitoreo | 5 |
 | 5 | Workflow & QC | Revision interna, portal cliente, aprobaciones, entrega | 4 |
-| 6 | Puente After Effects | Importar assets AE, rendering hibrido | 5 |
+| 6 | Puente After Effects | Importar assets AE, rendering hibrido **(BLOQUEADA — pendiente D1-D5)** | 5 |
 | 7 | IA & Adaptacion | Resizing, subtitulos, anti-fatigue, prediccion creativa | 3, 6, 7 |
+
+---
+
+## 🆕 Estrategia de Integración AE (decidida 2026-05-13)
+
+Tras el análisis de `docs/AE-INTEGRATION.md`, el proyecto adopta una **Estrategia Híbrida**:
+
+### Camino A — Quick Win (activado en Fase 3)
+La plataforma genera el **JSON formato AE** que el script JSX de Lizeth ya consume. Permite que cualquier persona prepare datos sin tocar AE, mientras AE sigue siendo el motor de render local. **Implementación**: ver `.claude/plans/phase-3-data-engine.md`.
+
+### Camino B — Largo plazo (activado en Fase 1 + 4)
+Los componentes Remotion replican las 4 capacidades del script AE como props (texto/opacidad/color/imagen dinámicos). Renderizado en nube via Remotion Lambda/Docker. Activación por componente — a medida que cada atom se completa, ese componente migra de Camino A a Camino B.
+
+### Decisiones pendientes (bloquean Fase 6)
+- D1: ¿AE se queda en pipeline de render o solo en creación?
+- D2: ¿Camino A, B o ambos en fases distintas?
+- D3: ¿Cómo se manejan templates AE existentes?
+- D4: ¿Automatizar trigger AE desde plataforma vía `aerender`?
+- D5: ¿Qué efectos AE son exportables con transparencia?
+
+Estas requieren **sesión Omnicom + dev team** antes de iniciar Fase 6.
+
+Referencia: `docs/AE-INTEGRATION.md`, `.claude/references/ae-to-remotion-mapping.md`.
 
 ---
 

@@ -1,10 +1,28 @@
 # Phase 1: Motor de Video — Vertical Slice Plan
 
 **Phase:** 1 — Motor de Video (Component Registry + Compositor)
-**Date:** 2026-04-12
+**Date:** 2026-04-12 (updated 2026-05-13 con Estrategia Híbrida AE)
 **Status:** Planning
 **Branch:** feat/phase-4 (continues from current work)
 **Strategy:** Vertical Slice — build the minimum Remotion components needed to produce a REAL video end-to-end, then expand.
+
+## 🆕 Update (2026-05-13): Alineación con Estrategia Híbrida AE
+
+Tras la decisión Híbrida (ver `docs/AE-INTEGRATION.md` + `.claude/references/ae-to-remotion-mapping.md`), Phase 1 conserva su scope pero se enriquece con:
+
+1. **Cada atom debe soportar las 4 capacidades del script JSX de Lizeth** como props:
+   - Texto dinámico → prop `content` (string)
+   - Opacidad condicional → renderizado condicional en parent (via prop boolean o lógica externa)
+   - Color dinámico → prop `color` (string hex)
+   - Imagen dinámica → prop `src` (URL)
+
+2. **Brand Tokens vs Hard-coded**: los atoms DEBEN usar Brand Tokens del prop `brandConfig`, NO hardcodear nada.
+
+3. **Compatibilidad bidireccional**: estos componentes deben renderizar las mismas variaciones que el script AE produce. Validación: data set de Lizeth → JSON formato AE → Camino A renderiza en AE. Mismo data set → props Remotion → Camino B renderiza en nube. **Outputs visualmente equivalentes**.
+
+4. **Camino B activación por componente**: a medida que se completa cada atom/molecule, se activa para Camino B. El resto sigue en Camino A (script AE) hasta migración completa.
+
+Referencia obligatoria: `.claude/references/ae-to-remotion-mapping.md` — tabla concreta AE → props Remotion.
 
 ---
 
