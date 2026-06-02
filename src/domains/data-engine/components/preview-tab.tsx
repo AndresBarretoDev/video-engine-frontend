@@ -27,10 +27,11 @@ interface PreviewTabProps {
 export function PreviewTab({ projectId }: PreviewTabProps) {
   const parsedRows = useDataEngineStore(s => s.parsedRows);
   const mappingDraft = useDataEngineStore(s => s.mappingDraft);
+  const rulesDraft = useDataEngineStore(s => s.rulesDraft);
 
   const variations = useMemo(
-    () => generateVariationsClient(parsedRows, mappingDraft),
-    [parsedRows, mappingDraft]
+    () => generateVariationsClient(parsedRows, mappingDraft, rulesDraft),
+    [parsedRows, mappingDraft, rulesDraft]
   );
 
   const total = variations.length;

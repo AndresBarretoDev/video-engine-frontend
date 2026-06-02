@@ -35,7 +35,9 @@ import {
   StoryTemplatePreview,
   storyTemplateDefaultProps,
   BannerVideoTemplatePreview,
-  bannerVideoTemplateDefaultProps
+  bannerVideoTemplateDefaultProps,
+  CTVTemplatePreview,
+  ctvTemplateDefaultProps
 } from './compositions/organism-previews';
 import { CortinillaEntradaSchema } from './components/molecules/cortinilla-entrada/cortinilla-entrada.schema';
 import { ProductOverlaySchema } from './components/molecules/product-overlay/product-overlay.schema';
@@ -50,6 +52,7 @@ import { SubtitleTrackSchema } from './components/atoms/subtitle-track/subtitle-
 import { PromoVideoTemplateSchema } from './components/organisms/promo-video-template/promo-video-template.schema';
 import { StoryTemplateSchema } from './components/organisms/story-template/story-template.schema';
 import { BannerVideoTemplateSchema } from './components/organisms/banner-video-template/banner-video-template.schema';
+import { CTVTemplateSchema } from './components/organisms/ctv-template/ctv-template.schema';
 
 export const Root: React.FC = () => {
   return (
@@ -221,6 +224,17 @@ export const Root: React.FC = () => {
         height={1080}
         schema={BannerVideoTemplateSchema}
         defaultProps={bannerVideoTemplateDefaultProps}
+      />
+
+      <Composition
+        id="organism-ctv-template"
+        component={CTVTemplatePreview}
+        durationInFrames={600}
+        fps={30}
+        width={1920}
+        height={1080}
+        schema={CTVTemplateSchema}
+        defaultProps={ctvTemplateDefaultProps}
       />
     </>
   );

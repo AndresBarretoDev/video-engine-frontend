@@ -26,24 +26,45 @@ This file provides guidance to Claude Code when working with this repository.
 
 **BEFORE doing anything else**, you MUST read these documents:
 
-1. [`docs/PRD-PHASES.md`](docs/PRD-PHASES.md) — **Product Roadmap**: The 8 phases of the product (Phase 0–7). This defines WHAT gets built and in what order. **Do NOT invent your own phases.**
+1. [`../op-video-engine-docs/PRD-PHASES.md`](../op-video-engine-docs/PRD-PHASES.md) — **Product Roadmap**: The 8 phases of the product (Phase 0–7). This defines WHAT gets built and in what order. **Do NOT invent your own phases.**
 2. [`.claude/knowledge/sdd-methodology.md`](.claude/knowledge/sdd-methodology.md) — **Specification-Driven Development**: Nothing gets implemented without a spec. This is the development methodology for the entire project.
 3. [`.claude/knowledge/critical-constraints.md`](.claude/knowledge/critical-constraints.md) — **10 Non-negotiable rules**: Architectural constraints that all code must follow.
 
-## 📄 Product Documentation
+## 📄 Product Documentation (SHARED — workspace level)
 
-**All product docs live in [`docs/`](docs/README.md)**. This is the source of truth for what the product is and what gets built:
+**🔴 Product docs are SHARED between frontend and backend.** They live OUTSIDE this repo, at the workspace level in [`../op-video-engine-docs/`](../op-video-engine-docs/) — the single source of truth for WHAT the product is. Both repos read from here. Do NOT duplicate these into the repo.
 
 | Document | Content |
 |----------|---------|
-| [`docs/PRD-PHASES.md`](docs/PRD-PHASES.md) | **🔴 Product roadmap** — 8 phases (0–7), deliverables, acceptance criteria |
-| [`docs/PROJECT-BRIEF.md`](docs/PROJECT-BRIEF.md) | Vision, problem statement, target users |
-| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Technical architecture (frontend + backend + video engine) |
-| [`docs/COMPONENT-SYSTEM.md`](docs/COMPONENT-SYSTEM.md) | Video component taxonomy (atoms/molecules/organisms) |
-| [`docs/USER-STORIES.md`](docs/USER-STORIES.md) | User stories by role |
-| [`docs/COMPETITIVE-ANALYSIS.md`](docs/COMPETITIVE-ANALYSIS.md) | Competitive landscape |
+| [`../op-video-engine-docs/PRD-PHASES.md`](../op-video-engine-docs/PRD-PHASES.md) | **🔴 Product roadmap** — phases, deliverables, acceptance criteria |
+| [`../op-video-engine-docs/PROJECT-BRIEF.md`](../op-video-engine-docs/PROJECT-BRIEF.md) | Vision, problem statement, target users |
+| [`../op-video-engine-docs/ARCHITECTURE.md`](../op-video-engine-docs/ARCHITECTURE.md) | Technical architecture (frontend + backend + video engine) |
+| [`../op-video-engine-docs/COMPONENT-SYSTEM.md`](../op-video-engine-docs/COMPONENT-SYSTEM.md) | Video component taxonomy (atoms/molecules/organisms) |
+| [`../op-video-engine-docs/USER-STORIES.md`](../op-video-engine-docs/USER-STORIES.md) | User stories by role |
+| [`../op-video-engine-docs/COMPETITIVE-ANALYSIS.md`](../op-video-engine-docs/COMPETITIVE-ANALYSIS.md) | Competitive landscape |
+| [`../op-video-engine-docs/PROYECTO-EXPLICADO.md`](../op-video-engine-docs/PROYECTO-EXPLICADO.md) | Inspiration project (Lidl / Belgium) explained |
 
-**SDD in short**: Spec first → implement second → validate third. If there's no spec in `.claude/plans/`, don't write implementation code. Create the spec first.
+**SDD in short**: Spec first → implement second → validate third. Implementation specs live in `openspec/` (this repo is migrating from `.claude/plans/` to OpenSpec to align with the backend). Don't write implementation code without a spec.
+
+---
+
+## 🧭 Workspace & Cross-Repo Conventions
+
+This repo lives in the `OP_VIDEO_CTV/` workspace alongside two siblings:
+
+```
+OP_VIDEO_CTV/
+├── op-video-engine-docs/      ← SHARED product source of truth (roadmap, briefs, user-stories)
+├── op-video-engine-frontend/  ← this repo (Next.js)
+└── op-video-engine-backend/   ← NestJS API (separate git repo)
+```
+
+**Rules for working across repos:**
+
+1. **One brain per repo.** Each repo has its OWN `.claude/` + `CLAUDE.md`. When working on the backend, open a Claude session IN the backend repo so its NestJS rules load — do NOT drive the backend from this frontend session.
+2. **Repos coordinate through SHARED ARTIFACTS, not direct calls.** The frontend writes the API contract it needs (as an OpenSpec change); the backend implements against it. This is Spec-Driven Development.
+3. **Engram memory uses ONE unified project key: `op-video-engine`** (NOT `op-video-engine-frontend`). This way frontend and backend share a single living memory of decisions and progress. Always pass `project: "op-video-engine"` to `mem_save` / `mem_search`.
+4. **Product docs are never duplicated into the repo** — they live in `../op-video-engine-docs/`.
 
 ---
 

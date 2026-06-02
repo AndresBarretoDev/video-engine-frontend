@@ -3,9 +3,11 @@ import { AbsoluteFill } from 'remotion';
 import { PromoVideoTemplate } from '@/remotion/components/organisms/promo-video-template/PromoVideoTemplate';
 import { StoryTemplate } from '@/remotion/components/organisms/story-template/StoryTemplate';
 import { BannerVideoTemplate } from '@/remotion/components/organisms/banner-video-template/BannerVideoTemplate';
+import { CTVTemplate } from '@/remotion/components/organisms/ctv-template/CTVTemplate';
 import type { PromoVideoTemplateProps } from '@/remotion/components/organisms/promo-video-template/promo-video-template.schema';
 import type { StoryTemplateProps } from '@/remotion/components/organisms/story-template/story-template.schema';
 import type { BannerVideoTemplateProps } from '@/remotion/components/organisms/banner-video-template/banner-video-template.schema';
+import type { CTVTemplateProps } from '@/remotion/components/organisms/ctv-template/ctv-template.schema';
 
 // ─── Placeholder URLs ─────────────────────────────────────────────────────────
 const PLACEHOLDER_IMAGE =
@@ -99,6 +101,62 @@ export const BannerVideoTemplatePreview: React.FC<
   return (
     <AbsoluteFill style={{ backgroundColor: '#0A0A1A' }}>
       <BannerVideoTemplate {...props} />
+    </AbsoluteFill>
+  );
+};
+
+// ─── CTVTemplate Preview ─────────────────────────────────────────────────────
+
+const PLACEHOLDER_CTV_MAIN =
+  'https://placehold.co/1920x1080/0a1628/4361EF?text=CTV+Long-Form+Content';
+
+export const ctvTemplateDefaultProps: CTVTemplateProps = {
+  format: '16:9',
+  introVariant: 'elegant',
+  mainContent: {
+    type: 'image',
+    src: PLACEHOLDER_CTV_MAIN
+  },
+  overlays: [
+    {
+      type: 'product',
+      startFrame: 180,
+      duration: 120,
+      props: {
+        productName: 'Featured Product',
+        productImage: PLACEHOLDER_PRODUCT,
+        price: '12.99',
+        originalPrice: '19.99'
+      }
+    },
+    {
+      type: 'promo',
+      startFrame: 340,
+      duration: 100,
+      props: {
+        message: 'Limited Time Offer',
+        textColor: '#FFFFFF'
+      }
+    },
+    {
+      type: 'lower-third',
+      startFrame: 460,
+      duration: 80,
+      props: {
+        title: 'Featured Series',
+        subtitle: 'New Episodes Weekly'
+      }
+    }
+  ],
+  ctaText: 'Visit Our Store',
+  legalText: '*Terms and conditions apply.',
+  totalDuration: 600
+};
+
+export const CTVTemplatePreview: React.FC<CTVTemplateProps> = props => {
+  return (
+    <AbsoluteFill style={{ backgroundColor: '#0A0A1A' }}>
+      <CTVTemplate {...props} />
     </AbsoluteFill>
   );
 };

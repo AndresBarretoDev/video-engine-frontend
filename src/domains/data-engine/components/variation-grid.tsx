@@ -60,11 +60,12 @@ export function VariationGrid({
   const clearAll = useDataEngineStore(s => s.clearAll);
   const parsedRows = useDataEngineStore(s => s.parsedRows);
   const mappingDraft = useDataEngineStore(s => s.mappingDraft);
+  const rulesDraft = useDataEngineStore(s => s.rulesDraft);
 
-  // Client-side variations from parsed CSV + mapping
+  // Client-side variations from parsed CSV + mapping + rules
   const allVariations = useMemo(
-    () => generateVariationsClient(parsedRows, mappingDraft),
-    [parsedRows, mappingDraft]
+    () => generateVariationsClient(parsedRows, mappingDraft, rulesDraft),
+    [parsedRows, mappingDraft, rulesDraft]
   );
 
   const data = useMemo(
@@ -113,16 +114,21 @@ export function VariationGrid({
           <EmptyState icon={Grid2X2} title={dataEngineTextMaps.noVariations} />
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-            {data.items.map(variation => (
-              <VariationCard
-                key={variation.index}
-                variation={variation}
-                templateId={templateId}
-                isSelected={selectedVariations.has(variation.index)}
-                onSelect={handleSelect}
-                onClick={handleCardClick}
-              />
-            ))}
+            {data.items.map(variation => {
+              const override = variation.props._templateOverride;
+              const effectiveTemplateId =
+                typeof override === 'string' && override ? override : templateId;
+              return (
+                <VariationCard
+                  key={variation.index}
+                  variation={variation}
+                  templateId={effectiveTemplateId}
+                  isSelected={selectedVariations.has(variation.index)}
+                  onSelect={handleSelect}
+                  onClick={handleCardClick}
+                />
+              );
+            })}
           </div>
         )}
 

@@ -1,0 +1,32 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Next.js 15 / React 19 / TypeScript / Tailwind CSS v4 / shadcn/ui / Remotion 4+
+  State: React Query (server state from NestJS API) + Zustand (UI state only)
+  Forms: React Hook Form + Zod
+  Architecture: Domain-driven (/src/domains), atomic design, container-presentational, ultra-clean pages
+  Backend: separate NestJS repo (op-video-engine-backend) consumed via /src/lib/api client
+  Testing: Vitest / React Testing Library
+  Style: kebab-case files, PascalCase components, named exports (except Next.js pages), absolute imports (@/), text-maps for strings, Vibe Coding design tokens (no hardcoded values)
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns
+    tdd: true
+    test_command: "pnpm test"
+  verify:
+    test_command: "pnpm test"
+    build_command: "pnpm build"
+  archive:
+    - Warn before merging destructive deltas
