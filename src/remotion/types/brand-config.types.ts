@@ -22,7 +22,21 @@ export const BrandTokensSchema = z.object({
       mass: z.number()
     })
   }),
-  spacing: z.object({ padding: z.number(), gap: z.number() })
+  spacing: z.object({ padding: z.number(), gap: z.number() }),
+  /**
+   * Border radius tokens for video components.
+   * Optional — existing BrandConfig without radius falls back to neutral defaults.
+   */
+  radius: z
+    .object({
+      /** Border radius applied to CTA button (px) */
+      button: z.number(),
+      /** Border radius applied to promo tag / badge pill (px) */
+      badge: z.number(),
+      /** Border radius applied to product image frame (px) */
+      image: z.number()
+    })
+    .optional()
 });
 
 export const BrandAssetsSchema = z.object({

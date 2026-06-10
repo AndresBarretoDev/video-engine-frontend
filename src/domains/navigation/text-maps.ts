@@ -14,7 +14,8 @@ export const navigationTextMap = {
     projects: 'Projects',
     assets: 'Assets',
     users: 'Users',
-    settings: 'Settings'
+    settings: 'Settings',
+    templates: 'Templates'
   },
 
   /* Sidebar branding */

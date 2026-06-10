@@ -4,3 +4,4 @@ export * from './promo-video-template';
 export * from './story-template';
 export * from './ctv-template';
 export * from './banner-video-template';
+export * from './looping-product-promo';

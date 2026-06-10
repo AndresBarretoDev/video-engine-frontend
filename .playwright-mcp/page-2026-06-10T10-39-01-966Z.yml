@@ -1,0 +1,14 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - heading "Upload Component Verify" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Temporary page — delete after visual check.
+    - generic [ref=e7]:
+      - button "Product Image" [ref=e8]
+      - button "Product Image — click or drag to upload" [ref=e9] [cursor=pointer]:
+        - img [ref=e11]
+        - generic [ref=e15]:
+          - paragraph [ref=e16]: Click to select or drag and drop
+          - paragraph [ref=e17]: JPG, PNG or WebP · max 10 MB
+    - generic [ref=e18]: "value: (empty)"
+  - region "Notifications alt+T"

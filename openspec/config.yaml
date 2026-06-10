@@ -1,13 +1,32 @@
 schema: spec-driven
 
+# Resolved from the global agent config ("Strict TDD Mode: enabled").
+# NOTE: not operational yet — Vitest is installed but no `test` script / vitest.config exists. Wire it before relying on TDD.
+strict_tdd: true
+
 context: |
   Tech stack: Next.js 15 / React 19 / TypeScript / Tailwind CSS v4 / shadcn/ui / Remotion 4+
   State: React Query (server state from NestJS API) + Zustand (UI state only)
   Forms: React Hook Form + Zod
   Architecture: Domain-driven (/src/domains), atomic design, container-presentational, ultra-clean pages
   Backend: separate NestJS repo (op-video-engine-backend) consumed via /src/lib/api client
-  Testing: Vitest / React Testing Library
+  Testing: Vitest installed (Storybook addon + @vitest/coverage-v8) — NO standalone `test` script wired yet
   Style: kebab-case files, PascalCase components, named exports (except Next.js pages), absolute imports (@/), text-maps for strings, Vibe Coding design tokens (no hardcoded values)
+  Product model (PRODUCT.md §0.5): columna de 4 capas — Cimiento (✅ Remotion+brands+render-jobs+projects) → Puerta de entrada simple (❌ FALTA, se hace 1°, = golden-path) → Escala/batch (✅ data-engine, upsell) → Destino (AE Bridge + Creative Studio). Empezar simple sin perder el norte.
+
+# Detected testing capabilities (sdd-init 2026-06-02, re-confirmado 2026-06-09)
+testing:
+  strict_tdd: true
+  test_runner: { framework: vitest, wired: false, note: "no `test` script yet — add `vitest`" }
+  layers:
+    unit: { available: true, tool: vitest, note: "installed, not wired" }
+    integration: { available: false, tool: "none (no @testing-library/* found)" }
+    e2e: { available: false, tool: "none (no playwright/cypress)" }
+  coverage: { available: true, command: "vitest --coverage (@vitest/coverage-v8)" }
+  quality:
+    linter: { available: true, command: "pnpm lint" }
+    type_checker: { available: true, command: "pnpm type-check (tsc --noEmit)" }
+    formatter: { available: true, command: "pnpm prettier:format" }
 
 rules:
   proposal:
@@ -24,9 +43,9 @@ rules:
   apply:
     - Follow existing code patterns
     tdd: true
-    test_command: "pnpm test"
+    test_command: "vitest run  (NOTE: add a `test` script + vitest.config first)"
   verify:
-    test_command: "pnpm test"
+    test_command: "vitest run  (once wired)"
     build_command: "pnpm build"
   archive:
     - Warn before merging destructive deltas

@@ -144,6 +144,26 @@ export const API_ENDPOINTS = {
 
   /* Uploads Module */
   uploads: {
-    upload: '/uploads',
+    upload: '/uploads'
   },
+
+  /* Templates Module — backend task 3.1 (not yet implemented) */
+  templates: {
+    list: '/templates',
+    byId: (id: string) => `/templates/${id}`
+  },
+
+  /* Video Generation Module — single-product golden path (D9, backend task 2.6) */
+  videoGeneration: {
+    /**
+     * BACKEND CONTRACT (task 2.6):
+     *   POST /projects/:projectId/render-single
+     *   Body   : CreateSingleProductRenderDto
+     *   Response: { jobIds: string[]; totalJobs: number }
+     *   Behavior: Creates N render jobs (one per format selected).
+     *   NOT the batch endpoint — dedicated single-product entry point.
+     */
+    renderSingle: (projectId: string) =>
+      `/projects/${projectId}/render-single`
+  }
 } as const;

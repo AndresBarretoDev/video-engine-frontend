@@ -1,0 +1,16 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Template 1 — OP Brand Verification" [level=1] [ref=e4]
+      - paragraph [ref=e5]: "Verify: OP Blue (#4361EF), Mulish font, no element overlap in all 3 formats. DELETE this page after verification."
+    - generic [ref=e6]:
+      - heading "Format 16:9 — Landscape (1920×1080)" [level=2] [ref=e7]
+      - paragraph [ref=e8]: 1920 × 1080 | 800×450px preview
+    - generic [ref=e10]:
+      - heading "Format 9:16 — Portrait (1080×1920)" [level=2] [ref=e11]
+      - paragraph [ref=e12]: 1080 × 1920 | 338×600px preview
+    - generic [ref=e14]:
+      - heading "Format 1:1 — Square (1080×1080)" [level=2] [ref=e15]
+      - paragraph [ref=e16]: 1080 × 1080 | 420×420px preview
+  - region "Notifications alt+T"
+  - alert [ref=e18]
