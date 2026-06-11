@@ -70,13 +70,15 @@ export function useRenderProgress(jobId: string, enabled: boolean = false) {
 
 /**
  * Get outputs for a completed render job.
+ * Pass enabled=true only once the job status is 'completed' to avoid
+ * premature requests that would return empty/404 and fill the cache with stale data.
  */
-export function useRenderOutputs(jobId: string) {
+export function useRenderOutputs(jobId: string, enabled: boolean = true) {
   return useQuery({
     queryKey: renderJobKeys.outputs(jobId),
     queryFn: () =>
       apiClient<RenderOutput[]>(API_ENDPOINTS.renderJobs.outputs(jobId)),
-    enabled: !!jobId,
+    enabled: !!jobId && enabled,
     staleTime: 5 * 60 * 1000,
   });
 }

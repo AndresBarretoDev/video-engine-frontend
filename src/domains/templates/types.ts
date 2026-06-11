@@ -5,7 +5,8 @@
  * This shape MUST match exactly what GET /templates returns (backend task 3.1).
  *
  * Contract version: v1 (2026-06-09)
- * Backend TODO: Implement GET /templates returning TemplateDescriptor[] — see design.md §Interfaces/Contracts
+ * Backend status: GET /templates IS IMPLEMENTED (verified 2026-06-11) and serves
+ * this exact shape from TEMPLATES_V1 (hardcoded server-side, no DB table yet).
  */
 
 import type { VideoFormat } from '@/remotion/types/video-format.types';

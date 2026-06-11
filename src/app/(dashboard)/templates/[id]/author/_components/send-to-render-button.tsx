@@ -1,45 +1,46 @@
 'use client';
 
 /**
- * SendToRenderButton — NEW single-product render trigger (D8).
+ * SendToRenderButton — multi-format render trigger for the golden path.
  *
- * This is the golden-path send-to-render. It calls useCreateSingleRender,
- * NOT the data-engine batch endpoint (which lives in data-engine domain, untouched).
+ * Fires one POST /render-single per selected format (Promise.allSettled so a
+ * single format failure doesn't block the others). Calls onJobsCreated with
+ * every { jobId, format } pair collected from all successful responses.
  *
- * - Disabled when form is invalid (spec: "Validation gates render")
- * - Shows error state clearly when backend is unavailable
- * - Stores jobIds returned from the backend for downstream polling
- *
- * Design ref: design.md §D8 — "send-to-render NUEVO single-product"
+ * Design ref: design.md §D8 — send-to-render NUEVO single-product
  * Spec: "Render MUST be blocked while any required field is missing"
- * Task: 4.5 (golden-path-video-generation)
+ *       "At least one format must be selected"
  */
 
+import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useCreateSingleRender } from '@/domains/video-generation/hooks/use-create-single-render';
 import { videoGenerationTextMaps as t } from '@/domains/video-generation/text-maps';
 import type { AssembledTemplateProps } from '@/domains/video-generation/types';
+import type { RenderJobEntry } from '@/domains/video-generation/stores/video-generation-store';
 import type { VideoFormat } from '@/remotion/types/video-format.types';
 
-// ─── Demo project ID — will be replaced with real project context ─────────────
-// TODO(task 5.x): integrate project selector / active project from context
-const DEMO_PROJECT_ID = 'demo-project-001';
+// ─── Demo project ID ─────────────────────────────────────────────────────────
+// TODO(task 5.x): replace with real project context.
+// Must be a valid UUID v4 — backend validates with @IsUUID().
+const DEMO_PROJECT_ID = '00000000-0000-4000-8000-000000000000';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
 interface SendToRenderButtonProps {
   templateId: string;
-  /** compositionId prefix from the registry — final id is `${prefix}-${format}`. */
   compositionIdPrefix: string;
   compositionProps: AssembledTemplateProps;
-  activeFormat: VideoFormat;
+  /** Formats selected via FormatSelector — one job is created per format. */
+  selectedFormats: VideoFormat[];
   isFormValid: boolean;
   projectId?: string;
-  /** Called with the job IDs returned by the backend so the parent can poll progress. */
-  onJobsCreated?: (jobIds: string[]) => void;
+  /** Called with all { jobId, format } pairs from successful render calls. */
+  onJobsCreated?: (entries: RenderJobEntry[]) => void;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -48,70 +49,103 @@ export function SendToRenderButton({
   templateId,
   compositionIdPrefix,
   compositionProps,
-  activeFormat,
+  selectedFormats,
   isFormValid,
   projectId = DEMO_PROJECT_ID,
-  onJobsCreated
+  onJobsCreated,
 }: SendToRenderButtonProps) {
-  const { mutate: createRender, isPending, isError, error } = useCreateSingleRender(projectId);
+  const { mutateAsync } = useCreateSingleRender(projectId);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  const handleRender = () => {
-    if (!isFormValid) return;
+  const canRender = isFormValid && selectedFormats.length > 0 && !isSubmitting;
 
-    createRender(
-      {
-        templateId,
-        compositionId: `${compositionIdPrefix}-${activeFormat.replace(':', '-')}`,
-        compositionProps,
-        format: activeFormat
-      },
-      {
-        onSuccess: data => {
-          onJobsCreated?.(data.jobIds);
-        }
-      }
+  async function handleRender() {
+    if (!canRender) return;
+    setIsSubmitting(true);
+    setHasError(false);
+
+    const results = await Promise.allSettled(
+      selectedFormats.map(format =>
+        mutateAsync({
+          templateId,
+          compositionId: `${compositionIdPrefix}-${format.replace(':', '-')}`,
+          compositionProps,
+          format,
+        })
+      )
     );
-  };
 
-  const isDisabled = !isFormValid || isPending;
+    const entries: RenderJobEntry[] = results.flatMap((result, i) => {
+      if (result.status === 'fulfilled') {
+        return result.value.jobIds.map(jobId => ({
+          jobId,
+          format: selectedFormats[i],
+        }));
+      }
+      return [];
+    });
+
+    // ONE toast per user action — never one-per-format. The mutation hook is
+    // intentionally silent; messaging is decided here from the aggregate result.
+    const okCount = results.filter(r => r.status === 'fulfilled').length;
+    const total = results.length;
+
+    if (entries.length > 0) {
+      if (okCount === total) {
+        toast.success(t.videosSentToRender(okCount));
+      } else {
+        toast.warning(t.videosSentPartial(okCount, total));
+      }
+      setHasError(false);
+      onJobsCreated?.(entries);
+    } else {
+      toast.error(t.errorRenderFailed);
+      setHasError(true);
+    }
+
+    setIsSubmitting(false);
+  }
+
+  const buttonLabel = isSubmitting
+    ? t.renderButtonRendering
+    : t.renderButtonMultiple(selectedFormats.length);
+
+  const disabledHint = !isFormValid
+    ? t.renderButtonDisabledMissingFields
+    : selectedFormats.length === 0
+    ? t.formatSelectorHint
+    : undefined;
 
   return (
     <div className="flex flex-col gap-2">
       <Button
         onClick={handleRender}
-        disabled={isDisabled}
+        disabled={!canRender}
         className="w-full"
-        aria-label={isDisabled && !isFormValid ? t.renderButtonDisabledMissingFields : t.renderButtonLabel}
-        aria-busy={isPending}
+        aria-label={disabledHint ?? buttonLabel}
+        aria-busy={isSubmitting}
       >
-        {isPending ? (
-          <>
-            <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
-            {t.renderButtonRendering}
-          </>
-        ) : (
-          t.renderButtonLabel
-        )}
+        {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />}
+        {buttonLabel}
       </Button>
 
-      {/* Validation hint — shown when form is not valid */}
-      {!isFormValid && (
+      {disabledHint && (
         <p className="text-muted-foreground text-xs" role="status">
-          {t.renderButtonDisabledMissingFields}
+          {disabledHint}
         </p>
       )}
 
-      {/* Backend error — graceful failure (backend task 2.6 not yet implemented) */}
-      {isError && (
+      {hasError && (
         <Alert variant="destructive" className="py-2">
           <AlertDescription className="flex items-center justify-between text-xs">
-            <span>{(error as Error).message || t.errorRenderFailed}</span>
+            <span>{t.errorRenderFailed}</span>
             <Button
               variant="ghost"
               size="sm"
               className="h-6 px-2 text-xs"
               onClick={handleRender}
-              disabled={!isFormValid}
+              disabled={!canRender}
             >
               {t.errorRetry}
             </Button>

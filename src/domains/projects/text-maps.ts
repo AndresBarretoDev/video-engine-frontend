@@ -9,6 +9,7 @@ export const projectsTextMaps = {
   newProjectDescription: 'Start a new video production project.',
   editProjectTitle: 'Edit Project',
   editProjectDescription: 'Update project information and settings.',
+  createVideoLabel: 'Create video',
 
   // ─── Project list ─────────────────────────────────────────────────────────
   projects: 'Projects',

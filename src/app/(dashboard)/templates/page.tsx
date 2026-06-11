@@ -19,10 +19,17 @@ export const metadata = {
   description: 'Choose a template to start creating your personalized video.'
 };
 
-export default function TemplatesPage() {
+interface TemplatesPageProps {
+  /** When present (project-first flow), template cards author under this project. */
+  searchParams: Promise<{ projectId?: string }>;
+}
+
+export default async function TemplatesPage({ searchParams }: TemplatesPageProps) {
+  const { projectId } = await searchParams;
+
   return (
     <Suspense fallback={<PageSkeleton variant="card-grid" />}>
-      <TemplateGrid />
+      <TemplateGrid projectId={projectId} />
     </Suspense>
   );
 }

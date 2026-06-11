@@ -24,6 +24,20 @@ import { create } from 'zustand';
 import type { FieldValues } from 'react-hook-form';
 import type { VideoFormat } from '@/remotion/types/video-format.types';
 
+// ─── Shared types ─────────────────────────────────────────────────────────────
+
+export interface RenderJobEntry {
+  jobId: string;
+  format: VideoFormat;
+}
+
+/** A completed render output, reported by each card when its job finishes.
+ *  Keyed by jobId so "Download All" can collect every ready file at once. */
+export interface ReadyOutput {
+  url: string;
+  format: VideoFormat;
+}
+
 // ─── Store state interface ────────────────────────────────────────────────────
 
 interface VideoGenerationStore {
@@ -34,15 +48,35 @@ interface VideoGenerationStore {
   isMobilePreviewOpen: boolean;
 
   // Debounced form snapshot — updated 400ms after form changes.
-  // Template-agnostic: this is what the Remotion player renders. Null until the
-  // first form change (the view falls back to the template's default values).
   formSnapshot: FieldValues | null;
+
+  // Selected brand id for the preview, or null for the template's default preset.
+  selectedBrandId: string | null;
+
+  // Formats selected for rendering (checkboxes). Min 1 required.
+  selectedFormats: VideoFormat[];
+
+  // Results sheet visibility (opens when render is triggered).
+  isResultsSheetOpen: boolean;
+
+  // Render jobs created this session — jobId + format pairs for the results sheet.
+  renderJobEntries: RenderJobEntry[];
+
+  // Ready outputs reported by each card on completion, keyed by jobId.
+  // Powers the "Download All" action in the results sheet.
+  readyOutputs: Record<string, ReadyOutput>;
 
   // Actions
   setActiveFormat: (format: VideoFormat) => void;
   setMobilePreviewOpen: (open: boolean) => void;
   toggleMobilePreview: () => void;
   setFormSnapshot: (values: FieldValues) => void;
+  setSelectedBrandId: (brandId: string | null) => void;
+  setSelectedFormats: (formats: VideoFormat[]) => void;
+  setResultsSheetOpen: (open: boolean) => void;
+  addRenderJobEntries: (entries: RenderJobEntry[]) => void;
+  setReadyOutput: (jobId: string, output: ReadyOutput) => void;
+  clearRenderJobEntries: () => void;
   resetEditor: () => void;
 }
 
@@ -54,6 +88,11 @@ export const useVideoGenerationStore = create<VideoGenerationStore>(set => ({
   activeFormat: '16:9',
   isMobilePreviewOpen: false,
   formSnapshot: null,
+  selectedBrandId: null,
+  selectedFormats: ['16:9'],
+  isResultsSheetOpen: false,
+  renderJobEntries: [],
+  readyOutputs: {},
 
   // ── Actions ────────────────────────────────────────────────────────────────
 
@@ -66,10 +105,29 @@ export const useVideoGenerationStore = create<VideoGenerationStore>(set => ({
 
   setFormSnapshot: values => set({ formSnapshot: values }),
 
+  setSelectedBrandId: brandId => set({ selectedBrandId: brandId }),
+
+  setSelectedFormats: formats => set({ selectedFormats: formats }),
+
+  setResultsSheetOpen: open => set({ isResultsSheetOpen: open }),
+
+  addRenderJobEntries: entries =>
+    set(state => ({ renderJobEntries: [...state.renderJobEntries, ...entries] })),
+
+  setReadyOutput: (jobId, output) =>
+    set(state => ({ readyOutputs: { ...state.readyOutputs, [jobId]: output } })),
+
+  clearRenderJobEntries: () => set({ renderJobEntries: [], readyOutputs: {} }),
+
   resetEditor: () =>
     set({
       activeFormat: '16:9',
       isMobilePreviewOpen: false,
-      formSnapshot: null
+      formSnapshot: null,
+      selectedBrandId: null,
+      selectedFormats: ['16:9'],
+      isResultsSheetOpen: false,
+      renderJobEntries: [],
+      readyOutputs: {},
     })
 }));

@@ -12,6 +12,7 @@
  */
 
 import type { BrandConfig as RemotionBrandConfig } from '@/remotion/types/brand-config.types';
+import type { BrandConfig, BrandDesignTokens } from '@/domains/brands/types';
 
 // ─── Input type: subset of domain BrandTokens ────────────────────────────────
 
@@ -108,4 +109,46 @@ export function mapBrandConfigToRemotionBrand(
       productOverlayPosition: 'bottom-right'
     }
   };
+}
+
+// ─── Domain BrandConfig → RemotionBrandConfig ─────────────────────────────────
+
+/**
+ * resolveRemotionBrand — adapts a domain BrandConfig (as returned by useBrand)
+ * into a RemotionBrandConfig the preview/render can consume.
+ *
+ * Reads the structured design tokens from `brand.tokens` (the BrandDesignTokens
+ * "seed format"), builds the flat mapper input, and delegates to
+ * mapBrandConfigToRemotionBrand.
+ *
+ * Returns null when the brand has no usable tokens (no colors.primary) — the
+ * caller then falls back to the template's default brand preset, so the preview
+ * never breaks.
+ */
+export function resolveRemotionBrand(
+  brand: BrandConfig | null | undefined
+): RemotionBrandConfig | null {
+  if (!brand) return null;
+
+  const tokens = brand.tokens as BrandDesignTokens | undefined;
+  const primary = tokens?.colors?.primary;
+
+  // No structured tokens → caller falls back to the template preset.
+  if (!tokens || !primary) return null;
+
+  return mapBrandConfigToRemotionBrand({
+    id: brand.id,
+    name: brand.name,
+    colorPrimary: primary,
+    colorAccent: tokens.colors.accent ?? primary,
+    colorSecondary: tokens.colors.secondary,
+    colorBackground: tokens.colors.background,
+    colorText: tokens.colors.text,
+    fontFamilyHeading: tokens.fonts?.heading ?? 'Inter, sans-serif',
+    fontFamilyBody: tokens.fonts?.body ?? 'Inter, sans-serif',
+    logoUrl: tokens.logo?.url ?? 'https://placehold.co/240x80/CCCCCC/333333?text=Logo',
+    logoWidth: tokens.logo?.width,
+    logoHeight: tokens.logo?.height,
+    logoWhiteUrl: tokens.logo?.whiteUrl
+  });
 }

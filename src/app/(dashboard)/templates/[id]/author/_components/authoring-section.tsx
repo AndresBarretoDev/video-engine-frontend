@@ -18,7 +18,7 @@
  * Task: 4.3 + 4.4 (golden-path-video-generation) + multi-template authoring
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useForm, type FieldValues, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -26,13 +26,19 @@ import { useTemplate } from '@/domains/templates/hooks/use-templates';
 import type { TemplateDescriptor } from '@/domains/templates/types';
 import { videoGenerationTextMaps } from '@/domains/video-generation/text-maps';
 import { useVideoGenerationStore } from '@/domains/video-generation/stores/video-generation-store';
+import type { RenderJobEntry } from '@/domains/video-generation/stores/video-generation-store';
+import { resolveRemotionBrand } from '@/domains/video-generation/utils/brand-config-mapper';
 import type { AuthoringState } from '@/domains/video-generation/types';
+import { useBrand } from '@/domains/brands/hooks/use-brands';
+import { BrandSelector } from '@/domains/brands/components/brand-selector';
 import type { VideoFormat } from '@/remotion/types/video-format.types';
 
 import { RemotionPlayerWrapper } from './remotion-player-wrapper';
 import { FormatTabs } from './format-tabs';
+import { FormatSelector } from './format-selector';
 import { SendToRenderButton } from './send-to-render-button';
 import { RenderCountIndicator } from './render-count-indicator';
+import { RenderResultsSheet } from './render-results-sheet';
 import { AuthoringSkeleton } from './authoring-skeleton';
 import {
   getTemplateAuthoringConfig,
@@ -47,11 +53,15 @@ import { Eye } from 'lucide-react';
 
 interface AuthoringSectionProps {
   templateId: string;
+  /** The project this video is authored under. Optional: the global showroom route
+   *  (/templates/[id]/author) renders a preview without a project; the project-scoped
+   *  route (/projects/[projectId]/templates/[id]/author) passes the real project. */
+  projectId?: string;
 }
 
 // ─── Resolver (data + config) ───────────────────────────────────────────────
 
-export function AuthoringSection({ templateId }: AuthoringSectionProps) {
+export function AuthoringSection({ templateId, projectId }: AuthoringSectionProps) {
   const { data: template, isLoading } = useTemplate(templateId);
 
   if (isLoading) {
@@ -81,18 +91,26 @@ export function AuthoringSection({ templateId }: AuthoringSectionProps) {
   }
 
   // key remounts the editor (and resets RHF) when switching templates.
-  return <AuthoringEditor key={template.id} template={template} config={config} />;
+  return (
+    <AuthoringEditor
+      key={template.id}
+      template={template}
+      config={config}
+      projectId={projectId}
+    />
+  );
 }
 
 // ─── Editor (hooks + render) ──────────────────────────────────────────────────
 
 interface AuthoringEditorProps {
   template: TemplateDescriptor;
+  projectId?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config: TemplateAuthoringConfig<any>;
 }
 
-function AuthoringEditor({ template, config }: AuthoringEditorProps) {
+function AuthoringEditor({ template, config, projectId }: AuthoringEditorProps) {
   const {
     activeFormat,
     setActiveFormat,
@@ -100,11 +118,26 @@ function AuthoringEditor({ template, config }: AuthoringEditorProps) {
     toggleMobilePreview,
     setFormSnapshot,
     formSnapshot,
-    resetEditor
+    selectedBrandId,
+    setSelectedBrandId,
+    selectedFormats,
+    addRenderJobEntries,
+    setResultsSheetOpen,
+    resetEditor,
   } = useVideoGenerationStore();
 
-  // Render job IDs returned by SendToRenderButton — passed to RenderCountIndicator.
-  const [jobIds, setJobIds] = useState<string[]>([]);
+  // Selected brand → Remotion brand config. Falls back to the template's preset
+  // when no brand is selected or the brand has no usable design tokens.
+  const { data: selectedBrand } = useBrand(selectedBrandId ?? '');
+  const brand =
+    (selectedBrandId ? resolveRemotionBrand(selectedBrand) : null) ??
+    config.fallbackBrandPreset;
+
+  function handleJobsCreated(entries: RenderJobEntry[]) {
+    addRenderJobEntries(entries);
+    setResultsSheetOpen(true);
+    form.reset(config.defaultFormValues);
+  }
 
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -148,7 +181,7 @@ function AuthoringEditor({ template, config }: AuthoringEditorProps) {
   const previewForm = formSnapshot ?? config.previewFormValues;
   const authoringState: AuthoringState<FieldValues> = {
     form: previewForm,
-    brand: config.brandPreset,
+    brand,
     activeFormat
   };
   const compositionProps = config.assembleProps(authoringState);
@@ -164,6 +197,9 @@ function AuthoringEditor({ template, config }: AuthoringEditorProps) {
     <div className="flex min-h-[calc(100vh-8rem)] flex-col gap-4 lg:flex-row">
       {/* ─── LEFT: Form panel ──────────────────────────────────────────────── */}
       <div className="flex flex-col gap-5 lg:w-[420px] lg:shrink-0">
+        {/* Active renders notification — only visible when jobs exist */}
+        <RenderCountIndicator />
+
         {/* Mobile: preview toggle button */}
         <div className="flex items-center justify-between lg:hidden">
           <h2 className="text-foreground text-base font-semibold">
@@ -192,19 +228,25 @@ function AuthoringEditor({ template, config }: AuthoringEditorProps) {
           {config.formSectionLabel}
         </h2>
 
+        {/* Brand selector — overrides the template's fallback preset in the preview */}
+        <BrandSelector value={selectedBrandId} onChange={setSelectedBrandId} />
+
         <config.FormComponent form={form as UseFormReturn<FieldValues>} />
 
         <div className="flex flex-col gap-3">
+          <FormatSelector availableFormats={template.formats.map(f => f.format)} />
           <SendToRenderButton
             templateId={template.id}
+            projectId={projectId}
             compositionIdPrefix={config.compositionIdPrefix}
             compositionProps={compositionProps}
-            activeFormat={activeFormat}
+            selectedFormats={selectedFormats}
             isFormValid={isFormValid}
-            onJobsCreated={setJobIds}
+            onJobsCreated={handleJobsCreated}
           />
-          <RenderCountIndicator templateId={template.id} jobIds={jobIds} />
         </div>
+
+        <RenderResultsSheet />
       </div>
 
       {/* ─── RIGHT: Preview panel (desktop) ────────────────────────────────── */}

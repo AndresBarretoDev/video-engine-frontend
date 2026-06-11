@@ -70,8 +70,9 @@ export interface TemplateAuthoringConfig<
   FormComponent: React.ComponentType<{ form: UseFormReturn<TFormValues> }>;
   /** Pure mapper: authoring state → organism props. */
   assembleProps: (state: AuthoringState<TFormValues>) => AssembledTemplateProps;
-  /** Brand identity used for the live preview (until brands module is wired). */
-  brandPreset: BrandConfig;
+  /** Fallback brand identity for the preview when no brand is selected (or the
+   *  selected brand has no usable design tokens). The brand selector overrides this. */
+  fallbackBrandPreset: BrandConfig;
   /** compositionId prefix — final id is `${prefix}-${format}` (e.g. stay-promo-16-9). */
   compositionIdPrefix: string;
   /** Form section heading. */
@@ -106,7 +107,7 @@ const loopingProductPromoConfig: TemplateAuthoringConfig<ProductFormValues> = {
   },
   FormComponent: ProductForm,
   assembleProps: assembleCompositionProps,
-  brandPreset: OP_BRAND_PRESET,
+  fallbackBrandPreset: OP_BRAND_PRESET,
   compositionIdPrefix: 'looping-product-promo',
   formSectionLabel: t.formSectionLabel,
   isRenderReady: values => isPublicImageUrl(values.productImage)
@@ -140,7 +141,7 @@ const stayPromoConfig: TemplateAuthoringConfig<StayFormValues> = {
   },
   FormComponent: StayForm,
   assembleProps: assembleStayCompositionProps,
-  brandPreset: AIRBNB_BRAND_PRESET,
+  fallbackBrandPreset: AIRBNB_BRAND_PRESET,
   compositionIdPrefix: 'stay-promo',
   formSectionLabel: t.stayFormSectionLabel,
   isRenderReady: values => isPublicImageUrl(values.heroImage)

@@ -17,6 +17,12 @@ export const brandsTextMaps = {
   createBrand: 'Create Brand',
   newBrand: 'New Brand',
 
+  // ─── Brand selector (authoring) ────────────────────────────────────────────
+  selectorLabel: 'Brand',
+  selectorPlaceholder: 'Select a brand',
+  selectorDefaultOption: 'Template default',
+  selectorLoading: 'Loading brands…',
+
   // ─── Status labels ────────────────────────────────────────────────────────
   statusActive: 'Active',
   statusArchived: 'Archived',

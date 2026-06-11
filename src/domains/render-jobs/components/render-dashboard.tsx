@@ -9,7 +9,7 @@
  * Plan: phase-4-rendering-pipeline.md — Group 3
  */
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Film } from 'lucide-react';
 
 import {
@@ -64,19 +64,11 @@ export function RenderDashboard({ projectId }: RenderDashboardProps) {
   const [search, setSearch] = useState('');
   const [selectedBatchId, setSelectedBatchId] = useState<string | null>(null);
 
-  const hasProcessing = useMemo(() => {
-    return false; // Will be computed from data below
-  }, []);
-
+  // Polling is data-driven inside useRenderBatches: it auto-polls while any
+  // batch is pending/processing and stops when all are terminal. No flag needed.
   const { data: batches, isLoading, isError, refetch } = useRenderBatches(
     projectId,
     { status: statusFilter === 'all' ? undefined : statusFilter as RenderBatch['status'], search: search || undefined },
-    hasProcessing,
-  );
-
-  const hasAnyProcessing = useMemo(
-    () => batches?.some(b => b.status === 'processing') ?? false,
-    [batches],
   );
 
   // If a batch is selected, show its detail view

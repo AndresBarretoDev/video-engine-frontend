@@ -25,7 +25,12 @@ import { TemplateCardSkeleton } from './template-card-skeleton';
 // Matches the minimum expected number of templates (1) × 3 cols preview = 3
 const SKELETON_COUNT = 3;
 
-export function TemplateGrid() {
+interface TemplateGridProps {
+  /** When present (project-first flow), cards author under this project. */
+  projectId?: string;
+}
+
+export function TemplateGrid({ projectId }: TemplateGridProps) {
   const { data: templates, isLoading, error, refetch } = useTemplates();
 
   return (
@@ -65,7 +70,7 @@ export function TemplateGrid() {
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {templates.map(template => (
-            <TemplateCard key={template.id} template={template} />
+            <TemplateCard key={template.id} template={template} projectId={projectId} />
           ))}
         </div>
       )}

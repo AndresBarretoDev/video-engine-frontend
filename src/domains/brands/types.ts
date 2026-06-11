@@ -14,6 +14,37 @@ export interface BrandConfig {
   updatedAt: string;
 }
 
+/**
+ * BrandDesignTokens — the structured shape carried inside `BrandConfig.tokens`
+ * (the "seed format" already read by brand-card.tsx and consumed by the authoring
+ * brand selector via resolveRemotionBrand). The backend must return tokens in this
+ * shape from GET /brands/:id — see docs/contracts/GET-brand-tokens.contract.md.
+ *
+ * `tokens` stays typed as Record<string, unknown> on BrandConfig (the token editor
+ * writes a partial/loose object); this interface documents and validates the subset
+ * the video preview consumes.
+ */
+export interface BrandDesignTokens {
+  colors: {
+    primary: string;
+    secondary?: string;
+    accent?: string;
+    background?: string;
+    text?: string;
+  };
+  fonts?: {
+    heading: string;
+    body: string;
+  };
+  logo?: {
+    url: string;
+    width?: number;
+    height?: number;
+    whiteUrl?: string;
+  };
+  customColors?: { name: string; hex: string }[];
+}
+
 export interface BrandTokens {
   brandId: string;
   colorPrimary: string;

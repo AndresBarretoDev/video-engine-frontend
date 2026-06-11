@@ -49,13 +49,13 @@ export function BatchDetailView({
   const [selectedJob, setSelectedJob] = useState<RenderJob | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const isProcessing = false; // Will be derived from data
+  // Polling is data-driven inside useRenderBatch (auto-polls while pending/processing).
   const {
     data: batch,
     isLoading: batchLoading,
     isError: batchError,
     refetch: refetchBatch,
-  } = useRenderBatch(projectId, batchId, isProcessing);
+  } = useRenderBatch(projectId, batchId);
 
   const {
     data: jobs,

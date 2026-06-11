@@ -5,16 +5,15 @@
  * Returns jobIds for subsequent progress polling.
  *
  * Design ref: design.md §D8 + D9
- * BACKEND CONTRACT: task 2.6 must implement POST /projects/:id/render-single
- * until then, the mutation will fail gracefully (ApiError) and show the error state.
+ * Backend status: POST /projects/:id/render-single IS IMPLEMENTED (verified
+ * 2026-06-11 with real 201s). Note: RENDER_PROVIDER=mock currently writes
+ * placeholder files, so outputs are not playable until local render is enabled.
  */
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
 
 import { apiClient } from '@/lib/api/client';
 import { API_ENDPOINTS } from '@/lib/api/endpoints';
-import { videoGenerationTextMaps as t } from '../text-maps';
 import type {
   CreateSingleProductRenderDto,
   SingleProductRenderResponse
@@ -31,7 +30,11 @@ export const VIDEO_GEN_JOBS_KEY = ['video-generation', 'render-jobs'] as const;
  *
  * Creates a single-product render job via the golden-path endpoint.
  * On success: returns jobIds to the caller (for progress polling).
- * On error: shows a toast — does NOT throw (fails gracefully).
+ *
+ * NOTE: No toast here on purpose. This hook fires ONCE PER FORMAT (the caller
+ * loops it inside Promise.allSettled). User-facing messaging belongs in the
+ * caller so a single user action produces a single toast — not one per format.
+ * The mutation still rejects on error so the caller's allSettled sees it.
  *
  * @param projectId - The project to render under
  */
@@ -47,14 +50,9 @@ export function useCreateSingleRender(projectId: string) {
           data: { ...dto, projectId }
         }
       ),
-    onSuccess: data => {
+    onSuccess: () => {
       // Invalidate render-jobs list so the count indicator refreshes
       queryClient.invalidateQueries({ queryKey: VIDEO_GEN_JOBS_KEY });
-      toast.success(t.renderJobCreated);
-      return data;
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || t.errorRenderFailed);
     }
   });
 }

@@ -15,8 +15,8 @@ This file provides guidance to Claude Code when working with this repository.
 - **Forms**: React Hook Form + Zod
 - **Backend** (separate repo): NestJS 10+ + PostgreSQL + Prisma + BullMQ + Redis
 - **Auth**: JWT tokens from NestJS (Passport.js), consumed via httpOnly cookies
-- **Rendering**: Remotion Lambda (AWS) orchestrated by backend
-- **Storage**: AWS S3 + CloudFront (managed by backend)
+- **Rendering**: Remotion CLI **local** orchestrated by backend via a `RenderProvider` port (`mock | local`). Lambda (AWS) is a FUTURE evolution of the port, NOT the starting point — see PRODUCT.md §4 Fase A
+- **Storage**: local filesystem served at `/uploads` (backend ServeStatic) via a `StorageProvider` port. S3 + CloudFront are the future cloud implementation
 
 **Philosophy**: UI/UX-first, reusable components, ultra-clean pages, strict separation of concerns, mobile-first responsive design.
 
@@ -26,7 +26,7 @@ This file provides guidance to Claude Code when working with this repository.
 
 **BEFORE doing anything else**, you MUST read these documents:
 
-1. [`../op-video-engine-docs/PRD-PHASES.md`](../op-video-engine-docs/PRD-PHASES.md) — **Product Roadmap**: The 8 phases of the product (Phase 0–7). This defines WHAT gets built and in what order. **Do NOT invent your own phases.**
+1. [`../op-video-engine-docs/PRODUCT.md`](../op-video-engine-docs/PRODUCT.md) — **🟢 SSOT del producto**: what the product is, the 4-layer experience model (§0.5), Módulos 1–7 (§3), the ACTIVE roadmap Fases A–F (§4), use cases CU-1..5 (§5), acceptance criteria (§6). **On any contradiction between docs, PRODUCT.md wins. Do NOT invent your own phases or modules.** The old "8 phases (0–7)" model is superseded and lives in `../op-video-engine-docs/archive/`.
 2. [`.claude/knowledge/sdd-methodology.md`](.claude/knowledge/sdd-methodology.md) — **Specification-Driven Development**: Nothing gets implemented without a spec. This is the development methodology for the entire project.
 3. [`.claude/knowledge/critical-constraints.md`](.claude/knowledge/critical-constraints.md) — **10 Non-negotiable rules**: Architectural constraints that all code must follow.
 
@@ -36,15 +36,16 @@ This file provides guidance to Claude Code when working with this repository.
 
 | Document | Content |
 |----------|---------|
-| [`../op-video-engine-docs/PRD-PHASES.md`](../op-video-engine-docs/PRD-PHASES.md) | **🔴 Product roadmap** — phases, deliverables, acceptance criteria |
-| [`../op-video-engine-docs/PROJECT-BRIEF.md`](../op-video-engine-docs/PROJECT-BRIEF.md) | Vision, problem statement, target users |
+| [`../op-video-engine-docs/PRODUCT.md`](../op-video-engine-docs/PRODUCT.md) | **🟢 SSOT** — product definition, layers, modules, ACTIVE roadmap (Fases A–F), acceptance criteria |
+| [`../op-video-engine-docs/README.md`](../op-video-engine-docs/README.md) | Document hierarchy index — which doc to trust for what |
+| [`../op-video-engine-docs/PROJECT-BRIEF.md`](../op-video-engine-docs/PROJECT-BRIEF.md) | Vision, problem statement, target users (monetization section outdated — trust PRODUCT.md §2) |
 | [`../op-video-engine-docs/ARCHITECTURE.md`](../op-video-engine-docs/ARCHITECTURE.md) | Technical architecture (frontend + backend + video engine) |
 | [`../op-video-engine-docs/COMPONENT-SYSTEM.md`](../op-video-engine-docs/COMPONENT-SYSTEM.md) | Video component taxonomy (atoms/molecules/organisms) |
 | [`../op-video-engine-docs/USER-STORIES.md`](../op-video-engine-docs/USER-STORIES.md) | User stories by role |
 | [`../op-video-engine-docs/COMPETITIVE-ANALYSIS.md`](../op-video-engine-docs/COMPETITIVE-ANALYSIS.md) | Competitive landscape |
 | [`../op-video-engine-docs/PROYECTO-EXPLICADO.md`](../op-video-engine-docs/PROYECTO-EXPLICADO.md) | Inspiration project (Lidl / Belgium) explained |
 
-**SDD in short**: Spec first → implement second → validate third. Implementation specs live in `openspec/` (this repo is migrating from `.claude/plans/` to OpenSpec to align with the backend). Don't write implementation code without a spec.
+**SDD in short**: Spec first → implement second → validate third. **Implementation specs live in `openspec/` — that is the canonical location.** The old plans in `.claude/plans/` (phase-1/3/4, written for the superseded 8-phase model) are HISTORICAL — do not implement from them; see `.claude/plans/README.md`. Don't write implementation code without a spec.
 
 ---
 
@@ -77,8 +78,8 @@ OP_VIDEO_CTV/
 │  Next.js 15 + React 19         │────▶│  NestJS 10+ (Express/Fastify)    │
 │  @remotion/player (preview)    │ API │  PostgreSQL + Prisma             │
 │  React Query (data fetching)   │◀────│  BullMQ + Redis (render queue)   │
-│  Zustand (UI state only)       │     │  Remotion Lambda (cloud render)  │
-│  Tailwind v4 + shadcn/ui      │     │  S3 + CloudFront (storage)       │
+│  Zustand (UI state only)       │     │  Remotion CLI local (render port)│
+│  Tailwind v4 + shadcn/ui      │     │  Local FS /uploads (storage port)│
 │  Zod (frontend validation)     │     │  Passport.js + JWT (auth)        │
 └─────────────────────────────────┘     └──────────────────────────────────┘
 ```
@@ -182,7 +183,8 @@ PHASE 1: SPECIFICATION (no code yet)
   domain-architect     → Contratos: types, schemas, API endpoints, hooks
   ui-designer          → Diseño: layout, componentes, text-maps, estados
       ↓
-  Output: Plans in .claude/plans/ ← ESTOS SON EL CONTRATO
+  Output: OpenSpec change in openspec/changes/{name}/ ← ESTE ES EL CONTRATO
+          (proposal.md + specs/ + design.md + tasks.md)
 
 PHASE 2: IMPLEMENTATION (following the specs)
   backend              → NestJS modules, controllers, DTOs (per domain plan)
@@ -194,7 +196,7 @@ PHASE 3: VALIDATION
   ✅ Feature complete
 ```
 
-**Rule**: Phase 2 CANNOT start without Phase 1 outputs in `.claude/plans/`.
+**Rule**: Phase 2 CANNOT start without Phase 1 outputs in `openspec/changes/`.
 
 ### For Trivial Changes
 
@@ -216,12 +218,13 @@ Implement directly — but document the decision in session context.
 ## 📚 Documentation Map
 
 ### Always Read First
-- [`docs/PRD-PHASES.md`](docs/PRD-PHASES.md) — Product roadmap (8 phases, 0–7)
+- [`../op-video-engine-docs/PRODUCT.md`](../op-video-engine-docs/PRODUCT.md) — 🟢 SSOT: product, layers, modules, ACTIVE roadmap (Fases A–F)
 - [`.claude/knowledge/critical-constraints.md`](.claude/knowledge/critical-constraints.md) — Non-negotiable rules
 
 ### Read When Starting a New Phase
-- [`docs/COMPONENT-SYSTEM.md`](docs/COMPONENT-SYSTEM.md) — Video component taxonomy (Phase 1+)
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — Technical architecture decisions
+- [`../op-video-engine-docs/COMPONENT-SYSTEM.md`](../op-video-engine-docs/COMPONENT-SYSTEM.md) — Video component taxonomy
+- [`../op-video-engine-docs/ARCHITECTURE.md`](../op-video-engine-docs/ARCHITECTURE.md) — Technical architecture (render section outdated: trust PRODUCT.md §4 — local CLI first, not Lambda)
+- In-repo working docs: [`docs/architecture/`](docs/architecture/) (estado actual, theming levels) + [`docs/contracts/`](docs/contracts/) (API contracts written by this repo)
 
 ### Load As Needed
 - [`.claude/knowledge/tech-stack.md`](.claude/knowledge/tech-stack.md) — Technologies, versions, commands

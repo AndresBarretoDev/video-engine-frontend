@@ -68,6 +68,10 @@ export const videoGenerationTextMaps = {
   renderJobCreated: 'Render started',
   renderJobFailed: 'Render failed',
   renderJobCompleted: 'Render complete',
+  videosSentToRender: (n: number) =>
+    `${n} video${n === 1 ? '' : 's'} sent to render`,
+  videosSentPartial: (ok: number, total: number) =>
+    `${ok} of ${total} videos started — ${total - ok} failed`,
 
   // ─── Download ───────────────────────────────────────────────────────────────
   downloadLabel: (format: string) => `Download ${format}`,
@@ -94,6 +98,43 @@ export const videoGenerationTextMaps = {
   templateNotFound: 'Template not found.',
   templateUnsupported: (componentId: string) =>
     `This template (${componentId}) isn't available for authoring yet.`,
+
+  // ─── Format selector (render output formats) ────────────────────────────────
+  formatSelectorLabel: 'Output Formats',
+  formatSelectorHint: 'Select at least one format to render',
+  formatLandscape: 'Landscape',
+  formatVertical: 'Vertical',
+  formatSquare: 'Square',
+
+  // ─── Render button (multi-format) ────────────────────────────────────────────
+  renderButtonMultiple: (n: number) => `Generate ${n} Video${n === 1 ? '' : 's'}`,
+
+  // ─── Results sheet ───────────────────────────────────────────────────────────
+  resultsSheetTitle: 'Your Videos',
+  resultsSheetDescription: 'Videos are being generated. Download when ready.',
+  resultsCardRendering: 'Rendering…',
+  resultsCardProcessing: 'Processing',
+  resultsCardGenerating: 'Generating…',
+  resultsCardReady: 'Ready',
+  resultsCardFailed: 'Failed',
+  resultsCardFormatLabel: (format: string) => format,
+  /** Friendly card title, e.g. "Square (1:1)" — mirrors the reference UI. */
+  resultsCardFormatTitle: (format: string) => {
+    const names: Record<string, string> = {
+      '1:1': 'Square (1:1)',
+      '9:16': 'Vertical (9:16)',
+      '16:9': 'Horizontal (16:9)'
+    };
+    return names[format] ?? format;
+  },
+  resultsDownloadFormat: (format: string) => `Download ${format}`,
+  resultsDownloadAll: 'Download All',
+  resultsJobCount: (n: number) => `${n} video${n === 1 ? '' : 's'}`,
+
+  // ─── Render badge (reopens results sheet) ───────────────────────────────────
+  renderBadgeActive: (n: number) => `${n} rendering…`,
+  renderBadgeReady: (n: number) => `${n} video${n === 1 ? '' : 's'} ready`,
+  renderBadgeViewResults: 'View results',
 
   // ─── Empty / skeleton ───────────────────────────────────────────────────────
   skeletonAriaLabel: 'Loading authoring view…',

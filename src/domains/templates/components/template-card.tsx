@@ -152,15 +152,23 @@ function LivePreview({ templateRef, component, ariaLabel }: LivePreviewProps) {
 
 interface TemplateCardProps {
   template: TemplateDescriptor;
+  /** When present (project-first flow), authoring happens under this project;
+   *  otherwise the card links to the global showroom preview. */
+  projectId?: string;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function TemplateCard({ template }: TemplateCardProps) {
+export function TemplateCard({ template, projectId }: TemplateCardProps) {
   const component = ORGANISM_REGISTRY[template.componentId];
 
   // Preview uses the first format by default (16:9 is index 0 in the registry)
   const previewRef = template.formats[0];
+
+  // Project-first → author under the project; otherwise → global showroom preview.
+  const authorHref = projectId
+    ? `/projects/${projectId}/templates/${template.id}/author`
+    : `/templates/${template.id}/author`;
 
   return (
     <Card className="group border-border bg-card hover:bg-accent/30 flex flex-col overflow-hidden transition-colors pt-0">
@@ -215,7 +223,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
       {/* ─── Action ────────────────────────────────────────────────────── */}
       <CardFooter className="pt-0 pb-4">
         <Button asChild size="sm" className="w-full">
-          <Link href={`/templates/${template.id}/author`}>
+          <Link href={authorHref}>
             {templatesTextMaps.cardSelectLabel}
           </Link>
         </Button>
