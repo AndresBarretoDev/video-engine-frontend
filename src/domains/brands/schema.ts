@@ -20,12 +20,43 @@ export const customColorSchema = z.object({
 export type CustomColorInput = z.infer<typeof customColorSchema>;
 
 export const brandTokensEditSchema = z.object({
+  // ─── Core colors ──────────────────────────────────────────────────────────
   colorPrimary: hexColorField,
   colorSecondary: hexColorField,
   colorAccent: hexColorField,
   customColors: z.array(customColorSchema).optional(),
+
+  // ─── Surfaces & semantic text inks ────────────────────────────────────────
+  colorSurface: hexColorField,
+  colorBorder: hexColorField,
+  colorTextOnBackground: hexColorField,
+  colorTextOnSurface: hexColorField,
+  colorTextOnPrimary: hexColorField,
+
+  // ─── Shape — radius (px, non-negative) ────────────────────────────────────
+  radiusButton: z.number().nonnegative().optional(),
+  radiusBadge: z.number().nonnegative().optional(),
+  radiusImage: z.number().nonnegative().optional(),
+
+  // ─── Shape — stroke widths (px, non-negative) ─────────────────────────────
+  strokeButton: z.number().nonnegative().optional(),
+  strokeCard: z.number().nonnegative().optional(),
+  strokeBadge: z.number().nonnegative().optional(),
+
+  // ─── Structure — cortinilla transitions ───────────────────────────────────
+  cortinillaEntrada: z.enum(['fade', 'none', 'slide']).optional(),
+  cortinillaCierre: z.enum(['fade', 'none', 'slide']).optional(),
+
+  // ─── Structure — layout selectors ─────────────────────────────────────────
+  promoBarStyle: z.enum(['top', 'bottom']).optional(),
+  productOverlayPosition: z.enum(['bottom-right', 'bottom-left', 'center']).optional(),
+
+  // ─── Typography ───────────────────────────────────────────────────────────
   fontHeading: z.string().max(100).optional(),
   fontBody: z.string().max(100).optional(),
+
+  // ─── Font asset URLs (comma or newline-separated CSS stylesheet URLs) ──────
+  fontUrls: z.string().max(2000).optional(),
 });
 
 export type BrandTokensEditInput = z.infer<typeof brandTokensEditSchema>;

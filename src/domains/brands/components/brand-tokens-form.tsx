@@ -3,9 +3,12 @@
 /**
  * OP Video Engine — Brand Tokens Form
  *
- * Visual editor for brand design tokens (colors + fonts).
+ * Visual editor for brand design tokens.
+ * Sections: Colors | Surfaces & Text | Custom Colors | Shape | Structure | Typography | Font URLs
  * Two-column layout: form fields left, live preview right.
  * Saves merged tokens via PATCH /brands/:id.
+ *
+ * Design ref: design.md D8 — "Brand form authors the full token set (round-trip)"
  */
 
 import { useEffect, useMemo } from 'react';
@@ -15,6 +18,7 @@ import { Plus, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Form,
   FormControl,
@@ -22,6 +26,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from '@/components/ui/form';
 import {
   Select,
@@ -34,12 +39,13 @@ import { Separator } from '@/components/ui/separator';
 
 import { brandTokensEditSchema } from '../schema';
 import type { BrandTokensEditInput } from '../schema';
-import type { BrandConfig } from '../types';
+import type { BrandConfig, BrandDesignTokens } from '../types';
 import { brandsTextMaps } from '../text-maps';
 import { useUpdateBrandTokens } from '../hooks/use-brands';
 import { ColorPickerField } from './color-picker-field';
 import { BrandTokenPreview } from './brand-token-preview';
 import { FONT_OPTIONS, getGoogleFontsUrl } from '../constants/font-options';
+import { buildBrandTokensPayload } from '../utils/brand-tokens-payload';
 
 interface BrandTokensFormProps {
   brand: BrandConfig;
@@ -51,18 +57,54 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
   const existingTokens = brand.tokens as Record<string, unknown> | undefined;
   const existingColors = (existingTokens?.colors as Record<string, string>) ?? {};
   const existingFonts = (existingTokens?.fonts as Record<string, string>) ?? {};
-  const existingCustomColors = (existingTokens?.customColors as { name: string; hex: string }[]) ?? [];
+  const existingCustomColors =
+    (existingTokens?.customColors as { name: string; hex: string }[]) ?? [];
+  const existingRadius = (existingTokens?.radius as Record<string, number>) ?? {};
+  const existingStroke = (existingTokens?.stroke as Record<string, number>) ?? {};
+  const existingStructure = (existingTokens?.structure as Record<string, string>) ?? {};
+  const existingFontUrls =
+    (existingTokens?.assets as { fonts?: string[] } | undefined)?.fonts?.join('\n') ?? '';
 
   const defaultValues = useMemo<BrandTokensEditInput>(
     () => ({
+      // Core colors
       colorPrimary: existingColors.primary ?? '',
       colorSecondary: existingColors.secondary ?? '',
       colorAccent: existingColors.accent ?? '',
       customColors: existingCustomColors.length > 0 ? existingCustomColors : [],
+
+      // Surfaces & semantic inks
+      colorSurface: existingColors.surface ?? '#F2F2F2',
+      colorBorder: existingColors.border ?? '#CCCCCC',
+      colorTextOnBackground: existingColors.textOnBackground ?? '#111111',
+      colorTextOnSurface: existingColors.textOnSurface ?? '#111111',
+      colorTextOnPrimary: existingColors.textOnPrimary ?? '#FFFFFF',
+
+      // Shape
+      radiusButton: existingRadius.button ?? 8,
+      radiusBadge: existingRadius.badge ?? 8,
+      radiusImage: existingRadius.image ?? 12,
+      strokeButton: existingStroke.button ?? 1,
+      strokeCard: existingStroke.card ?? 1,
+      strokeBadge: existingStroke.badge ?? 1,
+
+      // Structure
+      cortinillaEntrada: (existingStructure.cortinillaEntrada as 'fade' | 'none' | 'slide') ?? 'fade',
+      cortinillaCierre: (existingStructure.cortinillaCierre as 'fade' | 'none' | 'slide') ?? 'fade',
+      promoBarStyle: (existingStructure.promoBarStyle as 'top' | 'bottom') ?? 'bottom',
+      productOverlayPosition:
+        (existingStructure.productOverlayPosition as 'bottom-right' | 'bottom-left' | 'center') ??
+        'bottom-right',
+
+      // Typography
       fontHeading: existingFonts.heading ?? '',
       fontBody: existingFonts.body ?? '',
+
+      // Font URLs
+      fontUrls: existingFontUrls,
     }),
-    [existingColors, existingFonts, existingCustomColors],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [brand.id],
   );
 
   const form = useForm<BrandTokensEditInput>({
@@ -89,21 +131,8 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
   }, []);
 
   function onSubmit(data: BrandTokensEditInput) {
-    const mergedTokens = {
-      ...existingTokens,
-      colors: {
-        ...(data.colorPrimary && { primary: data.colorPrimary }),
-        ...(data.colorSecondary && { secondary: data.colorSecondary }),
-        ...(data.colorAccent && { accent: data.colorAccent }),
-      },
-      customColors: data.customColors?.filter((c) => c.name && c.hex) ?? [],
-      fonts: {
-        ...(data.fontHeading && { heading: data.fontHeading }),
-        ...(data.fontBody && { body: data.fontBody }),
-      },
-    };
-
-    updateTokens(mergedTokens);
+    const mergedTokens = buildBrandTokensPayload(data, existingTokens ?? {});
+    updateTokens(mergedTokens as Record<string, unknown>);
   }
 
   return (
@@ -121,9 +150,10 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
         <Separator />
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
-          {/* Left column — form fields */}
+          {/* ── Left column — form fields ─────────────────────────────────── */}
           <div className="space-y-6 lg:col-span-3">
-            {/* Colors section */}
+
+            {/* ── Section: Core colors ──────────────────────────────────────── */}
             <div className="space-y-4">
               <h3 className="text-sm font-medium text-muted-foreground">
                 {brandsTextMaps.sectionColors}
@@ -184,7 +214,128 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
               />
             </div>
 
-            {/* Custom colors section */}
+            <Separator />
+
+            {/* ── Section: Surfaces & Text ──────────────────────────────────── */}
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  {brandsTextMaps.sectionSurfacesAndText}
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {brandsTextMaps.sectionSurfacesDescription}
+                </p>
+              </div>
+
+              <FormField
+                control={form.control}
+                name="colorSurface"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormControl>
+                      <ColorPickerField
+                        label={brandsTextMaps.labelColorSurface}
+                        value={field.value ?? ''}
+                        onChange={field.onChange}
+                        error={fieldState.error?.message}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-xs">
+                      {brandsTextMaps.labelColorSurfaceHint}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="colorBorder"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormControl>
+                      <ColorPickerField
+                        label={brandsTextMaps.labelColorBorder}
+                        value={field.value ?? ''}
+                        onChange={field.onChange}
+                        error={fieldState.error?.message}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-xs">
+                      {brandsTextMaps.labelColorBorderHint}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="colorTextOnBackground"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormControl>
+                      <ColorPickerField
+                        label={brandsTextMaps.labelColorTextOnBackground}
+                        value={field.value ?? ''}
+                        onChange={field.onChange}
+                        error={fieldState.error?.message}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-xs">
+                      {brandsTextMaps.labelColorTextOnBackgroundHint}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="colorTextOnSurface"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormControl>
+                      <ColorPickerField
+                        label={brandsTextMaps.labelColorTextOnSurface}
+                        value={field.value ?? ''}
+                        onChange={field.onChange}
+                        error={fieldState.error?.message}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-xs">
+                      {brandsTextMaps.labelColorTextOnSurfaceHint}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="colorTextOnPrimary"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormControl>
+                      <ColorPickerField
+                        label={brandsTextMaps.labelColorTextOnPrimary}
+                        value={field.value ?? ''}
+                        onChange={field.onChange}
+                        error={fieldState.error?.message}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-xs">
+                      {brandsTextMaps.labelColorTextOnPrimaryHint}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <Separator />
+
+            {/* ── Section: Custom Colors ────────────────────────────────────── */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-medium text-muted-foreground">
@@ -204,7 +355,6 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
 
               {fields.map((field, index) => (
                 <div key={field.id} className="flex items-end gap-3">
-                  {/* Color name */}
                   <div className="flex-1 space-y-1.5">
                     <label className="text-sm font-medium text-foreground">
                       {brandsTextMaps.customColorName}
@@ -221,7 +371,6 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                     )}
                   </div>
 
-                  {/* Color picker */}
                   <div className="space-y-1.5">
                     <ColorPickerField
                       label=""
@@ -231,7 +380,6 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                     />
                   </div>
 
-                  {/* Remove button */}
                   <Button
                     type="button"
                     variant="ghost"
@@ -253,7 +401,275 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
 
             <Separator />
 
-            {/* Typography section */}
+            {/* ── Section: Shape ────────────────────────────────────────────── */}
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  {brandsTextMaps.sectionShape}
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {brandsTextMaps.sectionShapeDescription}
+                </p>
+              </div>
+
+              {/* Radius row */}
+              <div className="grid grid-cols-3 gap-3">
+                <FormField
+                  control={form.control}
+                  name="radiusButton"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">{brandsTextMaps.labelRadiusButton}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) =>
+                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          }
+                          className="text-sm"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="radiusBadge"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">{brandsTextMaps.labelRadiusBadge}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) =>
+                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          }
+                          className="text-sm"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="radiusImage"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">{brandsTextMaps.labelRadiusImage}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) =>
+                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          }
+                          className="text-sm"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Stroke row */}
+              <div className="grid grid-cols-3 gap-3">
+                <FormField
+                  control={form.control}
+                  name="strokeButton"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">{brandsTextMaps.labelStrokeButton}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) =>
+                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          }
+                          className="text-sm"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="strokeCard"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">{brandsTextMaps.labelStrokeCard}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) =>
+                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          }
+                          className="text-sm"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="strokeBadge"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">{brandsTextMaps.labelStrokeBadge}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          {...field}
+                          value={field.value ?? ''}
+                          onChange={(e) =>
+                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          }
+                          className="text-sm"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* ── Section: Structure ────────────────────────────────────────── */}
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground">
+                  {brandsTextMaps.sectionStructure}
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {brandsTextMaps.sectionStructureDescription}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="cortinillaEntrada"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{brandsTextMaps.labelCortinillaEntrada}</FormLabel>
+                      <Select value={field.value ?? 'fade'} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="fade">{brandsTextMaps.optionFade}</SelectItem>
+                          <SelectItem value="none">{brandsTextMaps.optionNone}</SelectItem>
+                          <SelectItem value="slide">{brandsTextMaps.optionSlide}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="cortinillaCierre"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{brandsTextMaps.labelCortinillaCierre}</FormLabel>
+                      <Select value={field.value ?? 'fade'} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="fade">{brandsTextMaps.optionFade}</SelectItem>
+                          <SelectItem value="none">{brandsTextMaps.optionNone}</SelectItem>
+                          <SelectItem value="slide">{brandsTextMaps.optionSlide}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="promoBarStyle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{brandsTextMaps.labelPromoBarStyle}</FormLabel>
+                      <Select value={field.value ?? 'bottom'} onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="top">{brandsTextMaps.optionTop}</SelectItem>
+                          <SelectItem value="bottom">{brandsTextMaps.optionBottom}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="productOverlayPosition"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{brandsTextMaps.labelProductOverlayPosition}</FormLabel>
+                      <Select
+                        value={field.value ?? 'bottom-right'}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="bottom-right">
+                            {brandsTextMaps.optionBottomRight}
+                          </SelectItem>
+                          <SelectItem value="bottom-left">
+                            {brandsTextMaps.optionBottomLeft}
+                          </SelectItem>
+                          <SelectItem value="center">{brandsTextMaps.optionCenter}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <Separator />
+
+            {/* ── Section: Typography ───────────────────────────────────────── */}
             <div className="space-y-4">
               <h3 className="text-sm font-medium text-muted-foreground">
                 {brandsTextMaps.sectionTypography}
@@ -265,23 +681,16 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{brandsTextMaps.labelFontHeading}</FormLabel>
-                    <Select
-                      value={field.value ?? ''}
-                      onValueChange={field.onChange}
-                    >
+                    <Select value={field.value ?? ''} onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue
-                            placeholder={brandsTextMaps.placeholderFontHeading}
-                          />
+                          <SelectValue placeholder={brandsTextMaps.placeholderFontHeading} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {FONT_OPTIONS.map((font) => (
                           <SelectItem key={font.value} value={font.value}>
-                            <span style={{ fontFamily: font.value }}>
-                              {font.label}
-                            </span>
+                            <span style={{ fontFamily: font.value }}>{font.label}</span>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -297,23 +706,16 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{brandsTextMaps.labelFontBody}</FormLabel>
-                    <Select
-                      value={field.value ?? ''}
-                      onValueChange={field.onChange}
-                    >
+                    <Select value={field.value ?? ''} onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue
-                            placeholder={brandsTextMaps.placeholderFontBody}
-                          />
+                          <SelectValue placeholder={brandsTextMaps.placeholderFontBody} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {FONT_OPTIONS.map((font) => (
                           <SelectItem key={font.value} value={font.value}>
-                            <span style={{ fontFamily: font.value }}>
-                              {font.label}
-                            </span>
+                            <span style={{ fontFamily: font.value }}>{font.label}</span>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -326,14 +728,40 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
 
             <Separator />
 
+            {/* ── Section: Font URLs ────────────────────────────────────────── */}
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="fontUrls"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{brandsTextMaps.labelFontUrls}</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        value={field.value ?? ''}
+                        placeholder={brandsTextMaps.placeholderFontUrls}
+                        rows={3}
+                        className="text-sm font-mono resize-none"
+                      />
+                    </FormControl>
+                    <FormDescription className="text-xs">
+                      {brandsTextMaps.labelFontUrlsHint}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <Separator />
+
             <Button type="submit" disabled={isPending}>
-              {isPending
-                ? brandsTextMaps.saveTokens + '…'
-                : brandsTextMaps.saveTokens}
+              {isPending ? brandsTextMaps.saveTokens + '…' : brandsTextMaps.saveTokens}
             </Button>
           </div>
 
-          {/* Right column — live preview */}
+          {/* ── Right column — live preview ───────────────────────────────── */}
           <div className="lg:col-span-2 lg:sticky lg:top-24 lg:self-start">
             <BrandTokenPreview
               brandName={brand.name}

@@ -14,16 +14,62 @@
  * so that 9:16 and 1:1 formats never overflow the column. The player scales via
  * object-fit: contain semantics using CSS aspect-ratio inside a constrained flex parent.
  *
+ * Phase 4 (brand-identity-engine): loads brand font URLs from brandConfig.assets.fonts
+ * so brand typography actually shows in the preview. Graceful: no-op when absent.
+ * Render-side font loading is out of scope (render is mock).
+ *
  * Design ref: design.md §Data Flow — "@remotion/player (preview viva)"
  * Spec: "preview text MUST update within 400ms without a save action"
  * Task: 4.4 + 6.0 fix (golden-path-video-generation) + multi-template authoring
  */
 
+import { useEffect } from 'react';
 import { Player } from '@remotion/player';
 import type { TemplateCompositionRef } from '@/domains/templates/types';
 import type { AssembledTemplateProps } from '@/domains/video-generation/types';
 import { videoGenerationTextMaps as t } from '@/domains/video-generation/text-maps';
 import { Skeleton } from '@/components/ui/skeleton';
+
+// ─── Font loader hook (Phase 4 — brand-identity-engine) ─────────────────────
+
+/**
+ * Injects brand font URLs as <link rel="stylesheet"> elements into the document
+ * head so that @remotion/player preview shows brand typography.
+ *
+ * Supports Google Fonts CSS URLs and any other CSS stylesheet URL.
+ * Graceful: no-op when fontUrls is empty or undefined.
+ * Cleanup: removes injected links on unmount or when fontUrls changes.
+ *
+ * Note: render-side font loading (Remotion Lambda / local render) is out of scope
+ * here — fonts there are loaded via Remotion's delayRender/continueRender or the
+ * @remotion/google-fonts package. That path is flagged for the local-render slice.
+ */
+function useBrandFonts(fontUrls: string[] | undefined): void {
+  useEffect(() => {
+    if (!fontUrls || fontUrls.length === 0) return;
+
+    const injected: HTMLLinkElement[] = [];
+
+    for (const url of fontUrls) {
+      // Avoid duplicate injection — check if a link for this href already exists
+      if (document.querySelector(`link[href="${url}"]`)) continue;
+
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = url;
+      link.setAttribute('data-brand-font', 'true');
+      document.head.appendChild(link);
+      injected.push(link);
+    }
+
+    return () => {
+      // Remove only the links we injected this render cycle
+      for (const link of injected) {
+        link.remove();
+      }
+    };
+  }, [fontUrls?.join(',')]); // eslint-disable-line react-hooks/exhaustive-deps
+}
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -62,6 +108,12 @@ export function RemotionPlayerWrapper({
 }: RemotionPlayerWrapperProps) {
   const { width, height, durationInFrames, fps } = compositionRef;
   const aspectRatio = width / height;
+
+  // Phase 4: load brand fonts into the preview so typography actually shows.
+  // Reads assets.fonts from brandConfig when present; graceful no-op if absent.
+  const brandFontUrls = (compositionProps as { brandConfig?: { assets?: { fonts?: string[] } } })
+    ?.brandConfig?.assets?.fonts;
+  useBrandFonts(brandFontUrls);
 
   return (
     // Outer shell: caps total height, centers the inner box

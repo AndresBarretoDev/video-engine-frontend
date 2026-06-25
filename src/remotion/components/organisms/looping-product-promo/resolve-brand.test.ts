@@ -145,33 +145,38 @@ describe('AIRBNB_BRAND_PRESET', () => {
     expect(AIRBNB_BRAND_PRESET.name).toBe('Airbnb');
   });
 
-  it('primary color is Airbnb coral #FF5A5F', () => {
-    expect(AIRBNB_BRAND_PRESET.tokens.colors.primary).toBe('#FF5A5F');
+  it('primary color is Airbnb Rausch #ff385c (DESIGN-AIRBNB.md)', () => {
+    // Source: DESIGN-AIRBNB.md colors.primary = "#ff385c" (Rausch)
+    expect(AIRBNB_BRAND_PRESET.tokens.colors.primary.toLowerCase()).toBe('#ff385c');
   });
 
-  it('background is white #FFFFFF', () => {
-    expect(AIRBNB_BRAND_PRESET.tokens.colors.background).toBe('#FFFFFF');
+  it('background is white #ffffff', () => {
+    expect(AIRBNB_BRAND_PRESET.tokens.colors.background.toLowerCase()).toBe('#ffffff');
   });
 
   it('text is dark #222222 for contrast on white', () => {
     expect(AIRBNB_BRAND_PRESET.tokens.colors.text).toBe('#222222');
   });
 
-  it('textInverse is white — buttons on coral are readable', () => {
-    expect(AIRBNB_BRAND_PRESET.tokens.colors.textInverse).toBe('#FFFFFF');
+  it('textInverse is white — buttons on Rausch are readable', () => {
+    expect(AIRBNB_BRAND_PRESET.tokens.colors.textInverse.toLowerCase()).toBe('#ffffff');
   });
 
-  it('heading font is Nunito (open source Airbnb-like rounded font)', () => {
-    expect(AIRBNB_BRAND_PRESET.tokens.fonts.heading.family).toContain('Nunito');
+  it('heading font is Inter (open-source Cereal VF substitute per DESIGN-AIRBNB.md)', () => {
+    // DESIGN-AIRBNB.md §Typography §Note on Font Substitutes:
+    // "If Airbnb Cereal VF and Circular are unavailable, Inter is the closest open-source substitute."
+    expect(AIRBNB_BRAND_PRESET.tokens.fonts.heading.family).toContain('Inter');
   });
 
-  it('radius.button is pill-shaped (>= 32) — Airbnb visual signature', () => {
+  it('radius.button is {rounded.sm} = 8px (DESIGN-AIRBNB.md button-primary)', () => {
+    // DESIGN-AIRBNB.md components.button-primary: rounded = "{rounded.sm}" = 8px
     expect(AIRBNB_BRAND_PRESET.tokens.radius).toBeDefined();
-    expect(AIRBNB_BRAND_PRESET.tokens.radius!.button).toBeGreaterThanOrEqual(32);
+    expect(AIRBNB_BRAND_PRESET.tokens.radius!.button).toBe(8);
   });
 
-  it('radius.badge is highly rounded (>= 20)', () => {
-    expect(AIRBNB_BRAND_PRESET.tokens.radius!.badge).toBeGreaterThanOrEqual(20);
+  it('radius.badge is pill {rounded.full} = 9999 (guest-favorite-badge, new-tag)', () => {
+    // DESIGN-AIRBNB.md: guest-favorite-badge and new-tag use {rounded.full} = 9999px
+    expect(AIRBNB_BRAND_PRESET.tokens.radius!.badge).toBeGreaterThanOrEqual(9000);
   });
 
   it('passes BrandConfigSchema Zod validation', () => {

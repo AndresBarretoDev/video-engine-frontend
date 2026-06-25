@@ -31,10 +31,37 @@ export interface BrandDesignTokens {
     accent?: string;
     background?: string;
     text?: string;
+    /** Panel/card background, distinct from `background`. */
+    surface?: string;
+    /** Border/stroke color for buttons, cards, badges. */
+    border?: string;
+    /** Declared legible inks per surface (no contrast math). */
+    textOnBackground?: string;
+    textOnSurface?: string;
+    textOnPrimary?: string;
   };
   fonts?: {
     heading: string;
     body: string;
+  };
+  /** Corner radii (px) per element. */
+  radius?: {
+    button: number;
+    badge: number;
+    image: number;
+  };
+  /** Border/stroke widths (px) per element — a brand signature. */
+  stroke?: {
+    button: number;
+    card: number;
+    badge: number;
+  };
+  /** Structural defaults (Level 2): which variants the brand picks within a template. */
+  structure?: {
+    cortinillaEntrada?: string;
+    cortinillaCierre?: string;
+    promoBarStyle?: 'top' | 'bottom';
+    productOverlayPosition?: 'bottom-right' | 'bottom-left' | 'center';
   };
   logo?: {
     url: string;
@@ -43,6 +70,11 @@ export interface BrandDesignTokens {
     whiteUrl?: string;
   };
   customColors?: { name: string; hex: string }[];
+  /** Brand asset URLs: font stylesheets loaded in the preview player. */
+  assets?: {
+    /** CSS font stylesheet URLs (e.g. Google Fonts). Loaded by useBrandFonts. */
+    fonts?: string[];
+  };
 }
 
 export interface BrandTokens {

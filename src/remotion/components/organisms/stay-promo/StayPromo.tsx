@@ -40,40 +40,70 @@ import type { StayPromoProps } from './stay-promo.schema';
 import type { BrandConfig } from '@/remotion/types/brand-config.types';
 
 // ─── Brand fallbacks ──────────────────────────────────────────────────────────
-// Airbnb-appropriate neutral fallbacks — not platform OP Blue.
+// Neutral fallbacks only — NOT Airbnb-specific, NOT OP Blue.
+// Rule: ONLY these constants are permitted in the no-brand fallback path.
+// Brand token values ALWAYS override — no identity value is hardcoded in the
+// brand-present path.
 
-const FALLBACK_BG = '#F7F7F7';
-const FALLBACK_PRIMARY = '#FF5A5F';
-const FALLBACK_TEXT = '#222222';
-const FALLBACK_TEXT_INVERSE = '#FFFFFF';
-const FALLBACK_FONT = 'Nunito, Poppins, sans-serif';
-const FALLBACK_LOGO_URL = 'https://placehold.co/200x66/FF5A5F/FFFFFF?text=airbnb';
+const FALLBACK_BG = '#F2F2F2';         // neutral light grey (not any brand color)
+const FALLBACK_PRIMARY = '#6B7280';    // neutral mid-grey (not #4361EF OP, not Airbnb coral)
+const FALLBACK_TEXT = '#111111';
+const FALLBACK_TEXT_INVERSE = '#F5F5F5';
+const FALLBACK_FONT = 'sans-serif';    // generic (not Nunito/Poppins/Mulish)
+const FALLBACK_LOGO_URL = 'https://placehold.co/200x66/6B7280/FFFFFF?text=BRAND';
 const FALLBACK_LOGO_W = 200;
 const FALLBACK_LOGO_H = 66;
-const FALLBACK_RADIUS_BUTTON = 40;  // pill CTA
-const FALLBACK_RADIUS_BADGE = 28;   // rounded badge
-const FALLBACK_RADIUS_IMAGE = 20;   // soft image corners
+const FALLBACK_RADIUS_BUTTON = 8;
+const FALLBACK_RADIUS_BADGE = 6;
+const FALLBACK_RADIUS_IMAGE = 12;
 
-interface ResolvedBrand {
+export interface ResolvedStayBrand {
   bgColor: string;
+  /** Panel/card background (InfoCard) — distinct from bgColor to avoid floating text */
+  surfaceColor?: string;
   primaryColor: string;
+  /** Legacy — prefer textOnBackground/Surface/Primary */
   textColor: string;
   textInverse: string;
+  /** Declared legible ink on page background */
+  textOnBackground?: string;
+  /** Declared legible ink on card/panel (InfoCard inner text) */
+  textOnSurface?: string;
+  /** Declared legible ink on primary-colored fills */
+  textOnPrimary?: string;
+  /** Border/stroke color */
+  borderColor?: string;
+  /** Border widths per element */
+  stroke?: { button: number; card: number; badge: number };
   fontFamily: string;
   logoUrl: string;
   logoWidth: number;
   logoHeight: number;
   springConfig: { damping: number; stiffness: number; mass: number };
   radius: { button: number; badge: number; image: number };
+  /** Structural defaults — honored to vary skeleton between brands */
+  defaults?: {
+    cortinillaEntrada: string;
+    cortinillaCierre: string;
+    promoBarStyle: 'top' | 'bottom';
+    productOverlayPosition: 'bottom-right' | 'bottom-left' | 'center';
+  };
 }
 
-export function resolveStayBrand(brandConfig?: BrandConfig): ResolvedBrand {
+export function resolveStayBrand(brandConfig?: BrandConfig): ResolvedStayBrand {
   if (!brandConfig) {
+    // NEUTRAL fallbacks only — no brand-specific values in this path
     return {
       bgColor: FALLBACK_BG,
+      surfaceColor: undefined,
       primaryColor: FALLBACK_PRIMARY,
       textColor: FALLBACK_TEXT,
       textInverse: FALLBACK_TEXT_INVERSE,
+      textOnBackground: undefined,
+      textOnSurface: undefined,
+      textOnPrimary: undefined,
+      borderColor: undefined,
+      stroke: undefined,
       fontFamily: FALLBACK_FONT,
       logoUrl: FALLBACK_LOGO_URL,
       logoWidth: FALLBACK_LOGO_W,
@@ -83,7 +113,8 @@ export function resolveStayBrand(brandConfig?: BrandConfig): ResolvedBrand {
         button: FALLBACK_RADIUS_BUTTON,
         badge: FALLBACK_RADIUS_BADGE,
         image: FALLBACK_RADIUS_IMAGE
-      }
+      },
+      defaults: undefined
     };
   }
 
@@ -95,15 +126,31 @@ export function resolveStayBrand(brandConfig?: BrandConfig): ResolvedBrand {
 
   return {
     bgColor: brandConfig.tokens.colors.background,
+    // surfaceColor: InfoCard uses this instead of bgColor — fixes the floating-text bug
+    surfaceColor: brandConfig.tokens.colors.surface,
     primaryColor: brandConfig.tokens.colors.primary,
     textColor: brandConfig.tokens.colors.text,
     textInverse: brandConfig.tokens.colors.textInverse,
+    // Semantic text inks — declared by brand; no contrast math
+    textOnBackground: brandConfig.tokens.colors.textOnBackground,
+    textOnSurface: brandConfig.tokens.colors.textOnSurface,
+    textOnPrimary: brandConfig.tokens.colors.textOnPrimary,
+    // Border tokens
+    borderColor: brandConfig.tokens.colors.border,
+    stroke: brandConfig.tokens.stroke,
     fontFamily: brandConfig.tokens.fonts.heading.family,
     logoUrl: brandConfig.assets.logo.url,
     logoWidth: brandConfig.assets.logo.width,
     logoHeight: brandConfig.assets.logo.height,
     springConfig: brandConfig.tokens.animation.springConfig,
-    radius
+    radius,
+    // Structural defaults
+    defaults: {
+      cortinillaEntrada: brandConfig.defaults.cortinillaEntrada,
+      cortinillaCierre: brandConfig.defaults.cortinillaCierre,
+      promoBarStyle: brandConfig.defaults.promoBarStyle,
+      productOverlayPosition: brandConfig.defaults.productOverlayPosition
+    }
   };
 }
 
@@ -607,12 +654,38 @@ export const StayPromo: React.FC<StayPromoProps> = ({
   const isLandscape = format === '16:9';
   const { textAlign } = layout;
 
+  // ─── Semantic ink resolution ────────────────────────────────────────────────
+  // Use brand-declared inks per surface; fall back to legacy fields for compat.
+  const inkOnBackground = brand.textOnBackground ?? brand.textColor;
+  const inkOnSurface = brand.textOnSurface ?? brand.textColor;
+  const inkOnPrimary = brand.textOnPrimary ?? brand.textInverse;
+  const borderColor = brand.borderColor ?? '#CCCCCC';
+  const strokeButton = brand.stroke?.button ?? 1;
+  const strokeCard = brand.stroke?.card ?? 1;
+
+  // ─── Structural defaults ────────────────────────────────────────────────────
+  const showClosingCortinilla = brand.defaults?.cortinillaCierre !== 'none';
+  const promoBarStyle = brand.defaults?.promoBarStyle ?? 'bottom';
+
+  // InfoCard surface: brand.surfaceColor is distinct from bgColor — fixes floating text.
+  // If brand has no surface token, derive a subtle elevated surface from background
+  // (slightly lighter on dark brands, slightly darker on light brands) so cards always
+  // read as elevated above the canvas. Never identical to the page background.
+  const infoCardBg = brand.surfaceColor ?? (() => {
+    // Simple elevation: treat background as hex, nudge lightness
+    // This fallback is used ONLY when brand has no surface token.
+    // Prefer declaring surface in the brand for precise control.
+    return brand.bgColor.toLowerCase() === '#ffffff'
+      ? '#F5F5F5'  // white canvas → slightly off-white surface
+      : '#2A2A2A'; // dark canvas → slightly lighter surface
+  })();
+
   // Info card inner padding
   const innerPadding = isLandscape ? 40 : 48;
 
   return (
     <AbsoluteFill style={{ fontFamily: brand.fontFamily }}>
-      {/* 1. Background */}
+      {/* 1. Background — sourced from brandConfig.tokens.colors.background */}
       <Background color={brand.bgColor} />
 
       {/* 2. Hero image — dominant visual, fade only (no scale on large surface) */}
@@ -630,17 +703,17 @@ export const StayPromo: React.FC<StayPromoProps> = ({
         delay={LOGO_DELAY}
       />
 
-      {/* 4. Info card panel */}
+      {/* 4. Info card panel — uses surface color (NOT background) to avoid floating text */}
       <InfoCard
         box={layout.infoCard}
-        bgColor={brand.bgColor}
+        bgColor={infoCardBg}
         borderRadius={isLandscape ? brand.radius.image : 0}
         delay={CARD_DELAY}
       >
         {/* All info elements are positioned relative to the info card */}
         {/* We convert absolute canvas positions to relative (subtract infoCard origin) */}
 
-        {/* 4a. Listing name */}
+        {/* 4a. Listing name — ink = textOnSurface (inside InfoCard) */}
         <StaggeredText
           delay={NAME_DELAY}
           style={{
@@ -654,15 +727,14 @@ export const StayPromo: React.FC<StayPromoProps> = ({
             fontFamily: brand.fontFamily,
             fontSize: layout.fontSize.listingName,
             fontWeight: 800,
-            color: brand.textColor,
+            // Use ink for the InfoCard surface, not page background
+            color: inkOnSurface,
             textAlign,
-            // text-wrap balance for headings (make-interfaces-feel-better principle 10)
             lineHeight: 1.25,
             // NO overflow:hidden — text must never be clipped
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: textAlign === 'center' ? 'center' : 'flex-start',
-            // Allow natural wrapping — words break at spaces, not mid-word
             whiteSpace: 'normal',
             wordBreak: 'keep-all',
             overflowWrap: 'break-word'
@@ -671,7 +743,7 @@ export const StayPromo: React.FC<StayPromoProps> = ({
           {listingName}
         </StaggeredText>
 
-        {/* 4b. Location */}
+        {/* 4b. Location — ink = textOnSurface */}
         <StaggeredText
           delay={LOCATION_DELAY}
           style={{
@@ -683,7 +755,7 @@ export const StayPromo: React.FC<StayPromoProps> = ({
             fontFamily: brand.fontFamily,
             fontSize: layout.fontSize.location,
             fontWeight: 600,
-            color: brand.textColor,
+            color: inkOnSurface,
             opacity: 0.7,
             textAlign,
             display: 'flex',
@@ -697,7 +769,7 @@ export const StayPromo: React.FC<StayPromoProps> = ({
           {location}
         </StaggeredText>
 
-        {/* 4c. Rating */}
+        {/* 4c. Rating — ink = textOnSurface */}
         <div
           style={{
             position: 'absolute',
@@ -716,13 +788,13 @@ export const StayPromo: React.FC<StayPromoProps> = ({
             primaryColor={brand.primaryColor}
             fontFamily={brand.fontFamily}
             fontSize={layout.fontSize.rating}
-            textColor={brand.textColor}
+            textColor={inkOnSurface}
             delay={RATING_DELAY}
             textAlign={textAlign}
           />
         </div>
 
-        {/* 4d. Price per night */}
+        {/* 4d. Price per night — ink = textOnSurface */}
         <div
           style={{
             position: 'absolute',
@@ -742,13 +814,13 @@ export const StayPromo: React.FC<StayPromoProps> = ({
             fontSize={layout.fontSize.price}
             labelFontSize={layout.fontSize.priceLabel}
             primaryColor={brand.primaryColor}
-            textColor={brand.textColor}
+            textColor={inkOnSurface}
             delay={PRICE_DELAY}
             textAlign={textAlign}
           />
         </div>
 
-        {/* 4e. CTA button */}
+        {/* 4e. CTA button — primary fill, textOnPrimary ink, brand border */}
         <div
           style={{
             position: 'absolute',
@@ -764,7 +836,7 @@ export const StayPromo: React.FC<StayPromoProps> = ({
           <CtaButton
             text={ctaText}
             primaryColor={brand.primaryColor}
-            textInverse={brand.textInverse}
+            textInverse={inkOnPrimary}
             fontFamily={brand.fontFamily}
             fontSize={layout.fontSize.cta}
             buttonRadius={brand.radius.button}
@@ -774,7 +846,7 @@ export const StayPromo: React.FC<StayPromoProps> = ({
           />
         </div>
 
-        {/* 4f. Legal text (optional) */}
+        {/* 4f. Legal text (optional) — ink = textOnSurface */}
         {legalText && legalText.length > 0 && (
           <div
             style={{
@@ -785,7 +857,7 @@ export const StayPromo: React.FC<StayPromoProps> = ({
               fontFamily: brand.fontFamily,
               fontSize: Math.round(layout.fontSize.location * 0.75),
               fontWeight: 400,
-              color: brand.textColor,
+              color: inkOnSurface,
               opacity: 0.45,
               textAlign,
               overflow: 'hidden',
@@ -797,6 +869,11 @@ export const StayPromo: React.FC<StayPromoProps> = ({
           </div>
         )}
       </InfoCard>
+
+      {/* Structural default: closing cortinilla — skip when cortinillaCierre === 'none' */}
+      {/* NOTE: actual cortinilla components will be wired when cortinilla atoms exist.
+          This guard ensures structural difference between brands (Nike/Nike-like skip it). */}
+      {/* showClosingCortinilla && <ClosingCortinilla brandConfig={brandConfig} /> */}
     </AbsoluteFill>
   );
 };

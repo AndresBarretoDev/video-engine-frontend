@@ -54,7 +54,16 @@ export const OP_BRAND_PRESET: BrandConfig = {
       // level_1.contrast — primary text on dark surface
       text: '#F5F5F5',
       // pure white for text on colored (blue) surfaces — badges, CTA labels
-      textInverse: '#FFFFFF'
+      textInverse: '#FFFFFF',
+      // general_surfaces.level_2.background / card.background — cards sit above the canvas
+      surface: '#0D0D0D',
+      // component.stroke.default_light — the design system's documented stroke color
+      border: '#DCDCDC',
+      // declared legible inks per surface (from the design system, no contrast math):
+      // level_1.contrast on the canvas, card.foreground on the card surface.
+      textOnBackground: '#F5F5F5',
+      textOnSurface: '#FFFFFF',
+      textOnPrimary: '#FFFFFF'
     },
 
     fonts: {
@@ -101,6 +110,14 @@ export const OP_BRAND_PRESET: BrandConfig = {
       badge: 8,
       // radius-12: "Estándar UI: Cards principales, Modales, Contenedores de sección."
       image: 12
+    },
+
+    // strokes_and_radius_system.json usage rules: default_border = stroke-thin (1px),
+    // outline button / focus = stroke-medium (2px). OP separates by surface, thin borders.
+    stroke: {
+      button: 2, // medium — outline CTA
+      card: 1, // thin — card hairline (surface does the separation)
+      badge: 1 // thin
     }
   },
 

@@ -1,0 +1,46 @@
+# OP Video Engine — Infraestructura local/stage
+#
+# Levanta PostgreSQL + Redis, que es lo único que el proyecto necesita como
+# servicios externos. El backend (NestJS) y el frontend (Next.js) se corren con
+# pnpm (ver README).
+#
+#   docker compose up -d        # levanta Postgres + Redis en segundo plano
+#   docker compose down         # los apaga (los datos persisten en el volumen)
+#   docker compose down -v      # los apaga y BORRA los datos
+#
+# Credenciales por defecto (coinciden con el DATABASE_URL del README):
+#   user: opve · password: opve · db: op_video_engine
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: opve-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: opve
+      POSTGRES_PASSWORD: opve
+      POSTGRES_DB: op_video_engine
+    ports:
+      - "5432:5432"
+    volumes:
+      - opve-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opve -d op_video_engine"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: opve-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  opve-pgdata:
