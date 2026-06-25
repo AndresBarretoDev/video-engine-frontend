@@ -10,14 +10,13 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FileSpreadsheet, Link2, ArrowRight, Loader2 } from 'lucide-react';
+import { FileSpreadsheet, Link2, ArrowRight } from 'lucide-react';
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 import { useDataEngineStore } from '../stores/data-engine-store';
-import { useCreateDataSource } from '../hooks/use-data-sources';
 import { CsvUploadZone } from './csv-upload-zone';
 import { GoogleSheetsConnector } from './google-sheets-connector';
 import { DataSourcePreviewTable } from './data-source-preview-table';
@@ -45,7 +44,6 @@ export function ImportTab({
   );
 
   const { parseStatus, parsedData, parsedColumns } = useDataEngineStore();
-  const createDataSource = useCreateDataSource(projectId);
 
   const csvDataReady =
     parseStatus === 'done' && parsedData && parsedColumns.length > 0;
@@ -55,25 +53,7 @@ export function ImportTab({
 
   function handleContinue() {
     if (sourceType === 'csv' && csvDataReady) {
-      // Save CSV metadata to backend
-      createDataSource.mutate(
-        {
-          name: dataEngineTextMaps.typeCSV,
-          type: 'csv',
-          autoSync: false,
-          config: {
-            rowCount: parsedData.totalRows,
-            columns: parsedColumns.map(c => ({ name: c.name, type: c.type }))
-          },
-          sourceConfig: {}
-        },
-        {
-          onSuccess: source => {
-            onDataSaved?.(source);
-            router.push(`/projects/${projectId}/data?tab=mapping`);
-          }
-        }
-      );
+      router.push(`/projects/${projectId}/data?tab=mapping`);
     } else if (sourceType === 'google_sheets' && sheetsDataReady) {
       onDataSaved?.(existingSource);
       router.push(`/projects/${projectId}/data?tab=mapping`);
@@ -124,21 +104,9 @@ export function ImportTab({
 
       {/* Continue button */}
       <div className="flex justify-end">
-        <Button
-          onClick={handleContinue}
-          disabled={!canContinue || createDataSource.isPending}
-        >
-          {createDataSource.isPending ? (
-            <>
-              <Loader2 className="mr-2 size-4 animate-spin" />
-              {dataEngineTextMaps.importProcessing}
-            </>
-          ) : (
-            <>
-              {dataEngineTextMaps.tabMapping}
-              <ArrowRight className="ml-2 size-4" />
-            </>
-          )}
+        <Button onClick={handleContinue} disabled={!canContinue}>
+          {dataEngineTextMaps.tabMapping}
+          <ArrowRight className="ml-2 size-4" />
         </Button>
       </div>
     </div>

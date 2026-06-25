@@ -10,10 +10,8 @@
  * Spec: SPEC-DE-008 / TASK-DE-029
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
-import { Skeleton } from '@/components/ui/skeleton';
-import { ErrorAlert } from '@/components/shared/error-alert';
 import { EmptyState } from '@/components/shared/empty-state';
 import { Grid2X2 } from 'lucide-react';
 
@@ -22,33 +20,14 @@ import { VariationFilterBar } from './variation-filter-bar';
 import { VariationDetailDrawer } from './variation-detail-drawer';
 import { SelectionBar } from './selection-bar';
 
-import { useVariations } from '../hooks/use-variations';
 import { useDataEngineStore } from '../stores/data-engine-store';
+import {
+  generateVariationsClient,
+  applyVariationFilters
+} from '../utils/generate-variations-client';
 import { DEFAULT_TEMPLATE_ID } from '../constants';
 import { dataEngineTextMaps } from '../text-maps';
 import type { Variation, VariationFilters } from '../types';
-
-// ─── Skeleton grid ────────────────────────────────────────────────────────────
-
-function VariationGridSkeleton() {
-  return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div
-          key={i}
-          className="border-border overflow-hidden rounded-[var(--radius-12)] border"
-        >
-          <Skeleton className="aspect-video w-full rounded-none" />
-          <div className="space-y-2 p-3">
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-3/4" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -79,10 +58,19 @@ export function VariationGrid({
   const selectAll = useDataEngineStore(s => s.selectAll);
   const deselectAll = useDataEngineStore(s => s.deselectAll);
   const clearAll = useDataEngineStore(s => s.clearAll);
+  const parsedRows = useDataEngineStore(s => s.parsedRows);
+  const mappingDraft = useDataEngineStore(s => s.mappingDraft);
+  const rulesDraft = useDataEngineStore(s => s.rulesDraft);
 
-  const { data, isLoading, isError, refetch } = useVariations(
-    projectId,
-    filters
+  // Client-side variations from parsed CSV + mapping + rules
+  const allVariations = useMemo(
+    () => generateVariationsClient(parsedRows, mappingDraft, rulesDraft),
+    [parsedRows, mappingDraft, rulesDraft]
+  );
+
+  const data = useMemo(
+    () => applyVariationFilters(allVariations, filters),
+    [allVariations, filters]
   );
 
   const handleFilterChange = useCallback((newFilters: VariationFilters) => {
@@ -101,7 +89,7 @@ export function VariationGrid({
     [toggleVariation]
   );
 
-  const allIndices = data?.items.map(v => v.index) ?? [];
+  const allIndices = data.items.map(v => v.index);
 
   function handleSelectAll() {
     selectAll(allIndices);
@@ -117,32 +105,30 @@ export function VariationGrid({
         {/* Filter bar — ALWAYS MOUNTED */}
         <VariationFilterBar
           filters={filters}
-          totalCount={data?.total}
+          totalCount={data.total}
           onFiltersChange={handleFilterChange}
         />
 
         {/* Grid content */}
-        {isLoading ? (
-          <VariationGridSkeleton />
-        ) : isError ? (
-          <ErrorAlert
-            message={dataEngineTextMaps.errorLoadVariations}
-            onRetry={() => refetch()}
-          />
-        ) : !data || data.items.length === 0 ? (
+        {data.items.length === 0 ? (
           <EmptyState icon={Grid2X2} title={dataEngineTextMaps.noVariations} />
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-            {data.items.map(variation => (
-              <VariationCard
-                key={variation.index}
-                variation={variation}
-                templateId={templateId}
-                isSelected={selectedVariations.has(variation.index)}
-                onSelect={handleSelect}
-                onClick={handleCardClick}
-              />
-            ))}
+            {data.items.map(variation => {
+              const override = variation.props._templateOverride;
+              const effectiveTemplateId =
+                typeof override === 'string' && override ? override : templateId;
+              return (
+                <VariationCard
+                  key={variation.index}
+                  variation={variation}
+                  templateId={effectiveTemplateId}
+                  isSelected={selectedVariations.has(variation.index)}
+                  onSelect={handleSelect}
+                  onClick={handleCardClick}
+                />
+              );
+            })}
           </div>
         )}
 
@@ -159,8 +145,10 @@ export function VariationGrid({
 
       {/* Selection bar — fixed at bottom, only when selections > 0 */}
       <SelectionBar
+        projectId={projectId}
         selectedCount={selectedVariations.size}
-        totalCount={data?.total ?? 0}
+        selectedIndices={Array.from(selectedVariations)}
+        totalCount={data.total}
         onSelectAll={handleSelectAll}
         onDeselectAll={handleDeselectAll}
         onClear={clearAll}

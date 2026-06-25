@@ -9,6 +9,7 @@ export const projectsTextMaps = {
   newProjectDescription: 'Start a new video production project.',
   editProjectTitle: 'Edit Project',
   editProjectDescription: 'Update project information and settings.',
+  createVideoLabel: 'Create video',
 
   // ─── Project list ─────────────────────────────────────────────────────────
   projects: 'Projects',
@@ -121,6 +122,7 @@ export const projectsTextMaps = {
 
   // ─── Actions ──────────────────────────────────────────────────────────────
   dataEngine: 'Data Engine',
+  renderJobs: 'Render Jobs',
   editProject: 'Edit Project',
   archiveProject: 'Archive Project',
   reactivateProject: 'Reactivate Project',
@@ -158,5 +160,36 @@ export const projectsTextMaps = {
   reactivateDescription:
     'Reactivating this project will restore it to draft status and make it visible in the active list.',
   reactivateConfirm: 'Yes, reactivate project',
-  reactivateCancel: 'Cancel'
+  reactivateCancel: 'Cancel',
+
+  // ─── Status workflow ──────────────────────────────────────────────────────
+  workflowStatus: 'Workflow',
+  stepDraft: 'Draft',
+  stepInProgress: 'In Progress',
+  stepReview: 'Review',
+  stepApproved: 'Approved',
+
+  // ─── Transition actions ───────────────────────────────────────────────────
+  startProduction: 'Start Production',
+  submitForReview: 'Submit for Review',
+  approve: 'Approve',
+  requestChanges: 'Request Changes',
+
+  // ─── Transition confirmations ─────────────────────────────────────────────
+  approveTitle: 'Approve Project',
+  approveDescription:
+    'Approving this project marks it as final. It will be ready for rendering and delivery.',
+  rejectTitle: 'Request Changes',
+  rejectDescription:
+    'This will send the project back to draft status for revisions. The team will need to resubmit for review.',
+  confirmApprove: 'Yes, approve',
+  confirmReject: 'Yes, request changes',
+  confirmCancel: 'Cancel',
+
+  // ─── Transition success toasts ────────────────────────────────────────────
+  transitionStarted: 'Production started',
+  transitionSubmitted: 'Submitted for review',
+  transitionApproved: 'Project approved',
+  transitionRejected: 'Changes requested — project returned to draft',
+  errorTransition: 'Failed to update project status',
 } as const;

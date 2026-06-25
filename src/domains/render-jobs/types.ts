@@ -119,3 +119,19 @@ export interface RenderStatistics {
   averageQueueTime: number; // seconds
   period: 'today' | 'week' | 'month' | 'year';
 }
+
+// ─── Filters ──────────────────────────────────────────────────────────────────
+
+export interface RenderJobFilters {
+  status?: RenderJobStatus | 'all';
+  search?: string;
+  priority?: RenderPriority | 'all';
+  sort?: 'newest' | 'priority' | 'status';
+  page?: number;
+  pageSize?: number;
+}
+
+export interface RenderBatchFilters {
+  status?: RenderBatch['status'] | 'all';
+  search?: string;
+}

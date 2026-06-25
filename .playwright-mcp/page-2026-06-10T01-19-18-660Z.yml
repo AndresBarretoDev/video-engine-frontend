@@ -1,0 +1,8 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - generic "Animated text block" [ref=e11]: Welcome to OP Video Engine
+    - generic "Animated text block" [ref=e17]: Welcome to OP Video Engine
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e23] [cursor=pointer]:
+    - img [ref=e24]
+  - alert [ref=e4]

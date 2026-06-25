@@ -112,7 +112,24 @@ export const API_ENDPOINTS = {
     batch: '/render-jobs/batch',
     progress: (id: string) => `/render-jobs/${id}/progress`,
     cancel: (id: string) => `/render-jobs/${id}/cancel`,
-    retry: (id: string) => `/render-jobs/${id}/retry`
+    retry: (id: string) => `/render-jobs/${id}/retry`,
+    // Project-scoped
+    byProject: (projectId: string) => `/projects/${projectId}/render-jobs`,
+    batchByProject: (projectId: string) =>
+      `/projects/${projectId}/render-jobs/batch`,
+    batches: (projectId: string) =>
+      `/projects/${projectId}/render-batches`,
+    batchById: (projectId: string, batchId: string) =>
+      `/projects/${projectId}/render-batches/${batchId}`,
+    batchCancel: (projectId: string, batchId: string) =>
+      `/projects/${projectId}/render-batches/${batchId}/cancel`,
+    batchRetryFailed: (projectId: string, batchId: string) =>
+      `/projects/${projectId}/render-batches/${batchId}/retry-failed`,
+    outputs: (jobId: string) => `/render-jobs/${jobId}/outputs`,
+    download: (outputId: string) =>
+      `/render-jobs/outputs/${outputId}/download`,
+    batchDownload: (batchId: string) =>
+      `/render-batches/${batchId}/download`
   },
 
   /* Reviews Module */
@@ -123,5 +140,30 @@ export const API_ENDPOINTS = {
     approve: (id: string) => `/reviews/${id}/approve`,
     reject: (id: string) => `/reviews/${id}/reject`,
     comments: (id: string) => `/reviews/${id}/comments`
+  },
+
+  /* Uploads Module */
+  uploads: {
+    upload: '/uploads'
+  },
+
+  /* Templates Module — backend task 3.1 (not yet implemented) */
+  templates: {
+    list: '/templates',
+    byId: (id: string) => `/templates/${id}`
+  },
+
+  /* Video Generation Module — single-product golden path (D9, backend task 2.6) */
+  videoGeneration: {
+    /**
+     * BACKEND CONTRACT (task 2.6):
+     *   POST /projects/:projectId/render-single
+     *   Body   : CreateSingleProductRenderDto
+     *   Response: { jobIds: string[]; totalJobs: number }
+     *   Behavior: Creates N render jobs (one per format selected).
+     *   NOT the batch endpoint — dedicated single-product entry point.
+     */
+    renderSingle: (projectId: string) =>
+      `/projects/${projectId}/render-single`
   }
 } as const;

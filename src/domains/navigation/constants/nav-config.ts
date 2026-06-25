@@ -13,7 +13,8 @@ import {
   Blocks,
   FolderKanban,
   Image,
-  Users
+  Users,
+  LayoutTemplate
 } from 'lucide-react';
 import type { NavItem } from '@/domains/navigation/types';
 import { navigationTextMap } from '@/domains/navigation/text-maps';
@@ -54,6 +55,12 @@ export const NAV_ITEMS: NavItem[] = [
     href: '/users',
     icon: Users,
     roles: ['admin']
+  },
+  {
+    key: 'templates',
+    href: '/templates',
+    icon: LayoutTemplate,
+    roles: ['admin', 'designer', 'producer']
   }
 ];
 
@@ -63,5 +70,6 @@ export const NAV_LABELS: Record<string, string> = {
   components: navigationTextMap.nav.components,
   projects: navigationTextMap.nav.projects,
   assets: navigationTextMap.nav.assets,
-  users: navigationTextMap.nav.users
+  users: navigationTextMap.nav.users,
+  templates: navigationTextMap.nav.templates
 };

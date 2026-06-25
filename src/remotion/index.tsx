@@ -35,7 +35,21 @@ import {
   StoryTemplatePreview,
   storyTemplateDefaultProps,
   BannerVideoTemplatePreview,
-  bannerVideoTemplateDefaultProps
+  bannerVideoTemplateDefaultProps,
+  CTVTemplatePreview,
+  ctvTemplateDefaultProps,
+  LoopingProductPromo16x9Preview,
+  loopingProductPromo16x9DefaultProps,
+  LoopingProductPromo9x16Preview,
+  loopingProductPromo9x16DefaultProps,
+  LoopingProductPromo1x1Preview,
+  loopingProductPromo1x1DefaultProps,
+  StayPromo16x9Preview,
+  stayPromo16x9DefaultProps,
+  StayPromo9x16Preview,
+  stayPromo9x16DefaultProps,
+  StayPromo1x1Preview,
+  stayPromo1x1DefaultProps
 } from './compositions/organism-previews';
 import { CortinillaEntradaSchema } from './components/molecules/cortinilla-entrada/cortinilla-entrada.schema';
 import { ProductOverlaySchema } from './components/molecules/product-overlay/product-overlay.schema';
@@ -50,6 +64,13 @@ import { SubtitleTrackSchema } from './components/atoms/subtitle-track/subtitle-
 import { PromoVideoTemplateSchema } from './components/organisms/promo-video-template/promo-video-template.schema';
 import { StoryTemplateSchema } from './components/organisms/story-template/story-template.schema';
 import { BannerVideoTemplateSchema } from './components/organisms/banner-video-template/banner-video-template.schema';
+import { CTVTemplateSchema } from './components/organisms/ctv-template/ctv-template.schema';
+// SPIKE — Creative Studio keystone proof (delete after verdict)
+import {
+  SpikeRemotionComposition,
+  spikeRemotionSchema,
+  spikeRemotionDefaultProps
+} from '../_spike-creative-studio/SpikeRemotion';
 
 export const Root: React.FC = () => {
   return (
@@ -221,6 +242,110 @@ export const Root: React.FC = () => {
         height={1080}
         schema={BannerVideoTemplateSchema}
         defaultProps={bannerVideoTemplateDefaultProps}
+      />
+
+      <Composition
+        id="organism-ctv-template"
+        component={CTVTemplatePreview}
+        durationInFrames={600}
+        fps={30}
+        width={1920}
+        height={1080}
+        schema={CTVTemplateSchema}
+        defaultProps={ctvTemplateDefaultProps}
+      />
+
+      {/* SPIKE — same SpikeProductCard component, rendered in Remotion (delete after verdict) */}
+      <Composition
+        id="spike-product-card"
+        component={SpikeRemotionComposition}
+        durationInFrames={90}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={spikeRemotionSchema}
+        defaultProps={spikeRemotionDefaultProps}
+      />
+
+      {/* ─── LoopingProductPromo — 3 formats ──────────────────────────────── */}
+      {/*
+        NOTE (zod@3 / Composition schema prop):
+        LoopingProductPromoSchema is zod@3. All existing organism schemas in this
+        file (PromoVideoTemplateSchema etc.) are also zod@3 and are passed via
+        schema={...} without issues at Remotion 4.0.443.
+        The schema prop is used by Remotion Studio for UI editing only.
+        Vitest validates props via the schema independently (no Remotion runtime).
+        Decision: pass schema={...} as-is (same as other organisms). If a future
+        Remotion upgrade enforces zod@4 for the schema prop, remove schema here
+        and document as a pending decision — do NOT add a pnpm override.
+      */}
+
+      <Composition
+        id="looping-product-promo-16-9"
+        component={LoopingProductPromo16x9Preview as any}
+        durationInFrames={300}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={loopingProductPromo16x9DefaultProps}
+      />
+
+      <Composition
+        id="looping-product-promo-9-16"
+        component={LoopingProductPromo9x16Preview as any}
+        durationInFrames={300}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={loopingProductPromo9x16DefaultProps}
+      />
+
+      <Composition
+        id="looping-product-promo-1-1"
+        component={LoopingProductPromo1x1Preview as any}
+        durationInFrames={300}
+        fps={30}
+        width={1080}
+        height={1080}
+        defaultProps={loopingProductPromo1x1DefaultProps}
+      />
+
+      {/* ─── StayPromo (Airbnb) — 3 formats ──────────────────────────────── */}
+      {/*
+        Template 2: StayPromo — Airbnb-style property / listing promotional video.
+        Layout: hero image (dominant) + info card (name, location, rating, price/night, CTA).
+        Split-screen (16:9) vs. stacked (9:16 / 1:1) — DIFFERENT from LoopingProductPromo.
+        Brand: AIRBNB_BRAND_PRESET (coral #FF5A5F, Nunito, pill radii).
+      */}
+
+      <Composition
+        id="stay-promo-16-9"
+        component={StayPromo16x9Preview as any}
+        durationInFrames={300}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={stayPromo16x9DefaultProps}
+      />
+
+      <Composition
+        id="stay-promo-9-16"
+        component={StayPromo9x16Preview as any}
+        durationInFrames={300}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={stayPromo9x16DefaultProps}
+      />
+
+      <Composition
+        id="stay-promo-1-1"
+        component={StayPromo1x1Preview as any}
+        durationInFrames={300}
+        fps={30}
+        width={1080}
+        height={1080}
+        defaultProps={stayPromo1x1DefaultProps}
       />
     </>
   );

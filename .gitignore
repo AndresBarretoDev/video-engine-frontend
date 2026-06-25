@@ -1,6 +1,12 @@
 # Created by https://www.toptal.com/developers/gitignore/api/nextjs,linux,macos,windows,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=nextjs,linux,macos,windows,react
 
+# Paridad test output (temp render frames for CLI vs Player comparison)
+.paridad-test/
+
+# Brand verification screenshots (local only — captured by verify-brand page)
+.brand-verify/
+
 ### Linux ###
 *~
 

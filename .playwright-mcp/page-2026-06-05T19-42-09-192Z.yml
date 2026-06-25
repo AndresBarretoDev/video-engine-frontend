@@ -1,0 +1,13 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - heading "SPIKE — Creative Studio (craft.js + Remotion shared component)" [level=2] [ref=e3]
+    - button "Serializar documento → JSON" [ref=e5]
+    - generic [ref=e6]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: OFERTA
+        - generic [ref=e11]: Manzanas Gala
+        - generic [ref=e12]: $1.990
+      - complementary [ref=e13]:
+        - heading "Propiedades" [level=3] [ref=e14]
+        - paragraph [ref=e15]: Seleccioná la card para editar.
+  - region "Notifications alt+T"

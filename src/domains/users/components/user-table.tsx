@@ -63,8 +63,8 @@ const ROLE_BADGE_VARIANTS: Record<UserRole, string> = {
   admin: 'bg-destructive/15 text-destructive border-destructive/30',
   designer: 'bg-op-blue-500/15 text-op-blue-300 border-op-blue-500/30',
   producer:
-    'bg-[color:var(--color-status-approved)]/15 text-[color:var(--color-status-approved)] border-[color:var(--color-status-approved)]/30',
-  qc: 'bg-[color:var(--color-status-warning)]/15 text-[color:var(--color-status-warning)] border-[color:var(--color-status-warning)]/30',
+    'bg-[color:var(--status-approved-icon)]/15 text-[color:var(--status-approved-icon)] border-[color:var(--status-approved-icon)]/30',
+  qc: 'bg-[color:var(--status-warning-icon)]/15 text-[color:var(--status-warning-icon)] border-[color:var(--status-warning-icon)]/30',
   client: 'bg-muted text-muted-foreground border-border'
 };
 

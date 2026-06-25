@@ -1,0 +1,78 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Template 1 — OP Brand Verification" [level=1] [ref=e4]
+      - paragraph [ref=e5]: "Verify: OP Blue (#4361EF), Mulish font, no element overlap in all 3 formats. DELETE this page after verification."
+    - generic [ref=e6]:
+      - heading "Format 16:9 — Landscape (1920×1080)" [level=2] [ref=e7]
+      - paragraph [ref=e8]: 1920 × 1080 | 800×450px preview
+      - generic [ref=e19]:
+        - generic [ref=e22]:
+          - generic "Animated text block" [ref=e29]: Smart TV 55" QLED
+          - generic [ref=e31]:
+            - generic [ref=e33]: "849.990"
+            - generic [ref=e34]: 1.199.990
+          - generic [ref=e35]:
+            - generic:
+              - generic: 30% OFF
+          - generic [ref=e40]: Shop Now
+          - generic "Animated text block" [ref=e42]: Precio válido hasta agotar stock. Condiciones aplican.
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - button "Pause video" [ref=e46] [cursor=pointer]:
+              - img [ref=e47]
+            - button "Mute sound" [ref=e51] [cursor=pointer]:
+              - img [ref=e52]
+            - generic [ref=e54]: 0:00 / 0:10
+          - button "Enter Fullscreen" [ref=e56] [cursor=pointer]:
+            - img [ref=e57]
+    - generic [ref=e10]:
+      - heading "Format 9:16 — Portrait (1080×1920)" [level=2] [ref=e11]
+      - paragraph [ref=e12]: 1080 × 1920 | 338×600px preview
+      - generic [ref=e68]:
+        - generic [ref=e71]:
+          - generic "Animated text block" [ref=e78]: Smart TV 55" QLED
+          - generic [ref=e80]:
+            - generic [ref=e82]: "849.990"
+            - generic [ref=e83]: 1.199.990
+          - generic [ref=e84]:
+            - generic:
+              - generic: 30% OFF
+          - generic [ref=e89]: Shop Now
+          - generic "Animated text block" [ref=e91]: Precio válido hasta agotar stock. Condiciones aplican.
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - button "Pause video" [ref=e95] [cursor=pointer]:
+              - img [ref=e96]
+            - button "Mute sound" [ref=e100] [cursor=pointer]:
+              - img [ref=e101]
+            - generic [ref=e103]: 0:00 / 0:10
+          - button "Enter Fullscreen" [ref=e105] [cursor=pointer]:
+            - img [ref=e106]
+    - generic [ref=e14]:
+      - heading "Format 1:1 — Square (1080×1080)" [level=2] [ref=e15]
+      - paragraph [ref=e16]: 1080 × 1080 | 420×420px preview
+      - generic [ref=e117]:
+        - generic [ref=e120]:
+          - generic "Animated text block" [ref=e127]: Smart TV 55" QLED
+          - generic [ref=e129]:
+            - generic [ref=e131]: "849.990"
+            - generic [ref=e132]: 1.199.990
+          - generic [ref=e133]:
+            - generic:
+              - generic: 30% OFF
+          - generic [ref=e138]: Shop Now
+          - generic "Animated text block" [ref=e140]: Precio válido hasta agotar stock. Condiciones aplican.
+        - generic [ref=e142]:
+          - generic [ref=e143]:
+            - button "Pause video" [active] [ref=e144] [cursor=pointer]:
+              - img [ref=e145]
+            - button "Mute sound" [ref=e149] [cursor=pointer]:
+              - img [ref=e150]
+            - generic [ref=e152]: 0:00 / 0:10
+          - button "Enter Fullscreen" [ref=e154] [cursor=pointer]:
+            - img [ref=e155]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e171] [cursor=pointer]:
+    - img [ref=e172]
+  - alert [ref=e18]

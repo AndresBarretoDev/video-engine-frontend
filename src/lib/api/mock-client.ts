@@ -1,25 +1,29 @@
 /**
- * OP Video Engine — Mock API Interceptor
+ * OP Video Engine — Mock API Interceptor (SURGICAL)
  *
- * When NEXT_PUBLIC_USE_MOCKS=true, intercepts API calls and returns
- * mock data instead of making real HTTP requests to the NestJS backend.
+ * When NEXT_PUBLIC_USE_MOCKS=true, intercepts API calls ONLY for modules that do
+ * NOT exist in the backend yet, and returns mock data. Everything else falls
+ * through to the real NestJS backend.
  *
- * URL matching is intentionally simple — path prefix matching only.
- * No MSW, no complex setup. Just a lookup table.
+ * PRINCIPLE: mock ONLY what the backend hasn't built. As the backend implements a
+ * module, delete its mock here. Two sources of truth for the same data = bug.
+ *
+ * Mocked here (NO backend controller as of 2026-06-10):
+ *   - data-engine        (Module 3 — backend deferred)
+ *   - components-registry (Module 2 — scaffold, lives in Remotion code only)
+ *   - assets             (no backend module yet)
+ *
+ * NOT mocked (backend EXISTS — uses the real API): auth, brands, users, dashboard,
+ * projects, uploads, templates, render-jobs (incl. render-single). Their mocks were
+ * removed so the real JWT/data flows (the half-mock/half-real mix caused 401s).
  */
 
-import { mockAuthUser } from './mocks/auth.mock';
 import { mockAssets } from './mocks/assets.mock';
-import { mockBrands } from './mocks/brands.mock';
 import { mockComponents } from './mocks/components.mock';
-import { mockDashboardSummary } from './mocks/dashboard.mock';
-import { mockProjects } from './mocks/projects.mock';
-import { mockUsers } from './mocks/users.mock';
 import {
   mockAutoMatchSuggestions,
   mockColumnMappings,
   mockDataSource,
-  mockPaginatedVariations,
   mockRules,
   mockVariations
 } from './mocks/data-engine.mock';
@@ -39,27 +43,7 @@ export function getMockResponse(
 
   const normalizedMethod = method.toUpperCase();
 
-  // ── Auth ──────────────────────────────────────────────────────────────────
-
-  if (url === '/auth/me' && normalizedMethod === 'GET') {
-    return mockAuthUser;
-  }
-
-  if (url === '/auth/login' && normalizedMethod === 'POST') {
-    return { user: mockAuthUser, message: 'Login successful' };
-  }
-
-  if (url === '/auth/logout' && normalizedMethod === 'POST') {
-    return { message: 'Logged out' };
-  }
-
-  // ── Dashboard ─────────────────────────────────────────────────────────────
-
-  if (url === '/dashboard/summary' && normalizedMethod === 'GET') {
-    return mockDashboardSummary;
-  }
-
-  // ── Assets ────────────────────────────────────────────────────────────────
+  // ── Assets (no backend module yet) ──────────────────────────────────────────
 
   if (url === '/assets' && normalizedMethod === 'GET') {
     let filtered = [...mockAssets];
@@ -112,57 +96,7 @@ export function getMockResponse(
     return { success: true };
   }
 
-  // ── Brands ────────────────────────────────────────────────────────────────
-
-  if (url === '/brands' && normalizedMethod === 'GET') {
-    let filtered = [...mockBrands];
-
-    if (params?.search) {
-      const q = String(params.search).toLowerCase();
-      filtered = filtered.filter(
-        b =>
-          b.name.toLowerCase().includes(q) ||
-          b.slug.toLowerCase().includes(q) ||
-          (b.description?.toLowerCase().includes(q) ?? false)
-      );
-    }
-
-    if (params?.status === 'active') {
-      filtered = filtered.filter(b => b.isActive);
-    } else if (params?.status === 'archived') {
-      filtered = filtered.filter(b => !b.isActive);
-    }
-
-    return filtered;
-  }
-
-  // GET /brands/:id
-  const brandByIdMatch = url.match(/^\/brands\/([^/]+)$/);
-  if (brandByIdMatch && normalizedMethod === 'GET') {
-    const id = brandByIdMatch[1];
-    return mockBrands.find(b => b.id === id) ?? null;
-  }
-
-  // POST /brands — create
-  if (url === '/brands' && normalizedMethod === 'POST') {
-    return {
-      id: `brand-${Date.now()}`,
-      organizationId: 'org-001',
-      clientId: 'client-mock',
-      isActive: true,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-  }
-
-  // PATCH /brands/:id
-  if (url.match(/^\/brands\/[^/]+$/) && normalizedMethod === 'PATCH') {
-    const id = url.split('/')[2];
-    const existing = mockBrands.find(b => b.id === id);
-    return existing ? { ...existing, updatedAt: new Date() } : null;
-  }
-
-  // ── Components Registry ───────────────────────────────────────────────────
+  // ── Components Registry (Module 2 — scaffold, no backend API) ────────────────
 
   if (url === '/components-registry' && normalizedMethod === 'GET') {
     let filtered = [...mockComponents];
@@ -200,150 +134,7 @@ export function getMockResponse(
     return mockComponents.filter(c => c.type === type);
   }
 
-  // ── Projects ──────────────────────────────────────────────────────────────
-
-  if (url === '/projects' && normalizedMethod === 'GET') {
-    let filtered = [...mockProjects];
-
-    if (params?.search) {
-      const q = String(params.search).toLowerCase();
-      filtered = filtered.filter(
-        p =>
-          p.name.toLowerCase().includes(q) ||
-          (p.description?.toLowerCase().includes(q) ?? false)
-      );
-    }
-
-    if (params?.status && params.status !== 'all') {
-      filtered = filtered.filter(p => p.status === params.status);
-    }
-
-    if (params?.brandId && params.brandId !== 'all') {
-      filtered = filtered.filter(p => p.brandId === params.brandId);
-    }
-
-    return filtered;
-  }
-
-  // GET /projects/:id
-  const projectByIdMatch = url.match(/^\/projects\/([^/]+)$/);
-  if (projectByIdMatch && normalizedMethod === 'GET') {
-    const id = projectByIdMatch[1];
-    return mockProjects.find(p => p.id === id) ?? null;
-  }
-
-  // POST /projects — create
-  if (url === '/projects' && normalizedMethod === 'POST') {
-    return {
-      id: `project-${Date.now()}`,
-      organizationId: 'org-001',
-      ownerId: 'user-002',
-      status: 'draft',
-      visibility: 'private',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-  }
-
-  // PATCH /projects/:id
-  if (url.match(/^\/projects\/[^/]+$/) && normalizedMethod === 'PATCH') {
-    const id = url.split('/')[2];
-    const existing = mockProjects.find(p => p.id === id);
-    return existing ? { ...existing, updatedAt: new Date() } : null;
-  }
-
-  // PATCH /projects/:id/archive
-  if (
-    url.match(/^\/projects\/[^/]+\/archive$/) &&
-    normalizedMethod === 'PATCH'
-  ) {
-    const id = url.split('/')[2];
-    const existing = mockProjects.find(p => p.id === id);
-    return existing
-      ? { ...existing, status: 'archived', updatedAt: new Date() }
-      : null;
-  }
-
-  // ── Users ─────────────────────────────────────────────────────────────────
-
-  if (url === '/users' && normalizedMethod === 'GET') {
-    let filtered = [...mockUsers];
-
-    if (params?.search) {
-      const q = String(params.search).toLowerCase();
-      filtered = filtered.filter(
-        u =>
-          u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)
-      );
-    }
-
-    if (params?.role && params.role !== 'all') {
-      filtered = filtered.filter(u => u.role === params.role);
-    }
-
-    if (params?.status === 'active') {
-      filtered = filtered.filter(u => u.isActive);
-    } else if (params?.status === 'inactive') {
-      filtered = filtered.filter(u => !u.isActive);
-    }
-
-    return filtered;
-  }
-
-  // GET /users/:id
-  const userByIdMatch = url.match(/^\/users\/([^/]+)$/);
-  if (userByIdMatch && normalizedMethod === 'GET') {
-    const id = userByIdMatch[1];
-    return mockUsers.find(u => u.id === id) ?? null;
-  }
-
-  // POST /users/invite
-  if (url === '/users/invite' && normalizedMethod === 'POST') {
-    const body = params as
-      | { email?: string; name?: string; role?: string }
-      | undefined;
-    const nameParts = (body?.name ?? 'New User').split(' ');
-    const firstName = nameParts[0] ?? 'New';
-    const lastName = nameParts.slice(1).join(' ') || 'User';
-    return {
-      id: `user-${Date.now()}`,
-      email: body?.email ?? '',
-      name: body?.name ?? 'New User',
-      firstName,
-      lastName,
-      role: body?.role ?? 'designer',
-      isActive: true,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-  }
-
-  // PATCH /users/:id/role
-  const userRoleMatch = url.match(/^\/users\/([^/]+)\/role$/);
-  if (userRoleMatch && normalizedMethod === 'PATCH') {
-    const id = userRoleMatch[1];
-    const existing = mockUsers.find(u => u.id === id);
-    const body = params as { role?: string } | undefined;
-    return existing
-      ? {
-          ...existing,
-          role: body?.role ?? existing.role,
-          updatedAt: new Date()
-        }
-      : null;
-  }
-
-  // PATCH /users/:id/deactivate
-  const userDeactivateMatch = url.match(/^\/users\/([^/]+)\/deactivate$/);
-  if (userDeactivateMatch && normalizedMethod === 'PATCH') {
-    const id = userDeactivateMatch[1];
-    const existing = mockUsers.find(u => u.id === id);
-    return existing
-      ? { ...existing, isActive: false, updatedAt: new Date() }
-      : null;
-  }
-
-  // ── Data Engine (project-scoped) ──────────────────────────────────────────
+  // ── Data Engine (Module 3 — backend deferred, project-scoped) ────────────────
 
   // GET /projects/:id/data-engine/sources
   const projectSourcesMatch = url.match(
@@ -443,7 +234,6 @@ export function getMockResponse(
 
     let items = [...mockVariations];
 
-    // Apply search filter
     if (search) {
       items = items.filter(v =>
         Object.values(v.rowData).some(
@@ -452,7 +242,6 @@ export function getMockResponse(
       );
     }
 
-    // Apply status filter
     if (statusFilter === 'valid') {
       items = items.filter(v => v.errors.length === 0);
     } else if (statusFilter === 'errors') {
@@ -475,6 +264,6 @@ export function getMockResponse(
     return mockVariations[index] ?? null;
   }
 
-  // No match — let the real request through
+  // No match — let the real request through to the backend.
   return null;
 }

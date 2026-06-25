@@ -1,0 +1,51 @@
+schema: spec-driven
+
+# Resolved from the global agent config ("Strict TDD Mode: enabled").
+# Vitest is WIRED since 2026-06-09: vitest.config.ts + `pnpm test` script. 164 tests green (2026-06-11).
+strict_tdd: true
+
+context: |
+  Tech stack: Next.js 15 / React 19 / TypeScript / Tailwind CSS v4 / shadcn/ui / Remotion 4+
+  State: React Query (server state from NestJS API) + Zustand (UI state only)
+  Forms: React Hook Form + Zod
+  Architecture: Domain-driven (/src/domains), atomic design, container-presentational, ultra-clean pages
+  Backend: separate NestJS repo (op-video-engine-backend) consumed via /src/lib/api client
+  Testing: Vitest WIRED (vitest.config.ts + `pnpm test`/test:watch/test:coverage). 164 tests green as of 2026-06-11. jsdom NOT installed (no React component tests yet).
+  Style: kebab-case files, PascalCase components, named exports (except Next.js pages), absolute imports (@/), text-maps for strings, Vibe Coding design tokens (no hardcoded values)
+  Product model (PRODUCT.md §0.5): columna de 4 capas — Cimiento (✅ Remotion+brands+render-jobs+projects) → Puerta de entrada simple (✅ CONSTRUIDA en frontend: galería + authoring + preview viva + render multi-formato + results sheet; pendiente: MP4 real con RENDER_PROVIDER=local) → Escala/batch (✅ data-engine, upsell) → Destino (AE Bridge + Creative Studio). Empezar simple sin perder el norte.
+
+# Detected testing capabilities (sdd-init 2026-06-02, updated 2026-06-11)
+testing:
+  strict_tdd: true
+  test_runner: { framework: vitest, wired: true, command: "pnpm test" }
+  layers:
+    unit: { available: true, tool: vitest, note: "wired — 164 tests green (utils + remotion organisms)" }
+    integration: { available: false, tool: "none (no @testing-library/* / jsdom — install for React component tests)" }
+    e2e: { available: false, tool: "none (no playwright/cypress; Chrome MCP used for manual visual verification)" }
+  coverage: { available: true, command: "pnpm test:coverage" }
+  quality:
+    linter: { available: true, command: "pnpm lint" }
+    type_checker: { available: true, command: "pnpm type-check (tsc --noEmit)" }
+    formatter: { available: true, command: "pnpm prettier:format" }
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns
+    tdd: true
+    test_command: "pnpm test"
+  verify:
+    test_command: "pnpm test"
+    build_command: "pnpm build  (NOTE: the owner runs builds himself — never run build after changes)"
+  archive:
+    - Warn before merging destructive deltas

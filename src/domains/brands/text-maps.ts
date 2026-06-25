@@ -17,6 +17,12 @@ export const brandsTextMaps = {
   createBrand: 'Create Brand',
   newBrand: 'New Brand',
 
+  // ─── Brand selector (authoring) ────────────────────────────────────────────
+  selectorLabel: 'Brand',
+  selectorPlaceholder: 'Select a brand',
+  selectorDefaultOption: 'Template default',
+  selectorLoading: 'Loading brands…',
+
   // ─── Status labels ────────────────────────────────────────────────────────
   statusActive: 'Active',
   statusArchived: 'Archived',
@@ -165,5 +171,74 @@ export const brandsTextMaps = {
   errorUpdate: 'Failed to update brand',
   errorArchive: 'Failed to archive brand',
   errorReactivate: 'Failed to reactivate brand',
-  errorLoad: 'Failed to load brands'
+  errorSaveTokens: 'Failed to save design tokens',
+  errorLoad: 'Failed to load brands',
+
+  // ─── Tokens editor ────────────────────────────────────────────────────────
+  tokensEditorTitle: 'Design Tokens',
+  tokensEditorDescription: 'Configure brand colors and typography for video components.',
+  labelColorPrimary: 'Primary Color',
+  labelColorSecondary: 'Secondary Color',
+  labelColorAccent: 'Accent Color',
+  labelFontHeading: 'Heading Font',
+  labelFontBody: 'Body Font',
+  placeholderFontHeading: 'e.g. Futura, Inter, Montserrat',
+  placeholderFontBody: 'e.g. Helvetica Neue, Arial, Open Sans',
+  sectionColors: 'Colors',
+  sectionCustomColors: 'Custom Colors',
+  addCustomColor: 'Add Color',
+  customColorName: 'Color Name',
+  customColorNamePlaceholder: 'e.g. Background, CTA Hover, Border',
+  removeCustomColor: 'Remove',
+  sectionTypography: 'Typography',
+  previewTitle: 'Preview',
+  previewSampleText: 'The quick brown fox jumps over the lazy dog.',
+  previewButton: 'Call to Action',
+  saveTokens: 'Save Tokens',
+  tokensSavedSuccess: 'Design tokens saved successfully',
+
+  // ─── Surfaces & semantic inks (Phase 5) ───────────────────────────────────
+  sectionSurfacesAndText: 'Surfaces & Text',
+  sectionSurfacesDescription: 'Panel backgrounds and legible ink per surface.',
+  labelColorSurface: 'Surface Color',
+  labelColorSurfaceHint: 'Panel and card background (distinct from page background)',
+  labelColorBorder: 'Border Color',
+  labelColorBorderHint: 'Stroke color for buttons, cards, and badges',
+  labelColorTextOnBackground: 'Text on Background',
+  labelColorTextOnBackgroundHint: 'Legible ink on the page background',
+  labelColorTextOnSurface: 'Text on Surface',
+  labelColorTextOnSurfaceHint: 'Legible ink on panels and cards',
+  labelColorTextOnPrimary: 'Text on Primary',
+  labelColorTextOnPrimaryHint: 'Legible ink on primary-colored fills (buttons, badges)',
+
+  // ─── Shape (Phase 5) ──────────────────────────────────────────────────────
+  sectionShape: 'Shape',
+  sectionShapeDescription: 'Corner radius and border stroke width (px).',
+  labelRadiusButton: 'Button Radius (px)',
+  labelRadiusBadge: 'Badge Radius (px)',
+  labelRadiusImage: 'Image Radius (px)',
+  labelStrokeButton: 'Button Stroke (px)',
+  labelStrokeCard: 'Card Stroke (px)',
+  labelStrokeBadge: 'Badge Stroke (px)',
+
+  // ─── Structure (Phase 5) ──────────────────────────────────────────────────
+  sectionStructure: 'Structure',
+  sectionStructureDescription: 'Default layout variants and transitions for video templates.',
+  labelCortinillaEntrada: 'Opening Cortinilla',
+  labelCortinillaCierre: 'Closing Cortinilla',
+  optionFade: 'Fade',
+  optionNone: 'None',
+  optionSlide: 'Slide',
+  labelPromoBarStyle: 'Promo Bar Position',
+  optionTop: 'Top',
+  optionBottom: 'Bottom',
+  labelProductOverlayPosition: 'Product Overlay Position',
+  optionBottomRight: 'Bottom Right',
+  optionBottomLeft: 'Bottom Left',
+  optionCenter: 'Center',
+
+  // ─── Font URLs (Phase 5) ──────────────────────────────────────────────────
+  labelFontUrls: 'Font Stylesheet URLs',
+  labelFontUrlsHint: 'One URL per line (or comma-separated). CSS stylesheets that load brand fonts in the preview (e.g. Google Fonts).',
+  placeholderFontUrls: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap',
 } as const;

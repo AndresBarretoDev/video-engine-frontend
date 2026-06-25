@@ -226,13 +226,37 @@ export const ImageFrame: React.FC<ImageFrameProps> = ({
     transformOrigin: 'center center'
   };
 
+  // An atom must never crash on its props: Remotion's <Img> throws when `src`
+  // is empty/undefined (e.g. the authoring preview before an image is provided).
+  // Render a neutral placeholder instead so the live preview stays usable.
+  const hasImage = Boolean(src && src.trim());
+
+  const placeholderStyle: React.CSSProperties = {
+    width: '100%',
+    height: '100%',
+    transform: imageTransform,
+    transformOrigin: 'center center',
+    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    backgroundImage:
+      'repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0, rgba(255,255,255,0.04) 12px, transparent 12px, transparent 24px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  };
+
   return (
     <div style={containerStyle}>
       {/*
        * Use Remotion <Img> for frame-accurate preloading.
        * objectFit is applied via style — Remotion <Img> accepts style prop.
+       * Guard against empty src: <Img> throws without a src, so fall back to a
+       * neutral placeholder (image not yet provided in the authoring preview).
        */}
-      <Img src={src} style={imageStyle} alt="" />
+      {hasImage ? (
+        <Img src={src} style={imageStyle} alt="" />
+      ) : (
+        <div style={placeholderStyle} aria-hidden="true" />
+      )}
 
       {/* Optional semitransparent overlay — rendered above image */}
       {overlay !== undefined && (

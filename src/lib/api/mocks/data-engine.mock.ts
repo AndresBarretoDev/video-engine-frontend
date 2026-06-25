@@ -217,7 +217,7 @@ const PRODUCTS = [
 
 export const mockDataSource: DataSource = {
   id: 'ds-001',
-  projectId: 'project-001',
+  projectId: '11111111-1111-4111-8111-111111111111',
   type: 'csv',
   name: 'campana-lacteos-2026.csv',
   status: 'synced',
@@ -348,7 +348,7 @@ export const mockColumnMappings: ColumnMapping[] = [
 export const mockRules: ConditionalRule[] = [
   {
     id: 'rule-1',
-    projectId: 'project-001',
+    projectId: '11111111-1111-4111-8111-111111111111',
     condition: {
       column: 'has_discount',
       operator: 'is_true'
@@ -361,7 +361,7 @@ export const mockRules: ConditionalRule[] = [
   },
   {
     id: 'rule-2',
-    projectId: 'project-001',
+    projectId: '11111111-1111-4111-8111-111111111111',
     condition: {
       column: 'format',
       operator: 'equals',

@@ -148,3 +148,27 @@ export function useReactivateBrand() {
     }
   });
 }
+
+/**
+ * Update brand design tokens (colors, fonts).
+ * On success: invalidates brand detail + list + shows success toast.
+ */
+export function useUpdateBrandTokens(id: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (tokens: Record<string, unknown>) =>
+      apiClient<BrandConfig>(API_ENDPOINTS.brands.update(id), {
+        method: 'PATCH',
+        data: { tokens },
+      }),
+    onSuccess: (updated) => {
+      queryClient.setQueryData(brandKeys.detail(id), updated);
+      queryClient.invalidateQueries({ queryKey: brandKeys.lists() });
+      toast.success(brandsTextMaps.tokensSavedSuccess);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || brandsTextMaps.errorSaveTokens);
+    },
+  });
+}

@@ -21,8 +21,8 @@ interface ResolvedBrandStyles {
 function resolveBrandStyles(brandConfig?: BrandConfig): ResolvedBrandStyles {
   if (!brandConfig) {
     return {
-      primaryColor: '#FFFFFF',
-      fontFamily: 'Mulish, sans-serif',
+      primaryColor: '#F9FAFB',
+      fontFamily: 'sans-serif',
       springConfig: { damping: 14, stiffness: 150, mass: 1 }
     };
   }
@@ -99,11 +99,14 @@ export const TextBlock: React.FC<TextBlockProps> = ({
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // 1. Resolve brand styles — explicit props override brand defaults
+  // 1. Resolve brand styles — explicit props override brand defaults.
+  // Explicit fontFamily/color always win; fall through to brand only when the
+  // parent explicitly passes the brand's font (via brand.fontFamily).
   const brand = resolveBrandStyles(brandConfig);
-  const resolvedFontFamily =
-    fontFamily !== 'Mulish, sans-serif' ? fontFamily : brand.fontFamily;
-  const resolvedColor = color !== '#FFFFFF' ? color : brand.primaryColor;
+  // fontFamily from parent is already resolved by the organism (= brand.fontFamily).
+  // Color from parent is already resolved. Both are passed explicitly — use them.
+  const resolvedFontFamily = fontFamily ?? brand.fontFamily;
+  const resolvedColor = color ?? brand.primaryColor;
 
   // 2. Compute responsive font size
   const scaledFontSize = getResponsiveFontSize(fontSize, format);
@@ -137,8 +140,10 @@ export const TextBlock: React.FC<TextBlockProps> = ({
     color: resolvedColor,
     textAlign: resolveTextAlign(textAlign, format),
     maxWidth: maxWidth !== undefined ? `${maxWidth}px` : undefined,
+    // Overflow protection — long product names / legal text must not escape layout bounds.
     overflowWrap: 'break-word',
     wordBreak: 'break-word',
+    overflow: 'hidden',
     lineHeight: 1.2,
     // Badge styles
     ...(hasBadge && {

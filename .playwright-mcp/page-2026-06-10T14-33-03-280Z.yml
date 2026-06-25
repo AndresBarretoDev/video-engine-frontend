@@ -1,0 +1,61 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "StayPromo — Template 2 Visual Verification" [level=1] [ref=e4]
+    - paragraph [ref=e5]: Frame 90 (settled state — all animations complete) | Airbnb Brand Preset | autoPlay=false
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - heading "16:9 (1920×1080)" [level=2] [ref=e8]
+        - generic [ref=e21]:
+          - img "Brand logo" [ref=e25]
+          - generic [ref=e26]:
+            - generic [ref=e27]: Beautiful Beach House
+            - generic [ref=e28]: Malibu, California
+            - generic [ref=e30]:
+              - generic [ref=e31]: ★
+              - generic [ref=e32]: "4.92"
+              - generic [ref=e33]: (128 reviews)
+            - generic [ref=e35]:
+              - generic [ref=e36]: $
+              - generic [ref=e37]: "250"
+              - generic [ref=e38]: / night
+            - generic [ref=e41]: Book now
+            - generic [ref=e42]: "*Prices subject to availability."
+      - generic [ref=e10]:
+        - heading "9:16 (1080×1920)" [level=2] [ref=e11]
+        - generic [ref=e46]:
+          - img "Brand logo" [ref=e50]
+          - generic [ref=e51]:
+            - generic [ref=e52]: Beautiful Beach House
+            - generic [ref=e53]: Malibu, California
+            - generic [ref=e55]:
+              - generic [ref=e56]: ★
+              - generic [ref=e57]: "4.92"
+              - generic [ref=e58]: (128 reviews)
+            - generic [ref=e60]:
+              - generic [ref=e61]: $
+              - generic [ref=e62]: "250"
+              - generic [ref=e63]: / night
+            - generic [ref=e66]: Book now
+            - generic [ref=e67]: "*Prices subject to availability."
+      - generic [ref=e13]:
+        - heading "1:1 (1080×1080)" [level=2] [ref=e14]
+        - generic [ref=e71]:
+          - img "Brand logo" [ref=e75]
+          - generic [ref=e76]:
+            - generic [ref=e77]: Beautiful Beach House
+            - generic [ref=e78]: Malibu, California
+            - generic [ref=e80]:
+              - generic [ref=e81]: ★
+              - generic [ref=e82]: "4.92"
+              - generic [ref=e83]: (128 reviews)
+            - generic [ref=e85]:
+              - generic [ref=e86]: $
+              - generic [ref=e87]: "250"
+              - generic [ref=e88]: / night
+            - generic [ref=e91]: Book now
+            - generic [ref=e92]: "*Prices subject to availability."
+    - paragraph [ref=e16]: "DELETE this page after visual verification. Path: src/app/verify-t2/page.tsx"
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e98] [cursor=pointer]:
+    - img [ref=e99]
+  - alert [ref=e17]

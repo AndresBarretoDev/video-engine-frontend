@@ -10,15 +10,13 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, Save, ArrowRight, Loader2 } from 'lucide-react';
+import { Plus, ArrowRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { useDataEngineStore } from '../stores/data-engine-store';
-import { useMappings, useSaveMappings } from '../hooks/use-mappings';
 import { autoMatchColumns } from '../utils/auto-match';
 import { AutoMatchBanner } from './auto-match-banner';
 import { MappingRow } from './mapping-row';
@@ -84,7 +82,7 @@ function generateId(): string {
 export function MappingTab({ projectId, dataSource }: MappingTabProps) {
   const router = useRouter();
 
-  // Zustand store
+  // Zustand store (client-side only)
   const {
     parsedColumns,
     mappingDraft,
@@ -94,11 +92,6 @@ export function MappingTab({ projectId, dataSource }: MappingTabProps) {
     removeMappingEntry,
     markMappingClean
   } = useDataEngineStore();
-
-  // Server state
-  const { data: savedMappings, isLoading: mappingsLoading } =
-    useMappings(projectId);
-  const saveMappings = useSaveMappings(projectId);
 
   // Local UI state
   const [autoMatchSuggestions, setAutoMatchSuggestions] = useState<
@@ -121,25 +114,6 @@ export function MappingTab({ projectId, dataSource }: MappingTabProps) {
           sampleValues: col.sampleValues.map(String),
           isEmpty: col.sampleValues.length === 0
         }));
-
-  // Initialize mapping draft from server data if draft is empty
-  useEffect(() => {
-    if (
-      savedMappings &&
-      savedMappings.length > 0 &&
-      mappingDraft.length === 0
-    ) {
-      const draft: MappingDraftEntry[] = savedMappings.map(m => ({
-        id: m.id,
-        columnName: m.columnName,
-        propPath: m.propPath,
-        transform: m.transform
-      }));
-      setMappingDraft(draft);
-      markMappingClean();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [savedMappings]);
 
   // Run auto-match when columns change
   useEffect(() => {
@@ -190,23 +164,8 @@ export function MappingTab({ projectId, dataSource }: MappingTabProps) {
   }
 
   function handleSaveMappings() {
-    if (!dataSource?.id) return;
-    saveMappings.mutate(
-      {
-        dataSourceId: dataSource.id,
-        mappings: mappingDraft.map(m => ({
-          id: m.id,
-          columnName: m.columnName,
-          propPath: m.propPath,
-          transform: m.transform
-        }))
-      },
-      {
-        onSuccess: () => {
-          markMappingClean();
-        }
-      }
-    );
+    // Client-side mode: mark draft as clean (Zustand-only persistence)
+    markMappingClean();
   }
 
   function handleContinue() {
@@ -224,16 +183,6 @@ export function MappingTab({ projectId, dataSource }: MappingTabProps) {
     autoMatchSuggestions.length > 0 && !autoMatchDismissed;
 
   // ── Render ────────────────────────────────────────────────────────────────
-
-  if (mappingsLoading) {
-    return (
-      <div className="space-y-3">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <Skeleton key={i} className="h-12 w-full rounded-[var(--radius-8)]" />
-        ))}
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">
@@ -322,25 +271,7 @@ export function MappingTab({ projectId, dataSource }: MappingTabProps) {
       )}
 
       {/* Action buttons */}
-      <div className="flex items-center justify-between gap-3 border-t border-[var(--color-stroke-default)] pt-2">
-        <Button
-          variant="outline"
-          onClick={handleSaveMappings}
-          disabled={!mappingIsDirty || saveMappings.isPending}
-        >
-          {saveMappings.isPending ? (
-            <>
-              <Loader2 className="mr-2 size-4 animate-spin" />
-              {dataEngineTextMaps.savingMappings}
-            </>
-          ) : (
-            <>
-              <Save className="mr-2 size-4" />
-              {dataEngineTextMaps.saveMapping}
-            </>
-          )}
-        </Button>
-
+      <div className="flex items-center justify-end gap-3 border-t border-[var(--color-stroke-default)] pt-2">
         <Button
           onClick={handleContinue}
           disabled={mappingDraft.filter(m => m.propPath).length === 0}

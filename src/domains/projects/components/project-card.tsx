@@ -18,7 +18,8 @@ import {
   Archive,
   ArchiveRestore,
   FolderKanban,
-  Database
+  Database,
+  Film,
 } from 'lucide-react';
 
 import {
@@ -64,12 +65,12 @@ const STATUS_LABEL: Record<ProjectStatus, string> = {
 const STATUS_CLASS: Record<ProjectStatus, string> = {
   draft: 'border-border text-muted-foreground',
   'in-progress':
-    'border-[var(--status-in-review)] text-[var(--status-in-review)] bg-[var(--status-in-review)]/10',
+    'border-[var(--status-in-review-border)] text-[var(--status-in-review-text)] bg-[var(--status-in-review-bg)]',
   review:
-    'border-[var(--status-pending)] text-[var(--status-pending)] bg-[var(--status-pending)]/10',
+    'border-[var(--status-pending-border)] text-[var(--status-pending-text)] bg-[var(--status-pending-bg)]',
   approved:
-    'border-[var(--status-approved)] text-[var(--status-approved)] bg-[var(--status-approved)]/10',
-  archived: 'border-border text-muted-foreground bg-muted/20'
+    'border-[var(--status-approved-border)] text-[var(--status-approved-text)] bg-[var(--status-approved-bg)]',
+  archived: 'border-border text-muted-foreground bg-muted/20',
 };
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -179,6 +180,15 @@ export function ProjectCard({
                   >
                     <Database className="size-3.5" />
                     {projectsTextMaps.dataEngine}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href={`/projects/${project.id}/render`}
+                    className="flex items-center gap-2"
+                  >
+                    <Film className="size-3.5" />
+                    {projectsTextMaps.renderJobs}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

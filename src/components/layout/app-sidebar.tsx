@@ -11,8 +11,9 @@
  * Spec: SPEC-LAYOUT-001 through SPEC-LAYOUT-004
  */
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Sidebar,
   SidebarContent,
@@ -33,6 +34,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { LogOut, ChevronsUpDown } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/lib/auth/auth-context';
@@ -55,7 +66,9 @@ function getInitials(name: string): string {
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, isLoading, logout } = useAuth();
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const filteredNavItems = NAV_ITEMS.filter(
     item => user && hasAnyRole(user, item.roles)
@@ -201,7 +214,7 @@ export function AppSidebar() {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={() => logout()}
+                    onClick={() => setShowLogoutDialog(true)}
                     className="text-destructive focus:text-destructive"
                   >
                     <LogOut className="mr-2 size-4" />
@@ -215,6 +228,30 @@ export function AppSidebar() {
       </SidebarFooter>
 
       <SidebarRail />
+
+      {/* Logout confirmation dialog */}
+      <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{layoutTextMap.userSection.logoutTitle}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {layoutTextMap.userSection.logoutDescription}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{layoutTextMap.userSection.logoutCancel}</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={async () => {
+                await logout();
+                router.push('/login');
+              }}
+            >
+              {layoutTextMap.userSection.logoutConfirm}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Sidebar>
   );
 }

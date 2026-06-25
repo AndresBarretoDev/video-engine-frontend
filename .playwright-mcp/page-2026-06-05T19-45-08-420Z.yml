@@ -1,0 +1,34 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - heading "SPIKE — Creative Studio (craft.js + Remotion shared component)" [level=2] [ref=e3]
+    - button "Serializar documento → JSON" [ref=e5]
+    - generic [ref=e6]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: OFERTA
+        - generic [ref=e11]: Manzanas Gala
+        - generic [ref=e12]: $1.990
+      - complementary [ref=e13]:
+        - heading "Propiedades" [level=3] [ref=e14]
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]: Producto
+            - textbox "Producto" [ref=e38]: Manzanas Gala
+          - generic [ref=e39]:
+            - generic [ref=e40]: Precio
+            - textbox "Precio" [ref=e41]: $1.990
+          - generic [ref=e42]:
+            - generic [ref=e43]: Color
+            - textbox "Color" [ref=e44]: "#4361ef"
+  - region "Notifications alt+T"
+  - generic [ref=e20] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e21]:
+      - img [ref=e22]
+    - generic [ref=e25]:
+      - button "Open issues overlay" [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: "0"
+          - generic [ref=e29]: "1"
+        - generic [ref=e30]: Issue
+      - button "Collapse issues badge" [ref=e31]:
+        - img [ref=e32]
+  - alert [ref=e34]

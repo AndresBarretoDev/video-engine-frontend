@@ -15,6 +15,7 @@ export const BREADCRUMB_LABELS: Record<string, string> = {
   assets: 'Assets',
   users: 'Users',
   settings: 'Settings',
+  templates: 'Templates',
   new: 'New',
   edit: 'Edit',
   detail: 'Detail'

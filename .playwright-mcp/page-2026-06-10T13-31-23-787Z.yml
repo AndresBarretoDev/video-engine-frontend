@@ -1,0 +1,93 @@
+- generic [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - heading "Brand Token Verification — Airbnb Preset" [level=1] [ref=e5]
+        - paragraph [ref=e6]: "LoopingProductPromo rendered across 3 formats with Airbnb brand tokens. Confirm: coral primary, pill CTA, rounded badge, Nunito font, white background."
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - heading "16:9 — Landscape" [level=2] [ref=e9]
+          - list [ref=e10]:
+            - listitem [ref=e11]: "Primary: #FF5A5F"
+            - listitem [ref=e12]: "BG: #FFFFFF"
+            - listitem [ref=e13]: "Text: #222222"
+            - listitem [ref=e14]: "Font: Nunito"
+            - listitem [ref=e15]: "Radius btn: 40px (pill)"
+          - generic [ref=e17]:
+            - generic [ref=e20]:
+              - generic "Animated text block" [ref=e27]: Entire villa in Tuscany
+              - generic [ref=e29]:
+                - generic [ref=e31]: "249"
+                - generic [ref=e32]: "320"
+              - generic [ref=e33]:
+                - generic:
+                  - generic: 22% OFF
+              - generic [ref=e36]: Book Now
+              - generic "Animated text block" [ref=e38]: "*Per night. Taxes and fees may apply."
+            - generic [ref=e40]:
+              - generic [ref=e41]:
+                - button "Pause video" [ref=e42] [cursor=pointer]:
+                  - img [ref=e43]
+                - button "Mute sound" [ref=e47] [cursor=pointer]:
+                  - img [ref=e48]
+                - generic [ref=e50]: 0:00 / 0:10
+              - button "Enter Fullscreen" [ref=e52] [cursor=pointer]:
+                - img [ref=e53]
+        - generic [ref=e63]:
+          - heading "9:16 — Portrait" [level=2] [ref=e64]
+          - list [ref=e65]:
+            - listitem [ref=e66]: "Primary: #FF5A5F"
+            - listitem [ref=e67]: "BG: #FFFFFF"
+            - listitem [ref=e68]: "Text: #222222"
+            - listitem [ref=e69]: "Font: Nunito"
+            - listitem [ref=e70]: "Radius btn: 40px (pill)"
+          - generic [ref=e72]:
+            - generic [ref=e75]:
+              - generic "Animated text block" [ref=e82]: Entire villa in Tuscany
+              - generic [ref=e84]:
+                - generic [ref=e86]: "249"
+                - generic [ref=e87]: "320"
+              - generic [ref=e88]:
+                - generic:
+                  - generic: 22% OFF
+              - generic [ref=e91]: Book Now
+              - generic "Animated text block" [ref=e93]: "*Per night. Taxes and fees may apply."
+            - generic [ref=e95]:
+              - generic [ref=e96]:
+                - button "Pause video" [ref=e97] [cursor=pointer]:
+                  - img [ref=e98]
+                - button "Mute sound" [ref=e102] [cursor=pointer]:
+                  - img [ref=e103]
+                - generic [ref=e105]: 0:00 / 0:10
+              - button "Enter Fullscreen" [ref=e107] [cursor=pointer]:
+                - img [ref=e108]
+        - generic [ref=e118]:
+          - heading "1:1 — Square" [level=2] [ref=e119]
+          - list [ref=e120]:
+            - listitem [ref=e121]: "Primary: #FF5A5F"
+            - listitem [ref=e122]: "BG: #FFFFFF"
+            - listitem [ref=e123]: "Text: #222222"
+            - listitem [ref=e124]: "Font: Nunito"
+            - listitem [ref=e125]: "Radius btn: 40px (pill)"
+          - generic [ref=e127]:
+            - generic [ref=e130]:
+              - generic "Animated text block" [ref=e137]: Entire villa in Tuscany
+              - generic [ref=e139]:
+                - generic [ref=e141]: "249"
+                - generic [ref=e142]: "320"
+              - generic [ref=e143]:
+                - generic:
+                  - generic: 22% OFF
+              - generic [ref=e146]: Book Now
+              - generic "Animated text block" [ref=e148]: "*Per night. Taxes and fees may apply."
+            - generic [ref=e150]:
+              - generic [ref=e151]:
+                - button "Pause video" [active] [ref=e152] [cursor=pointer]:
+                  - img [ref=e153]
+                - button "Mute sound" [ref=e157] [cursor=pointer]:
+                  - img [ref=e158]
+                - generic [ref=e160]: 0:00 / 0:10
+              - button "Enter Fullscreen" [ref=e162] [cursor=pointer]:
+                - img [ref=e163]
+  - region "Notifications alt+T"
+  - alert [ref=e173]

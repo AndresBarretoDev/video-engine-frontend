@@ -14,6 +14,69 @@ export interface BrandConfig {
   updatedAt: string;
 }
 
+/**
+ * BrandDesignTokens — the structured shape carried inside `BrandConfig.tokens`
+ * (the "seed format" already read by brand-card.tsx and consumed by the authoring
+ * brand selector via resolveRemotionBrand). The backend must return tokens in this
+ * shape from GET /brands/:id — see docs/contracts/GET-brand-tokens.contract.md.
+ *
+ * `tokens` stays typed as Record<string, unknown> on BrandConfig (the token editor
+ * writes a partial/loose object); this interface documents and validates the subset
+ * the video preview consumes.
+ */
+export interface BrandDesignTokens {
+  colors: {
+    primary: string;
+    secondary?: string;
+    accent?: string;
+    background?: string;
+    text?: string;
+    /** Panel/card background, distinct from `background`. */
+    surface?: string;
+    /** Border/stroke color for buttons, cards, badges. */
+    border?: string;
+    /** Declared legible inks per surface (no contrast math). */
+    textOnBackground?: string;
+    textOnSurface?: string;
+    textOnPrimary?: string;
+  };
+  fonts?: {
+    heading: string;
+    body: string;
+  };
+  /** Corner radii (px) per element. */
+  radius?: {
+    button: number;
+    badge: number;
+    image: number;
+  };
+  /** Border/stroke widths (px) per element — a brand signature. */
+  stroke?: {
+    button: number;
+    card: number;
+    badge: number;
+  };
+  /** Structural defaults (Level 2): which variants the brand picks within a template. */
+  structure?: {
+    cortinillaEntrada?: string;
+    cortinillaCierre?: string;
+    promoBarStyle?: 'top' | 'bottom';
+    productOverlayPosition?: 'bottom-right' | 'bottom-left' | 'center';
+  };
+  logo?: {
+    url: string;
+    width?: number;
+    height?: number;
+    whiteUrl?: string;
+  };
+  customColors?: { name: string; hex: string }[];
+  /** Brand asset URLs: font stylesheets loaded in the preview player. */
+  assets?: {
+    /** CSS font stylesheet URLs (e.g. Google Fonts). Loaded by useBrandFonts. */
+    fonts?: string[];
+  };
+}
+
 export interface BrandTokens {
   brandId: string;
   colorPrimary: string;
