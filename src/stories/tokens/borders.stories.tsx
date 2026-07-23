@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 const RadiusSample = ({
   label,
   value,
-  usage,
+  usage
 }: {
   label: string;
   value: number;
@@ -14,7 +14,7 @@ const RadiusSample = ({
       display: 'flex',
       alignItems: 'center',
       gap: 16,
-      marginBottom: 16,
+      marginBottom: 16
     }}
   >
     <div
@@ -24,7 +24,7 @@ const RadiusSample = ({
         borderRadius: value,
         background: 'rgba(67,97,239,0.15)',
         border: '2px solid rgba(67,97,239,0.5)',
-        flexShrink: 0,
+        flexShrink: 0
       }}
     />
     <div>
@@ -46,7 +46,7 @@ const RadiusSample = ({
 const StrokeSample = ({
   label,
   width,
-  description,
+  description
 }: {
   label: string;
   width: number;
@@ -57,7 +57,7 @@ const StrokeSample = ({
       display: 'flex',
       alignItems: 'center',
       gap: 16,
-      marginBottom: 16,
+      marginBottom: 16
     }}
   >
     <div
@@ -72,7 +72,7 @@ const StrokeSample = ({
         justifyContent: 'center',
         fontSize: 10,
         color: '#8C8C8C',
-        fontFamily: 'monospace',
+        fontFamily: 'monospace'
       }}
     >
       {width}px
@@ -90,7 +90,7 @@ const StrokeSample = ({
 
 const Section = ({
   title,
-  children,
+  children
 }: {
   title: string;
   children: React.ReactNode;
@@ -101,7 +101,7 @@ const Section = ({
         fontSize: 16,
         fontWeight: 600,
         color: '#8C8C8C',
-        marginBottom: 16,
+        marginBottom: 16
       }}
     >
       {title}
@@ -117,7 +117,7 @@ function BordersPage() {
         background: '#000',
         color: '#F5F5F5',
         padding: 32,
-        fontFamily: 'Mulish, sans-serif',
+        fontFamily: 'Mulish, sans-serif'
       }}
     >
       <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>
@@ -210,7 +210,7 @@ function BordersPage() {
             background: '#0D0D0D',
             borderRadius: 12,
             padding: 24,
-            border: '1px solid rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.1)'
           }}
         >
           <p style={{ fontSize: 13, color: '#DCDCDC', marginBottom: 12 }}>
@@ -235,8 +235,8 @@ const meta = {
   title: 'Design Tokens/Borders & Radius',
   component: BordersPage,
   parameters: {
-    layout: 'fullscreen',
-  },
+    layout: 'fullscreen'
+  }
 } satisfies Meta<typeof BordersPage>;
 
 export default meta;

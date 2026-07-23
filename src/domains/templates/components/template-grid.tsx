@@ -70,7 +70,11 @@ export function TemplateGrid({ projectId }: TemplateGridProps) {
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {templates.map(template => (
-            <TemplateCard key={template.id} template={template} projectId={projectId} />
+            <TemplateCard
+              key={template.id}
+              template={template}
+              projectId={projectId}
+            />
           ))}
         </div>
       )}

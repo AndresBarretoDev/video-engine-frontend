@@ -30,16 +30,46 @@
   },
   "border_radius": {
     "scale": {
-      "radius-2": { "value": 2, "usage": "Micro-elementos, checkboxes, badges internos muy pequeños." },
-      "radius-4": { "value": 4, "usage": "Elementos internos compactos, keyboard keys, tags pequeños." },
-      "radius-6": { "value": 6, "usage": "Sub-contenedores, tooltips, dropdown items." },
-      "radius-8": { "value": 8, "usage": "Estándar UI: Botones pequeños, Inputs, Cards densas." },
-      "radius-10": { "value": 10, "usage": "Variante moderna para botones medianos/grandes." },
-      "radius-12": { "value": 12, "usage": "Estándar UI: Cards principales, Modales, Contenedores de sección." },
-      "radius-16": { "value": 16, "usage": "Contenedores grandes, Drawers, Elementos flotantes destacados." },
-      "radius-24": { "value": 24, "usage": "Modales de gran escala, Secciones tipo 'Hero' con bordes suaves." },
-      "radius-32": { "value": 32, "usage": "Elementos decorativos grandes o contenedores ultra-suaves." },
-      "radius-infinite": { "value": 9999, "usage": "Botones tipo Pill (redondos), Avatares circulares, Status indicators." }
+      "radius-2": {
+        "value": 2,
+        "usage": "Micro-elementos, checkboxes, badges internos muy pequeños."
+      },
+      "radius-4": {
+        "value": 4,
+        "usage": "Elementos internos compactos, keyboard keys, tags pequeños."
+      },
+      "radius-6": {
+        "value": 6,
+        "usage": "Sub-contenedores, tooltips, dropdown items."
+      },
+      "radius-8": {
+        "value": 8,
+        "usage": "Estándar UI: Botones pequeños, Inputs, Cards densas."
+      },
+      "radius-10": {
+        "value": 10,
+        "usage": "Variante moderna para botones medianos/grandes."
+      },
+      "radius-12": {
+        "value": 12,
+        "usage": "Estándar UI: Cards principales, Modales, Contenedores de sección."
+      },
+      "radius-16": {
+        "value": 16,
+        "usage": "Contenedores grandes, Drawers, Elementos flotantes destacados."
+      },
+      "radius-24": {
+        "value": 24,
+        "usage": "Modales de gran escala, Secciones tipo 'Hero' con bordes suaves."
+      },
+      "radius-32": {
+        "value": 32,
+        "usage": "Elementos decorativos grandes o contenedores ultra-suaves."
+      },
+      "radius-infinite": {
+        "value": 9999,
+        "usage": "Botones tipo Pill (redondos), Avatares circulares, Status indicators."
+      }
     },
     "rules": {
       "nested_radius": "Outer Radius - Padding = Inner Radius. (Ej: Si el container tiene radius-16 y padding-8, el elemento interno debe tener radius-8).",

@@ -20,26 +20,26 @@ export function ColorPickerField({
   label,
   value,
   onChange,
-  error,
+  error
 }: ColorPickerFieldProps) {
   return (
     <div className="space-y-1.5">
-      <label className="text-sm font-medium text-foreground">{label}</label>
+      <label className="text-foreground text-sm font-medium">{label}</label>
       <div className="flex items-center gap-3">
         {/* Native color picker */}
         <div className="relative">
           <input
             type="color"
             value={value || '#000000'}
-            onChange={(e) => onChange(e.target.value)}
-            className="size-10 cursor-pointer rounded-[var(--radius-8)] border border-border bg-transparent p-0.5"
+            onChange={e => onChange(e.target.value)}
+            className="border-border size-10 cursor-pointer rounded-[var(--radius-8)] border bg-transparent p-0.5"
           />
         </div>
 
         {/* Hex text input */}
         <Input
           value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={e => onChange(e.target.value)}
           placeholder="#000000"
           className="max-w-32 font-mono text-sm"
         />
@@ -47,12 +47,12 @@ export function ColorPickerField({
         {/* Swatch preview */}
         {value && (
           <div
-            className="size-6 shrink-0 rounded-full border border-border shadow-sm"
+            className="border-border size-6 shrink-0 rounded-full border shadow-sm"
             style={{ backgroundColor: value }}
           />
         )}
       </div>
-      {error && <p className="text-xs text-destructive">{error}</p>}
+      {error && <p className="text-destructive text-xs">{error}</p>}
     </div>
   );
 }

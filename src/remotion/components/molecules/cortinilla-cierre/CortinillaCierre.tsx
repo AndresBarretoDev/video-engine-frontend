@@ -103,7 +103,6 @@ export const CortinillaCierre: React.FC<CortinillaCierreProps> = ({
   ctaText,
   legalText,
   variant,
-  duration,
   format
 }) => {
   // Resolve brand values

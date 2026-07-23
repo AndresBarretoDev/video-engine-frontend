@@ -12,7 +12,6 @@
 import React from 'react';
 import {
   AbsoluteFill,
-  Sequence,
   useCurrentFrame,
   useVideoConfig,
   interpolate,
@@ -39,7 +38,8 @@ const FALLBACK_PRIMARY = '#6B7280';
 const FALLBACK_TEXT_COLOR = '#F9FAFB';
 const FALLBACK_TEXT_INVERSE = '#111827';
 const FALLBACK_FONT_FAMILY = 'sans-serif';
-const FALLBACK_LOGO_URL = 'https://placehold.co/240x80/6B7280/FFFFFF?text=BRAND';
+const FALLBACK_LOGO_URL =
+  'https://placehold.co/240x80/6B7280/FFFFFF?text=BRAND';
 const FALLBACK_LOGO_W = 240;
 const FALLBACK_LOGO_H = 80;
 // Neutral radius — not too sharp, not too round; brand overrides these completely.
@@ -160,13 +160,7 @@ const LEGAL_DELAY = 60;
 
 // ─── Background animation (fade in from black) ────────────────────────────────
 
-function BackgroundLayer({
-  color,
-  totalFrames
-}: {
-  color: string;
-  totalFrames: number;
-}) {
+function BackgroundLayer({ color }: { color: string }) {
   const frame = useCurrentFrame();
   const opacity = interpolate(frame, [0, BG_FADE_DURATION], [0, 1], {
     extrapolateLeft: 'clamp',
@@ -228,7 +222,8 @@ function PromoTagPill({
         justifyContent: textAlign === 'center' ? 'center' : 'flex-start',
         opacity: frame < delay ? 0 : opacity,
         transform: `scale(${frame < delay ? 0 : scale})`,
-        transformOrigin: textAlign === 'center' ? 'center center' : 'left center'
+        transformOrigin:
+          textAlign === 'center' ? 'center center' : 'left center'
       }}
     >
       <span
@@ -241,7 +236,10 @@ function PromoTagPill({
           fontSize: 'inherit',
           borderRadius: badgeRadius,
           // Brand border on badge — every element carries its brand border
-          border: badgeStrokeWidth > 0 ? `${badgeStrokeWidth}px solid ${borderColor}` : 'none',
+          border:
+            badgeStrokeWidth > 0
+              ? `${badgeStrokeWidth}px solid ${borderColor}`
+              : 'none',
           paddingTop: 8,
           paddingBottom: 8,
           paddingLeft: 20,
@@ -319,9 +317,10 @@ function CtaButton({
           fontSize,
           borderRadius: buttonRadius,
           // Brand border on button (stroke.button may be 0 for Nike's filled black pill)
-          border: buttonStrokeWidth > 0
-            ? `${buttonStrokeWidth}px solid ${borderColor}`
-            : 'none',
+          border:
+            buttonStrokeWidth > 0
+              ? `${buttonStrokeWidth}px solid ${borderColor}`
+              : 'none',
           paddingTop: 16,
           paddingBottom: 16,
           paddingLeft: 40,
@@ -343,19 +342,10 @@ function CtaButton({
 export const LoopingProductPromo: React.FC<LoopingProductPromoProps> = ({
   brandConfig,
   format,
-  slots,
-  timing,
-  logoPosition
+  slots
 }) => {
-  const { fps } = useVideoConfig();
   const layout = getLoopingPromoLayout(format);
   const brand = resolveBrand(brandConfig);
-
-  const {
-    totalDurationInFrames,
-    introDurationInFrames,
-    outroDurationInFrames
-  } = timing;
 
   const {
     productName,
@@ -381,12 +371,22 @@ export const LoopingProductPromo: React.FC<LoopingProductPromoProps> = ({
   // cortinillaCierre 'none' = skip the closing cortinilla block
   const showClosingCortinilla = brand.defaults?.cortinillaCierre !== 'none';
   // productOverlayPosition and promoBarStyle are props for future structural routing;
-  // tracked here so organisms can be audited for compliance.
-  const overlayPosition = brand.defaults?.productOverlayPosition ?? 'bottom-right';
+  // tracked here so organisms can be audited for compliance. Not yet wired into
+  // JSX — void keeps the audit trail without tripping no-unused-vars.
+  const overlayPosition =
+    brand.defaults?.productOverlayPosition ?? 'bottom-right';
   const promoBarStyle = brand.defaults?.promoBarStyle ?? 'bottom';
+  void showClosingCortinilla;
+  void overlayPosition;
+  void promoBarStyle;
 
   // ─── Absolute position style helpers ────────────────────────────────────────
-  function absStyle(box: { x: number; y: number; width: number; height: number }): React.CSSProperties {
+  function absStyle(box: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }): React.CSSProperties {
     return {
       position: 'absolute',
       left: box.x,
@@ -399,10 +399,7 @@ export const LoopingProductPromo: React.FC<LoopingProductPromoProps> = ({
   return (
     <AbsoluteFill>
       {/* 1. Background — sourced from brandConfig.tokens.colors.background */}
-      <BackgroundLayer
-        color={brand.bgColor}
-        totalFrames={totalDurationInFrames}
-      />
+      <BackgroundLayer color={brand.bgColor} />
 
       {/* 2. Logo */}
       <div style={absStyle(layout.logo)}>
@@ -472,7 +469,12 @@ export const LoopingProductPromo: React.FC<LoopingProductPromoProps> = ({
 
       {/* 6. Promo tag — optional slot; primary fill with brand border */}
       {promoTag !== undefined && promoTag.length > 0 && (
-        <div style={{ ...absStyle(layout.promoTag), fontSize: layout.fontSize.promoTag }}>
+        <div
+          style={{
+            ...absStyle(layout.promoTag),
+            fontSize: layout.fontSize.promoTag
+          }}
+        >
           <PromoTagPill
             text={promoTag}
             primaryColor={brand.primaryColor}

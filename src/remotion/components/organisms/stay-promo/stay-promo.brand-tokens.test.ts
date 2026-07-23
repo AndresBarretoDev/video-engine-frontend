@@ -32,7 +32,7 @@ const FULL_BRAND: BrandConfig = {
       background: '#F8F8F8',
       text: '#101010',
       textInverse: '#FFFEFE',
-      surface: '#E0E0E0',       // distinct from background
+      surface: '#E0E0E0', // distinct from background
       border: '#AAAAAA',
       textOnBackground: '#101010',
       textOnSurface: '#202020',

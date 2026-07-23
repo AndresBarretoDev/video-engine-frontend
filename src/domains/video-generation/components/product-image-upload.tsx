@@ -26,7 +26,14 @@
 
 import { useCallback, useState } from 'react';
 import Image from 'next/image';
-import { ImagePlus, Upload, Trash2, Loader2, AlertCircle, CloudOff } from 'lucide-react';
+import {
+  ImagePlus,
+  Upload,
+  Trash2,
+  Loader2,
+  AlertCircle,
+  CloudOff
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useProductImageUpload } from '../hooks/use-product-image-upload';
@@ -48,7 +55,7 @@ interface ProductImageUploadProps {
 export function ProductImageUpload({
   value,
   onChange,
-  hasError = false,
+  hasError = false
 }: ProductImageUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -62,10 +69,10 @@ export function ProductImageUpload({
     handlePickerClick,
     handleFileChange,
     handleFileDrop,
-    handleRemove,
+    handleRemove
   } = useProductImageUpload({
     initialUrl: value,
-    onChange,
+    onChange
   });
 
   // ── Drag and drop ──────────────────────────────────────────────────────────
@@ -110,8 +117,6 @@ export function ProductImageUpload({
     [handlePickerClick]
   );
 
-  const errorMessage = validationError ?? (hasError ? undefined : undefined);
-
   return (
     <div className="w-full space-y-2">
       {/* Hidden file input — accessible by label + keyboard trigger */}
@@ -147,7 +152,7 @@ export function ProductImageUpload({
             // Hover
             'hover:border-primary/40 hover:bg-muted/40',
             // Focus ring (keyboard nav)
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+            'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
             // Drag active
             isDragging && 'border-primary/60 bg-primary/8 scale-[1.01]',
             // Uploading: non-interactive
@@ -180,7 +185,9 @@ export function ProductImageUpload({
               <div className="text-center">
                 <p className="text-foreground text-sm font-medium [text-wrap:balance]">
                   Click to select{' '}
-                  <span className="text-muted-foreground font-normal">or drag and drop</span>
+                  <span className="text-muted-foreground font-normal">
+                    or drag and drop
+                  </span>
                 </p>
                 <p className="text-muted-foreground/70 mt-0.5 text-xs">
                   {t.productImageHint}
@@ -199,7 +206,7 @@ export function ProductImageUpload({
            */}
           <div
             className={cn(
-              'group relative h-52 w-full overflow-hidden rounded-[var(--radius-12)] border border-border',
+              'group border-border relative h-52 w-full overflow-hidden rounded-[var(--radius-12)] border',
               isUploading && 'opacity-80'
             )}
           >
@@ -212,7 +219,7 @@ export function ProductImageUpload({
               style={{
                 // Subtle outline for depth — pure black, low opacity (make-interfaces-feel-better §11)
                 outline: '1px solid rgba(0, 0, 0, 0.10)',
-                outlineOffset: '-1px',
+                outlineOffset: '-1px'
               }}
               unoptimized={previewUrl.startsWith('blob:')}
             />
@@ -269,13 +276,15 @@ export function ProductImageUpload({
                   className="flex items-center gap-1.5 rounded-[var(--radius-6)] px-2 py-1"
                   style={{
                     backgroundColor: 'var(--status-pending-bg)',
-                    color: 'var(--status-pending-text)',
+                    color: 'var(--status-pending-text)'
                   }}
                   role="status"
                   aria-label={t.productImageUploadPending}
                 >
                   <CloudOff className="size-3 shrink-0" aria-hidden />
-                  <span className="truncate">{t.productImageUploadPending}</span>
+                  <span className="truncate">
+                    {t.productImageUploadPending}
+                  </span>
                 </div>
               )}
               {fileName && !isPendingUpload && (
@@ -293,7 +302,10 @@ export function ProductImageUpload({
 
       {/* Validation error — inline, next to where the action happened */}
       {(validationError ?? (hasError ? null : null)) && (
-        <p className="text-destructive flex items-center gap-1.5 text-xs" role="alert">
+        <p
+          className="text-destructive flex items-center gap-1.5 text-xs"
+          role="alert"
+        >
           <AlertCircle className="size-3.5 shrink-0" aria-hidden />
           {validationError}
         </p>

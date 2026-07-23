@@ -41,10 +41,9 @@ export function useRenderBatches(
   return useQuery({
     queryKey: renderJobKeys.batchList(projectId, filters),
     queryFn: () =>
-      apiClient<RenderBatch[]>(
-        API_ENDPOINTS.renderJobs.batches(projectId),
-        { params: filters as Record<string, unknown> }
-      ),
+      apiClient<RenderBatch[]>(API_ENDPOINTS.renderJobs.batches(projectId), {
+        params: filters as Record<string, unknown>
+      }),
     enabled: !!projectId,
     staleTime: 30 * 1000,
     refetchInterval: query => {
@@ -53,7 +52,7 @@ export function useRenderBatches(
         Array.isArray(data) &&
         data.some(b => b.status === 'pending' || b.status === 'processing');
       return forcePolling || anyActive ? 10 * 1000 : false;
-    },
+    }
   });
 }
 
@@ -81,7 +80,7 @@ export function useRenderBatch(
       const status = query.state.data?.status;
       const active = status === 'pending' || status === 'processing';
       return forcePolling || active ? 5 * 1000 : false;
-    },
+    }
   });
 }
 
@@ -102,16 +101,16 @@ export function useCreateRenderBatch(projectId: string) {
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.batches(projectId),
+        queryKey: renderJobKeys.batches(projectId)
       });
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.lists(projectId),
+        queryKey: renderJobKeys.lists(projectId)
       });
       toast.success(renderJobsTextMaps.batchCreated);
     },
     onError: (error: Error) => {
       toast.error(error.message || renderJobsTextMaps.errorOccurred);
-    },
+    }
   });
 }
 
@@ -130,16 +129,16 @@ export function useCancelRenderBatch(projectId: string) {
       ),
     onSuccess: (_data, batchId) => {
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.batchDetail(projectId, batchId),
+        queryKey: renderJobKeys.batchDetail(projectId, batchId)
       });
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.lists(projectId),
+        queryKey: renderJobKeys.lists(projectId)
       });
       toast.success(renderJobsTextMaps.jobCancelled);
     },
     onError: (error: Error) => {
       toast.error(error.message || renderJobsTextMaps.errorOccurred);
-    },
+    }
   });
 }
 
@@ -158,15 +157,15 @@ export function useRetryFailedInBatch(projectId: string) {
       ),
     onSuccess: (_data, batchId) => {
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.batchDetail(projectId, batchId),
+        queryKey: renderJobKeys.batchDetail(projectId, batchId)
       });
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.lists(projectId),
+        queryKey: renderJobKeys.lists(projectId)
       });
       toast.success(renderJobsTextMaps.jobStarted);
     },
     onError: (error: Error) => {
       toast.error(error.message || renderJobsTextMaps.errorOccurred);
-    },
+    }
   });
 }

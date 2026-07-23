@@ -26,7 +26,8 @@ import { templateKeys } from './query-keys';
 export function useTemplates() {
   return useQuery({
     queryKey: templateKeys.list(),
-    queryFn: () => apiClient<TemplateDescriptor[]>(API_ENDPOINTS.templates.list),
+    queryFn: () =>
+      apiClient<TemplateDescriptor[]>(API_ENDPOINTS.templates.list),
     staleTime: 5 * 60 * 1000
   });
 }
@@ -37,7 +38,8 @@ export function useTemplates() {
 export function useTemplate(id: string) {
   return useQuery({
     queryKey: templateKeys.detail(id),
-    queryFn: () => apiClient<TemplateDescriptor>(API_ENDPOINTS.templates.byId(id)),
+    queryFn: () =>
+      apiClient<TemplateDescriptor>(API_ENDPOINTS.templates.byId(id)),
     enabled: !!id,
     staleTime: 5 * 60 * 1000
   });

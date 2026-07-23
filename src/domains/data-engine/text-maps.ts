@@ -331,5 +331,5 @@ export const dataEngineTextMaps = {
   errorLoadVariations: 'Failed to load variations',
 
   // ─── General ──────────────────────────────────────────────────────────────
-  cancel: 'Cancel',
+  cancel: 'Cancel'
 } as const;

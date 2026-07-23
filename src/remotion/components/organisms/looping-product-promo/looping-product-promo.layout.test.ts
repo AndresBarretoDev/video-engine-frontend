@@ -60,7 +60,7 @@ const FORMATS: VideoFormat[] = ['16:9', '9:16', '1:1'];
 
 describe('getLoopingPromoLayout', () => {
   describe('returns a layout object for each format', () => {
-    FORMATS.forEach((format) => {
+    FORMATS.forEach(format => {
       it(`returns layout for ${format}`, () => {
         const layout = getLoopingPromoLayout(format);
         expect(layout).toBeDefined();
@@ -139,7 +139,7 @@ describe('getLoopingPromoLayout', () => {
   });
 
   describe('NO-OVERFLOW invariant — all elements must fit within canvas bounds', () => {
-    FORMATS.forEach((format) => {
+    FORMATS.forEach(format => {
       describe(`format ${format}`, () => {
         let layout: LoopingPromoLayout;
         let canvas: { width: number; height: number };
@@ -185,7 +185,7 @@ describe('getLoopingPromoLayout', () => {
     // strictly below the previous one (bottom edge ≤ next element's top).
     const VERTICAL_FORMATS: VideoFormat[] = ['9:16', '1:1'];
 
-    VERTICAL_FORMATS.forEach((format) => {
+    VERTICAL_FORMATS.forEach(format => {
       describe(`format ${format}`, () => {
         let layout: LoopingPromoLayout;
 

@@ -75,7 +75,8 @@ export const videoGenerationTextMaps = {
 
   // ─── Download ───────────────────────────────────────────────────────────────
   downloadLabel: (format: string) => `Download ${format}`,
-  downloadAriaLabel: (format: string) => `Download rendered video in ${format} format`,
+  downloadAriaLabel: (format: string) =>
+    `Download rendered video in ${format} format`,
 
   // ─── Progress ───────────────────────────────────────────────────────────────
   progressAriaLabel: 'Render progress',
@@ -85,7 +86,8 @@ export const videoGenerationTextMaps = {
   // ─── Product image upload ────────────────────────────────────────────────────
   productImageLabel: 'Product Image',
   productImageHint: 'JPG, PNG or WebP · max 10 MB',
-  productImageUploadPending: 'Image saved locally. Will upload when server is available.',
+  productImageUploadPending:
+    'Image saved locally. Will upload when server is available.',
   productImageTypeError: 'Only JPG, PNG and WebP files are accepted.',
   productImageSizeError: 'File exceeds 10 MB limit.',
 
@@ -107,7 +109,8 @@ export const videoGenerationTextMaps = {
   formatSquare: 'Square',
 
   // ─── Render button (multi-format) ────────────────────────────────────────────
-  renderButtonMultiple: (n: number) => `Generate ${n} Video${n === 1 ? '' : 's'}`,
+  renderButtonMultiple: (n: number) =>
+    `Generate ${n} Video${n === 1 ? '' : 's'}`,
 
   // ─── Results sheet ───────────────────────────────────────────────────────────
   resultsSheetTitle: 'Your Videos',
@@ -139,5 +142,5 @@ export const videoGenerationTextMaps = {
   // ─── Empty / skeleton ───────────────────────────────────────────────────────
   skeletonAriaLabel: 'Loading authoring view…',
   jobsEmptyTitle: 'No render jobs yet',
-  jobsEmptyDescription: 'Fill in the form and click Render to start.',
+  jobsEmptyDescription: 'Fill in the form and click Render to start.'
 } as const;

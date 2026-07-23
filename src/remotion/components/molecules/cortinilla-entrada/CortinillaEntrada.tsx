@@ -4,8 +4,6 @@ import { LogoReveal } from '@/remotion/components/atoms/logo-reveal/LogoReveal';
 import { ShapeElement } from '@/remotion/components/atoms/shape-element/ShapeElement';
 import { TextBlock } from '@/remotion/components/atoms/text-block/TextBlock';
 import { AudioTrack } from '@/remotion/components/atoms/audio-track/AudioTrack';
-import type { BrandConfig } from '@/remotion/types/brand-config.types';
-import type { VideoFormat } from '@/remotion/types/video-format.types';
 import type {
   CortinillaEntradaProps,
   CortinillaEntradaVariant
@@ -26,10 +24,7 @@ interface VariantTiming {
   shapeDelays: number[];
 }
 
-function getVariantTiming(
-  variant: CortinillaEntradaVariant,
-  duration: number
-): VariantTiming {
+function getVariantTiming(variant: CortinillaEntradaVariant): VariantTiming {
   // All timing in frames
   switch (variant) {
     case 'minimal':
@@ -183,7 +178,6 @@ export const CortinillaEntrada: React.FC<CortinillaEntradaProps> = ({
   brandConfig,
   claim,
   variant,
-  duration,
   format
 }) => {
   const { fps } = useVideoConfig();
@@ -198,7 +192,7 @@ export const CortinillaEntrada: React.FC<CortinillaEntradaProps> = ({
     brandConfig?.tokens.fonts.heading.family ?? 'Mulish, sans-serif';
   const jingleUrl = brandConfig?.assets.jingle;
 
-  const timing = getVariantTiming(variant, duration);
+  const timing = getVariantTiming(variant);
   const logoAnimation = getLogoAnimation(variant);
   const claimAnimation = getClaimAnimation(variant);
   const shapeConfigs = getShapeConfigs(variant, primaryColor, secondaryColor);

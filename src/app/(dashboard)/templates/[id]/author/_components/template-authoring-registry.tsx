@@ -49,7 +49,9 @@ import { StayForm } from './stay-form';
  * blob: objectURL — the backend cannot fetch a blob: that lives in this browser.
  */
 function isPublicImageUrl(value: unknown): boolean {
-  return typeof value === 'string' && value.length > 0 && !value.startsWith('blob:');
+  return (
+    typeof value === 'string' && value.length > 0 && !value.startsWith('blob:')
+  );
 }
 
 export interface TemplateAuthoringConfig<
@@ -149,8 +151,10 @@ const stayPromoConfig: TemplateAuthoringConfig<StayFormValues> = {
 
 // ─── Registry ───────────────────────────────────────────────────────────────
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const TEMPLATE_AUTHORING_REGISTRY: Record<string, TemplateAuthoringConfig<any>> = {
+const TEMPLATE_AUTHORING_REGISTRY: Record<
+  string,
+  TemplateAuthoringConfig<any> // eslint-disable-line @typescript-eslint/no-explicit-any
+> = {
   [loopingProductPromoConfig.componentId]: loopingProductPromoConfig,
   [stayPromoConfig.componentId]: stayPromoConfig
 };

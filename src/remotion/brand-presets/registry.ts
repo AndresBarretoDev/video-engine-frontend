@@ -26,8 +26,8 @@ import { AIRBNB_BRAND_PRESET } from './airbnb.preset';
  */
 export const BRAND_PRESETS: Record<string, BrandConfig> = {
   'op-brand': OP_BRAND_PRESET,
-  'op': OP_BRAND_PRESET,
-  'nike': NIKE_BRAND_PRESET,
-  'airbnb': AIRBNB_BRAND_PRESET,
+  op: OP_BRAND_PRESET,
+  nike: NIKE_BRAND_PRESET,
+  airbnb: AIRBNB_BRAND_PRESET,
   'demo-airbnb': AIRBNB_BRAND_PRESET
 };

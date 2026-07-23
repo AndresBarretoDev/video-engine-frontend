@@ -175,7 +175,6 @@ export const ProductOverlay: React.FC<ProductOverlayProps> = ({
   weight,
   position,
   animation,
-  duration,
   format,
   brandConfig
 }) => {

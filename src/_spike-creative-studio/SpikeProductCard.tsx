@@ -32,9 +32,15 @@ export const SpikeProductCard: React.FC<SpikeProductCardProps> = ({
         boxShadow: '0 8px 24px rgba(0,0,0,0.25)'
       }}
     >
-      <div style={{ fontSize: 14, opacity: 0.85, letterSpacing: 1 }}>OFERTA</div>
-      <div style={{ fontSize: 28, fontWeight: 700, marginTop: 8 }}>{productName}</div>
-      <div style={{ fontSize: 40, fontWeight: 800, marginTop: 12 }}>{price}</div>
+      <div style={{ fontSize: 14, opacity: 0.85, letterSpacing: 1 }}>
+        OFERTA
+      </div>
+      <div style={{ fontSize: 28, fontWeight: 700, marginTop: 8 }}>
+        {productName}
+      </div>
+      <div style={{ fontSize: 40, fontWeight: 800, marginTop: 12 }}>
+        {price}
+      </div>
     </div>
   );
 };

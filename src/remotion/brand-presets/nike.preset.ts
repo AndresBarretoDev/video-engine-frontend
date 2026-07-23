@@ -90,8 +90,8 @@ export const NIKE_BRAND_PRESET: BrandConfig = {
     //   image:  {rounded.none} = 0px — "cards: zero radius, zero shadow; the photograph is the card"
     radius: {
       button: 30, // pill CTAs — "Nike's primary pill is rounded.lg"
-      badge: 30,  // promo tag / filter chips share the pill treatment
-      image: 0    // SQUARE — "product cards: zero radius" (Nike signature)
+      badge: 30, // promo tag / filter chips share the pill treatment
+      image: 0 // SQUARE — "product cards: zero radius" (Nike signature)
     },
 
     // DESIGN-NIKE.md §Elevation: "flat (no shadow) — dominant treatment"
@@ -99,8 +99,8 @@ export const NIKE_BRAND_PRESET: BrandConfig = {
     // Button: no visible border (filled black CTA is borderless in Nike's system)
     stroke: {
       button: 0, // filled black pill — no visible border (background = ink, border would be invisible)
-      card: 1,   // {colors.hairline} 1px — "hairline dividers between filter rows / card borders"
-      badge: 1   // hairline on promo badge frame
+      card: 1, // {colors.hairline} 1px — "hairline dividers between filter rows / card borders"
+      badge: 1 // hairline on promo badge frame
     }
   },
 

@@ -10,12 +10,12 @@ interface UseImageUploadProps {
 export function useImageUpload({
   initialUrl,
   onUpload,
-  onRemove,
+  onRemove
 }: UseImageUploadProps = {}) {
   const previewRef = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
-    initialUrl ?? null,
+    initialUrl ?? null
   );
   const [fileName, setFileName] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -62,7 +62,7 @@ export function useImageUpload({
         setIsUploading(false);
       }
     },
-    [uploadFile, onUpload, initialUrl],
+    [uploadFile, onUpload, initialUrl]
   );
 
   const handleRemove = useCallback(() => {
@@ -94,6 +94,6 @@ export function useImageUpload({
     isUploading,
     handleThumbnailClick,
     handleFileChange,
-    handleRemove,
+    handleRemove
   };
 }

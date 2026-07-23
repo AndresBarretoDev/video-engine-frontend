@@ -1,9 +1,7 @@
 import React from 'react';
 import { useCurrentFrame, useVideoConfig, spring, interpolate } from 'remotion';
-import type { BrandConfig } from '@/remotion/types/brand-config.types';
 import {
   prefersReducedMotion,
-  SPRING_BOUNCY,
   SPRING_SNAPPY
 } from '@/remotion/utils/animation-helpers';
 import type { PricePatchProps } from './price-patch.schema';
@@ -28,19 +26,6 @@ const SIZE_TOKENS: Record<'small' | 'medium' | 'large', SizeTokens> = {
 
 // Spec: format 9:16 → all sizes × 1.3 scale multiplier
 const FORMAT_SCALE_9_16 = 1.3;
-
-// ─── Brand resolution ──────────────────────────────────────────────────────────
-
-interface ResolvedBrandStyles {
-  springConfig: { damping: number; stiffness: number; mass: number };
-}
-
-function resolveBrandStyles(brandConfig?: BrandConfig): ResolvedBrandStyles {
-  if (!brandConfig) {
-    return { springConfig: { damping: 14, stiffness: 150, mass: 1 } };
-  }
-  return { springConfig: brandConfig.tokens.animation.springConfig };
-}
 
 // ─── Animation helpers ────────────────────────────────────────────────────────
 
@@ -122,14 +107,12 @@ export const PricePatch: React.FC<PricePatchProps> = ({
   size,
   animation,
   delay,
-  format,
-  brandConfig
+  format
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const reducedMotion = prefersReducedMotion();
-  const brand = resolveBrandStyles(brandConfig);
 
   // Apply format scale for 9:16
   const formatMultiplier = format === '9:16' ? FORMAT_SCALE_9_16 : 1;

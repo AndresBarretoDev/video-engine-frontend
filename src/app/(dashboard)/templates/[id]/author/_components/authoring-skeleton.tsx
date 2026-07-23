@@ -32,7 +32,10 @@ export function AuthoringSkeleton() {
           <Skeleton className="h-9 w-14" />
         </div>
         {/* Player skeleton — 16:9 aspect ratio */}
-        <Skeleton className="w-full rounded-[var(--radius-12)]" style={{ aspectRatio: '16/9' }} />
+        <Skeleton
+          className="w-full rounded-[var(--radius-12)]"
+          style={{ aspectRatio: '16/9' }}
+        />
       </div>
     </div>
   );

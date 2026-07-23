@@ -112,10 +112,14 @@ export const useVideoGenerationStore = create<VideoGenerationStore>(set => ({
   setResultsSheetOpen: open => set({ isResultsSheetOpen: open }),
 
   addRenderJobEntries: entries =>
-    set(state => ({ renderJobEntries: [...state.renderJobEntries, ...entries] })),
+    set(state => ({
+      renderJobEntries: [...state.renderJobEntries, ...entries]
+    })),
 
   setReadyOutput: (jobId, output) =>
-    set(state => ({ readyOutputs: { ...state.readyOutputs, [jobId]: output } })),
+    set(state => ({
+      readyOutputs: { ...state.readyOutputs, [jobId]: output }
+    })),
 
   clearRenderJobEntries: () => set({ renderJobEntries: [], readyOutputs: {} }),
 
@@ -128,6 +132,6 @@ export const useVideoGenerationStore = create<VideoGenerationStore>(set => ({
       selectedFormats: ['16:9'],
       isResultsSheetOpen: false,
       renderJobEntries: [],
-      readyOutputs: {},
+      readyOutputs: {}
     })
 }));

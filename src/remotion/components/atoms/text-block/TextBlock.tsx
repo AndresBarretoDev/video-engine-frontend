@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCurrentFrame, useVideoConfig } from 'remotion';
+import { useCurrentFrame } from 'remotion';
 import type { BrandConfig } from '@/remotion/types/brand-config.types';
 import type { VideoFormat } from '@/remotion/types/video-format.types';
 import {
@@ -74,6 +74,7 @@ function resolveTextAlign(
   explicitAlign: 'left' | 'center' | 'right',
   format: VideoFormat
 ): 'left' | 'center' | 'right' {
+  void format;
   // Explicit prop wins; if it defaults to 'left' and format is portrait/square,
   // the parent can override by passing 'center' explicitly.
   return explicitAlign;
@@ -97,7 +98,6 @@ export const TextBlock: React.FC<TextBlockProps> = ({
   brandConfig
 }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
 
   // 1. Resolve brand styles — explicit props override brand defaults.
   // Explicit fontFamily/color always win; fall through to brand only when the

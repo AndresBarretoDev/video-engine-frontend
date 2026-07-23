@@ -176,7 +176,8 @@ export const brandsTextMaps = {
 
   // ─── Tokens editor ────────────────────────────────────────────────────────
   tokensEditorTitle: 'Design Tokens',
-  tokensEditorDescription: 'Configure brand colors and typography for video components.',
+  tokensEditorDescription:
+    'Configure brand colors and typography for video components.',
   labelColorPrimary: 'Primary Color',
   labelColorSecondary: 'Secondary Color',
   labelColorAccent: 'Accent Color',
@@ -201,7 +202,8 @@ export const brandsTextMaps = {
   sectionSurfacesAndText: 'Surfaces & Text',
   sectionSurfacesDescription: 'Panel backgrounds and legible ink per surface.',
   labelColorSurface: 'Surface Color',
-  labelColorSurfaceHint: 'Panel and card background (distinct from page background)',
+  labelColorSurfaceHint:
+    'Panel and card background (distinct from page background)',
   labelColorBorder: 'Border Color',
   labelColorBorderHint: 'Stroke color for buttons, cards, and badges',
   labelColorTextOnBackground: 'Text on Background',
@@ -209,7 +211,8 @@ export const brandsTextMaps = {
   labelColorTextOnSurface: 'Text on Surface',
   labelColorTextOnSurfaceHint: 'Legible ink on panels and cards',
   labelColorTextOnPrimary: 'Text on Primary',
-  labelColorTextOnPrimaryHint: 'Legible ink on primary-colored fills (buttons, badges)',
+  labelColorTextOnPrimaryHint:
+    'Legible ink on primary-colored fills (buttons, badges)',
 
   // ─── Shape (Phase 5) ──────────────────────────────────────────────────────
   sectionShape: 'Shape',
@@ -223,7 +226,8 @@ export const brandsTextMaps = {
 
   // ─── Structure (Phase 5) ──────────────────────────────────────────────────
   sectionStructure: 'Structure',
-  sectionStructureDescription: 'Default layout variants and transitions for video templates.',
+  sectionStructureDescription:
+    'Default layout variants and transitions for video templates.',
   labelCortinillaEntrada: 'Opening Cortinilla',
   labelCortinillaCierre: 'Closing Cortinilla',
   optionFade: 'Fade',
@@ -239,6 +243,8 @@ export const brandsTextMaps = {
 
   // ─── Font URLs (Phase 5) ──────────────────────────────────────────────────
   labelFontUrls: 'Font Stylesheet URLs',
-  labelFontUrlsHint: 'One URL per line (or comma-separated). CSS stylesheets that load brand fonts in the preview (e.g. Google Fonts).',
-  placeholderFontUrls: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap',
+  labelFontUrlsHint:
+    'One URL per line (or comma-separated). CSS stylesheets that load brand fonts in the preview (e.g. Google Fonts).',
+  placeholderFontUrls:
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap'
 } as const;

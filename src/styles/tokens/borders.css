@@ -21,10 +21,10 @@
   /* ========================================
    * Border Radius Scale
    * ======================================== */
-  --radius-2: 2px;   /* Micro elements, checkboxes, tiny badges */
-  --radius-4: 4px;   /* Compact internals, keyboard keys, small tags */
-  --radius-6: 6px;   /* Sub-containers, tooltips, dropdown items */
-  --radius-8: 8px;   /* Standard UI: small buttons, inputs, dense cards */
+  --radius-2: 2px; /* Micro elements, checkboxes, tiny badges */
+  --radius-4: 4px; /* Compact internals, keyboard keys, small tags */
+  --radius-6: 6px; /* Sub-containers, tooltips, dropdown items */
+  --radius-8: 8px; /* Standard UI: small buttons, inputs, dense cards */
   --radius-10: 10px; /* Modern variant: medium/large buttons */
   --radius-12: 12px; /* Standard UI: cards, modals, sections */
   --radius-16: 16px; /* Large containers, drawers, floating elements */

@@ -5,22 +5,21 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
+    passWithNoTests: false,
+    reporters: ['default'],
+    watch: false,
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     exclude: ['src/**/*.stories.{ts,tsx}', 'node_modules/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
       include: ['src/**/*.{ts,tsx}'],
-      exclude: [
-        'src/**/*.stories.{ts,tsx}',
-        'src/**/*.d.ts',
-        'src/**/index.ts',
-      ],
-    },
+      exclude: ['src/**/*.stories.{ts,tsx}', 'src/**/*.d.ts', 'src/**/index.ts']
+    }
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
-  },
+      '@': path.resolve(__dirname, 'src')
+    }
+  }
 });

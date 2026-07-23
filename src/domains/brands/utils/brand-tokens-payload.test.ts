@@ -51,7 +51,8 @@ const FULL_FORM_DATA = {
   productOverlayPosition: 'bottom-right' as const,
 
   // New Phase 5 fields — Font URLs
-  fontUrls: 'https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap',
+  fontUrls:
+    'https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap'
 };
 
 // ─── Schema validation tests ──────────────────────────────────────────────────
@@ -68,22 +69,30 @@ describe('brandTokensEditSchema — new Phase 5 fields', () => {
   });
 
   it('accepts textOnBackground as optional hex', () => {
-    const result = brandTokensEditSchema.safeParse({ colorTextOnBackground: '#111111' });
+    const result = brandTokensEditSchema.safeParse({
+      colorTextOnBackground: '#111111'
+    });
     expect(result.success).toBe(true);
   });
 
   it('accepts textOnSurface as optional hex', () => {
-    const result = brandTokensEditSchema.safeParse({ colorTextOnSurface: '#111111' });
+    const result = brandTokensEditSchema.safeParse({
+      colorTextOnSurface: '#111111'
+    });
     expect(result.success).toBe(true);
   });
 
   it('accepts textOnPrimary as optional hex', () => {
-    const result = brandTokensEditSchema.safeParse({ colorTextOnPrimary: '#FFFFFF' });
+    const result = brandTokensEditSchema.safeParse({
+      colorTextOnPrimary: '#FFFFFF'
+    });
     expect(result.success).toBe(true);
   });
 
   it('rejects non-hex surface color', () => {
-    const result = brandTokensEditSchema.safeParse({ colorSurface: 'notacolor' });
+    const result = brandTokensEditSchema.safeParse({
+      colorSurface: 'notacolor'
+    });
     expect(result.success).toBe(false);
   });
 
@@ -91,7 +100,7 @@ describe('brandTokensEditSchema — new Phase 5 fields', () => {
     const result = brandTokensEditSchema.safeParse({
       radiusButton: 8,
       radiusBadge: 8,
-      radiusImage: 12,
+      radiusImage: 12
     });
     expect(result.success).toBe(true);
   });
@@ -105,7 +114,7 @@ describe('brandTokensEditSchema — new Phase 5 fields', () => {
     const result = brandTokensEditSchema.safeParse({
       strokeButton: 1,
       strokeCard: 1,
-      strokeBadge: 1,
+      strokeBadge: 1
     });
     expect(result.success).toBe(true);
   });
@@ -118,7 +127,9 @@ describe('brandTokensEditSchema — new Phase 5 fields', () => {
   });
 
   it('rejects unknown cortinillaEntrada value', () => {
-    const result = brandTokensEditSchema.safeParse({ cortinillaEntrada: 'zoom' });
+    const result = brandTokensEditSchema.safeParse({
+      cortinillaEntrada: 'zoom'
+    });
     expect(result.success).toBe(false);
   });
 
@@ -131,14 +142,16 @@ describe('brandTokensEditSchema — new Phase 5 fields', () => {
 
   it('accepts productOverlayPosition enum values', () => {
     for (const v of ['bottom-right', 'bottom-left', 'center'] as const) {
-      const result = brandTokensEditSchema.safeParse({ productOverlayPosition: v });
+      const result = brandTokensEditSchema.safeParse({
+        productOverlayPosition: v
+      });
       expect(result.success, `expected "${v}" to be valid`).toBe(true);
     }
   });
 
   it('accepts fontUrls as an optional string', () => {
     const result = brandTokensEditSchema.safeParse({
-      fontUrls: 'https://fonts.googleapis.com/css2?family=Inter&display=swap',
+      fontUrls: 'https://fonts.googleapis.com/css2?family=Inter&display=swap'
     });
     expect(result.success).toBe(true);
   });
@@ -208,7 +221,7 @@ describe('buildBrandTokensPayload — assembles BrandDesignTokens shape', () => 
       cortinillaEntrada: 'fade',
       cortinillaCierre: 'fade',
       promoBarStyle: 'bottom',
-      productOverlayPosition: 'bottom-right',
+      productOverlayPosition: 'bottom-right'
     });
   });
 
@@ -247,7 +260,7 @@ describe('buildBrandTokensPayload — assembles BrandDesignTokens shape', () => 
       colorPrimary: '#111111',
       radiusButton: undefined,
       radiusBadge: undefined,
-      radiusImage: undefined,
+      radiusImage: undefined
     } as Parameters<typeof buildBrandTokensPayload>[0];
     const payload = buildBrandTokensPayload(data, {});
     expect(payload.radius).toBeUndefined();
@@ -258,7 +271,7 @@ describe('buildBrandTokensPayload — assembles BrandDesignTokens shape', () => 
       colorPrimary: '#111111',
       strokeButton: undefined,
       strokeCard: undefined,
-      strokeBadge: undefined,
+      strokeBadge: undefined
     } as Parameters<typeof buildBrandTokensPayload>[0];
     const payload = buildBrandTokensPayload(data, {});
     expect(payload.stroke).toBeUndefined();
@@ -282,10 +295,10 @@ describe('resolveRemotionBrand — fontUrls flow to assets.fonts', () => {
       assets: {
         fonts: [
           'https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap',
-          'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap',
-        ],
-      },
-    },
+          'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap'
+        ]
+      }
+    }
   };
 
   it('passes font URLs from tokens.assets.fonts into RemotionBrandConfig.assets.fonts', () => {
@@ -293,14 +306,14 @@ describe('resolveRemotionBrand — fontUrls flow to assets.fonts', () => {
     expect(remotionBrand).not.toBeNull();
     expect(remotionBrand!.assets.fonts).toEqual([
       'https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap',
-      'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap',
+      'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap'
     ]);
   });
 
   it('returns empty fonts array when tokens.assets.fonts is absent', () => {
     const brandWithoutFonts: BrandConfig = {
       ...BRAND_WITH_FONT_URLS,
-      tokens: { colors: { primary: '#111111' } },
+      tokens: { colors: { primary: '#111111' } }
     };
     const remotionBrand = resolveRemotionBrand(brandWithoutFonts);
     expect(remotionBrand).not.toBeNull();
@@ -316,7 +329,7 @@ describe('resolveRemotionBrand — fontUrls flow to assets.fonts', () => {
       isActive: true,
       createdAt: '2024-01-01T00:00:00Z',
       updatedAt: '2024-01-01T00:00:00Z',
-      tokens: {},
+      tokens: {}
     };
     expect(resolveRemotionBrand(emptyBrand)).toBeNull();
   });

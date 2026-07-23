@@ -79,8 +79,7 @@ interface VariationThumbnailProps {
 export function VariationThumbnail({
   resolvedProps,
   templateId,
-  hasErrors,
-  index
+  hasErrors
 }: VariationThumbnailProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);

@@ -16,7 +16,7 @@ import type {
   RenderJob,
   RenderJobFilters,
   RenderProgress,
-  RenderOutput,
+  RenderOutput
 } from '../types';
 import { renderJobsTextMaps } from '../text-maps';
 import { renderJobKeys } from './query-keys';
@@ -32,10 +32,10 @@ export function useRenderJobs(projectId: string, filters?: RenderJobFilters) {
     queryKey: renderJobKeys.list(projectId, filters),
     queryFn: () =>
       apiClient<RenderJob[]>(API_ENDPOINTS.renderJobs.byProject(projectId), {
-        params: filters as Record<string, unknown>,
+        params: filters as Record<string, unknown>
       }),
     enabled: !!projectId,
-    staleTime: 30 * 1000,
+    staleTime: 30 * 1000
   });
 }
 
@@ -45,10 +45,9 @@ export function useRenderJobs(projectId: string, filters?: RenderJobFilters) {
 export function useRenderJob(jobId: string) {
   return useQuery({
     queryKey: renderJobKeys.detail(jobId),
-    queryFn: () =>
-      apiClient<RenderJob>(API_ENDPOINTS.renderJobs.byId(jobId)),
+    queryFn: () => apiClient<RenderJob>(API_ENDPOINTS.renderJobs.byId(jobId)),
     enabled: !!jobId,
-    staleTime: 30 * 1000,
+    staleTime: 30 * 1000
   });
 }
 
@@ -64,7 +63,7 @@ export function useRenderProgress(jobId: string, enabled: boolean = false) {
       apiClient<RenderProgress>(API_ENDPOINTS.renderJobs.progress(jobId)),
     enabled: !!jobId && enabled,
     refetchInterval: enabled ? 3 * 1000 : false,
-    staleTime: 0,
+    staleTime: 0
   });
 }
 
@@ -79,7 +78,7 @@ export function useRenderOutputs(jobId: string, enabled: boolean = true) {
     queryFn: () =>
       apiClient<RenderOutput[]>(API_ENDPOINTS.renderJobs.outputs(jobId)),
     enabled: !!jobId && enabled,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 5 * 60 * 1000
   });
 }
 
@@ -95,23 +94,23 @@ export function useCancelRenderJob(projectId: string) {
   return useMutation({
     mutationFn: (jobId: string) =>
       apiClient<RenderJob>(API_ENDPOINTS.renderJobs.cancel(jobId), {
-        method: 'POST',
+        method: 'POST'
       }),
     onSuccess: (_data, jobId) => {
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.detail(jobId),
+        queryKey: renderJobKeys.detail(jobId)
       });
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.lists(projectId),
+        queryKey: renderJobKeys.lists(projectId)
       });
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.batches(projectId),
+        queryKey: renderJobKeys.batches(projectId)
       });
       toast.success(renderJobsTextMaps.jobCancelled);
     },
     onError: (error: Error) => {
       toast.error(error.message || renderJobsTextMaps.errorOccurred);
-    },
+    }
   });
 }
 
@@ -125,22 +124,22 @@ export function useRetryRenderJob(projectId: string) {
   return useMutation({
     mutationFn: (jobId: string) =>
       apiClient<RenderJob>(API_ENDPOINTS.renderJobs.retry(jobId), {
-        method: 'POST',
+        method: 'POST'
       }),
     onSuccess: (_data, jobId) => {
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.detail(jobId),
+        queryKey: renderJobKeys.detail(jobId)
       });
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.lists(projectId),
+        queryKey: renderJobKeys.lists(projectId)
       });
       queryClient.invalidateQueries({
-        queryKey: renderJobKeys.batches(projectId),
+        queryKey: renderJobKeys.batches(projectId)
       });
       toast.success(renderJobsTextMaps.jobStarted);
     },
     onError: (error: Error) => {
       toast.error(error.message || renderJobsTextMaps.errorOccurred);
-    },
+    }
   });
 }

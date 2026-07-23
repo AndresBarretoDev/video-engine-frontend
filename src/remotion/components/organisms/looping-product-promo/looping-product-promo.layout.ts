@@ -130,11 +130,26 @@ function buildLayout16x9(): LoopingPromoLayout {
     textAlign: 'left',
     logo: { x: PADDING, y: PADDING, width: LOGO_W, height: LOGO_H },
     productImage: { x: IMAGE_X, y: IMAGE_Y, width: IMAGE_W, height: IMAGE_H },
-    productName: { x: TEXT_X, y: PRODUCT_NAME_Y, width: TEXT_COL_W, height: PRODUCT_NAME_H },
+    productName: {
+      x: TEXT_X,
+      y: PRODUCT_NAME_Y,
+      width: TEXT_COL_W,
+      height: PRODUCT_NAME_H
+    },
     price: { x: TEXT_X, y: PRICE_Y, width: PRICE_W, height: PRICE_H },
-    promoTag: { x: TEXT_X, y: PROMO_TAG_Y, width: PROMO_TAG_W, height: PROMO_TAG_H },
+    promoTag: {
+      x: TEXT_X,
+      y: PROMO_TAG_Y,
+      width: PROMO_TAG_W,
+      height: PROMO_TAG_H
+    },
     ctaText: { x: TEXT_X, y: CTA_Y, width: CTA_W, height: CTA_H },
-    legalText: { x: PADDING, y: LEGAL_Y, width: W - PADDING * 2, height: LEGAL_H },
+    legalText: {
+      x: PADDING,
+      y: LEGAL_Y,
+      width: W - PADDING * 2,
+      height: LEGAL_H
+    },
     fontSize: {
       productName: 64,
       price: 72,
@@ -208,9 +223,19 @@ function buildLayout9x16(): LoopingPromoLayout {
     textAlign: 'center',
     logo: { x: PADDING, y: PADDING, width: LOGO_W, height: LOGO_H },
     productImage: { x: IMAGE_X, y: IMAGE_Y, width: IMAGE_W, height: IMAGE_H },
-    productName: { x: TEXT_X, y: PRODUCT_NAME_Y, width: TEXT_W, height: PRODUCT_NAME_H },
+    productName: {
+      x: TEXT_X,
+      y: PRODUCT_NAME_Y,
+      width: TEXT_W,
+      height: PRODUCT_NAME_H
+    },
     price: { x: TEXT_X, y: PRICE_Y, width: PRICE_W, height: PRICE_H },
-    promoTag: { x: TEXT_X, y: PROMO_TAG_Y, width: PROMO_TAG_W, height: PROMO_TAG_H },
+    promoTag: {
+      x: TEXT_X,
+      y: PROMO_TAG_Y,
+      width: PROMO_TAG_W,
+      height: PROMO_TAG_H
+    },
     ctaText: { x: CTA_X, y: CTA_Y, width: CTA_W, height: CTA_H },
     legalText: { x: PADDING, y: LEGAL_Y, width: TEXT_W, height: LEGAL_H },
     fontSize: {
@@ -285,9 +310,19 @@ function buildLayout1x1(): LoopingPromoLayout {
     textAlign: 'center',
     logo: { x: PADDING, y: 40, width: LOGO_W, height: LOGO_H },
     productImage: { x: IMAGE_X, y: IMAGE_Y, width: IMAGE_W, height: IMAGE_H },
-    productName: { x: TEXT_X, y: PRODUCT_NAME_Y, width: TEXT_W, height: PRODUCT_NAME_H },
+    productName: {
+      x: TEXT_X,
+      y: PRODUCT_NAME_Y,
+      width: TEXT_W,
+      height: PRODUCT_NAME_H
+    },
     price: { x: TEXT_X, y: PRICE_Y, width: PRICE_W, height: PRICE_H },
-    promoTag: { x: TEXT_X, y: PROMO_TAG_Y, width: PROMO_TAG_W, height: PROMO_TAG_H },
+    promoTag: {
+      x: TEXT_X,
+      y: PROMO_TAG_Y,
+      width: PROMO_TAG_W,
+      height: PROMO_TAG_H
+    },
     ctaText: { x: CTA_X, y: CTA_Y, width: CTA_W, height: CTA_H },
     legalText: { x: PADDING, y: LEGAL_Y, width: TEXT_W, height: LEGAL_H },
     fontSize: {
@@ -320,6 +355,7 @@ export function getLoopingPromoLayout(format: VideoFormat): LoopingPromoLayout {
     default: {
       // Exhaustive check — TypeScript will error if a new format is added without handling
       const _exhaustive: never = format;
+      void _exhaustive;
       return buildLayout16x9();
     }
   }

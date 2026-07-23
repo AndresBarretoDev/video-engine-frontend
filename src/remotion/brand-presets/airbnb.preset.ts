@@ -90,9 +90,9 @@ export const AIRBNB_BRAND_PRESET: BrandConfig = {
     //   badge:  {rounded.full} = 9999px — pill badges (guest-favorite, new-tag)
     //   image:  {rounded.md} = 14px — "property cards: ~14px corner clipping"
     radius: {
-      button: 8,    // {rounded.sm} — primary CTA button
-      badge: 9999,  // {rounded.full} — pill badges (guest-favorite, new-tag, category chips)
-      image: 14     // {rounded.md} — property card photo corners
+      button: 8, // {rounded.sm} — primary CTA button
+      badge: 9999, // {rounded.full} — pill badges (guest-favorite, new-tag, category chips)
+      image: 14 // {rounded.md} — property card photo corners
     },
 
     // DESIGN-AIRBNB.md §Elevation: one shadow tier + flat baseline.
@@ -101,8 +101,8 @@ export const AIRBNB_BRAND_PRESET: BrandConfig = {
     // we apply hairline for consistency with the brand's soft visual language)
     stroke: {
       button: 1, // hairline on button border (primary filled) — brand-soft treatment
-      card: 1,   // "1px hairline: search bar dividers, card borders" — standard Airbnb border
-      badge: 1   // hairline on badge frame
+      card: 1, // "1px hairline: search bar dividers, card borders" — standard Airbnb border
+      badge: 1 // hairline on badge frame
     }
   },
 

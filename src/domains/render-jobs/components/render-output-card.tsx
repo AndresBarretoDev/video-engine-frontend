@@ -68,12 +68,7 @@ export function RenderOutputCard({ output }: RenderOutputCardProps) {
             <Copy className="size-3.5" />
           )}
         </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="gap-1.5"
-          asChild
-        >
+        <Button variant="ghost" size="sm" className="gap-1.5" asChild>
           <a href={output.fileUrl} download>
             <Download className="size-3.5" />
             {renderJobsTextMaps.downloadFile}

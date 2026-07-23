@@ -23,7 +23,10 @@ import { Download, AlertCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { useRenderProgress, useRenderOutputs } from '@/domains/render-jobs/hooks/use-render-jobs';
+import {
+  useRenderProgress,
+  useRenderOutputs
+} from '@/domains/render-jobs/hooks/use-render-jobs';
 import { useVideoGenerationStore } from '@/domains/video-generation/stores/video-generation-store';
 import { videoGenerationTextMaps as t } from '@/domains/video-generation/text-maps';
 import type { VideoFormat } from '@/remotion/types/video-format.types';
@@ -33,7 +36,7 @@ import type { VideoFormat } from '@/remotion/types/video-format.types';
 const ASPECT_CLASS: Record<VideoFormat, string> = {
   '16:9': 'aspect-video',
   '9:16': 'aspect-[9/16]',
-  '1:1':  'aspect-square',
+  '1:1': 'aspect-square'
 };
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -45,7 +48,10 @@ interface RenderJobResultCardProps {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function RenderJobResultCard({ jobId, format }: RenderJobResultCardProps) {
+export function RenderJobResultCard({
+  jobId,
+  format
+}: RenderJobResultCardProps) {
   const [hasTerminated, setHasTerminated] = useState(false);
   const setReadyOutput = useVideoGenerationStore(s => s.setReadyOutput);
 
@@ -93,9 +99,7 @@ export function RenderJobResultCard({ jobId, format }: RenderJobResultCardProps)
           </Badge>
         )}
         {isProcessing && (
-          <Badge
-            className="shrink-0 gap-1 border-transparent bg-amber-400 text-[10px] text-amber-950"
-          >
+          <Badge className="shrink-0 gap-1 border-transparent bg-amber-400 text-[10px] text-amber-950">
             <Loader2 className="size-3 animate-spin" />
             {t.resultsCardProcessing}
           </Badge>
@@ -109,7 +113,6 @@ export function RenderJobResultCard({ jobId, format }: RenderJobResultCardProps)
         }`}
       >
         {isCompleted && output ? (
-          // eslint-disable-next-line jsx-a11y/media-has-caption
           <video
             src={output.fileUrl}
             controls
@@ -122,8 +125,13 @@ export function RenderJobResultCard({ jobId, format }: RenderJobResultCardProps)
           </div>
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4">
-            <Loader2 className="text-muted-foreground size-6 animate-spin" aria-hidden />
-            <span className="text-muted-foreground text-xs">{t.resultsCardGenerating}</span>
+            <Loader2
+              className="text-muted-foreground size-6 animate-spin"
+              aria-hidden
+            />
+            <span className="text-muted-foreground text-xs">
+              {t.resultsCardGenerating}
+            </span>
             {progress && progress.progress > 0 && (
               <Progress
                 value={progress.progress}
@@ -147,7 +155,12 @@ export function RenderJobResultCard({ jobId, format }: RenderJobResultCardProps)
           </a>
         </Button>
       ) : (
-        <Button variant="default" size="sm" className="w-full gap-2 opacity-50" disabled>
+        <Button
+          variant="default"
+          size="sm"
+          className="w-full gap-2 opacity-50"
+          disabled
+        >
           <Download className="size-3.5" aria-hidden />
           {t.resultsDownloadFormat(format)}
         </Button>

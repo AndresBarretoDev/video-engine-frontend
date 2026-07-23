@@ -37,10 +37,9 @@ export function SelectionBar({
   projectId,
   selectedCount,
   selectedIndices,
-  totalCount,
   onSelectAll,
   onDeselectAll,
-  onClear,
+  onClear
 }: SelectionBarProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 

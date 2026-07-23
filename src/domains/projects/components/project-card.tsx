@@ -19,7 +19,7 @@ import {
   ArchiveRestore,
   FolderKanban,
   Database,
-  Film,
+  Film
 } from 'lucide-react';
 
 import {
@@ -70,7 +70,7 @@ const STATUS_CLASS: Record<ProjectStatus, string> = {
     'border-[var(--status-pending-border)] text-[var(--status-pending-text)] bg-[var(--status-pending-bg)]',
   approved:
     'border-[var(--status-approved-border)] text-[var(--status-approved-text)] bg-[var(--status-approved-bg)]',
-  archived: 'border-border text-muted-foreground bg-muted/20',
+  archived: 'border-border text-muted-foreground bg-muted/20'
 };
 
 // ─── Props ────────────────────────────────────────────────────────────────────

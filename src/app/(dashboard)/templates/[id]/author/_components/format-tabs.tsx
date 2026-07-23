@@ -32,7 +32,11 @@ const FORMAT_LABELS: Record<VideoFormat, string> = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function FormatTabs({ activeFormat, formats, onFormatChange }: FormatTabsProps) {
+export function FormatTabs({
+  activeFormat,
+  formats,
+  onFormatChange
+}: FormatTabsProps) {
   return (
     <Tabs
       value={activeFormat}

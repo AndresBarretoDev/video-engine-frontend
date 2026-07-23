@@ -147,11 +147,15 @@ describe('AIRBNB_BRAND_PRESET', () => {
 
   it('primary color is Airbnb Rausch #ff385c (DESIGN-AIRBNB.md)', () => {
     // Source: DESIGN-AIRBNB.md colors.primary = "#ff385c" (Rausch)
-    expect(AIRBNB_BRAND_PRESET.tokens.colors.primary.toLowerCase()).toBe('#ff385c');
+    expect(AIRBNB_BRAND_PRESET.tokens.colors.primary.toLowerCase()).toBe(
+      '#ff385c'
+    );
   });
 
   it('background is white #ffffff', () => {
-    expect(AIRBNB_BRAND_PRESET.tokens.colors.background.toLowerCase()).toBe('#ffffff');
+    expect(AIRBNB_BRAND_PRESET.tokens.colors.background.toLowerCase()).toBe(
+      '#ffffff'
+    );
   });
 
   it('text is dark #222222 for contrast on white', () => {
@@ -159,7 +163,9 @@ describe('AIRBNB_BRAND_PRESET', () => {
   });
 
   it('textInverse is white — buttons on Rausch are readable', () => {
-    expect(AIRBNB_BRAND_PRESET.tokens.colors.textInverse.toLowerCase()).toBe('#ffffff');
+    expect(AIRBNB_BRAND_PRESET.tokens.colors.textInverse.toLowerCase()).toBe(
+      '#ffffff'
+    );
   });
 
   it('heading font is Inter (open-source Cereal VF substitute per DESIGN-AIRBNB.md)', () => {
@@ -176,7 +182,9 @@ describe('AIRBNB_BRAND_PRESET', () => {
 
   it('radius.badge is pill {rounded.full} = 9999 (guest-favorite-badge, new-tag)', () => {
     // DESIGN-AIRBNB.md: guest-favorite-badge and new-tag use {rounded.full} = 9999px
-    expect(AIRBNB_BRAND_PRESET.tokens.radius!.badge).toBeGreaterThanOrEqual(9000);
+    expect(AIRBNB_BRAND_PRESET.tokens.radius!.badge).toBeGreaterThanOrEqual(
+      9000
+    );
   });
 
   it('passes BrandConfigSchema Zod validation', () => {

@@ -5,7 +5,7 @@ const TypeSample = ({
   size,
   lineHeight,
   weight,
-  text,
+  text
 }: {
   label: string;
   size: number;
@@ -19,7 +19,7 @@ const TypeSample = ({
         fontSize: 10,
         color: '#6E6E6E',
         fontFamily: 'monospace',
-        marginBottom: 4,
+        marginBottom: 4
       }}
     >
       {label} — {size}px / {lineHeight}px / {weight}
@@ -30,7 +30,7 @@ const TypeSample = ({
         lineHeight: `${lineHeight}px`,
         fontWeight: weight,
         fontFamily: 'Mulish, sans-serif',
-        color: '#F5F5F5',
+        color: '#F5F5F5'
       }}
     >
       {text}
@@ -41,7 +41,7 @@ const TypeSample = ({
 const Section = ({
   title,
   description,
-  children,
+  children
 }: {
   title: string;
   description?: string;
@@ -53,7 +53,7 @@ const Section = ({
         fontSize: 16,
         fontWeight: 600,
         color: '#8C8C8C',
-        marginBottom: 4,
+        marginBottom: 4
       }}
     >
       {title}
@@ -63,7 +63,7 @@ const Section = ({
         style={{
           fontSize: 12,
           color: '#545454',
-          marginBottom: 16,
+          marginBottom: 16
         }}
       >
         {description}
@@ -80,7 +80,7 @@ function TypographyPage() {
         background: '#000',
         color: '#F5F5F5',
         padding: 32,
-        fontFamily: 'Mulish, sans-serif',
+        fontFamily: 'Mulish, sans-serif'
       }}
     >
       <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>
@@ -158,7 +158,7 @@ function TypographyPage() {
                   fontSize: 11,
                   color: '#4361EF',
                   fontWeight: 600,
-                  marginBottom: 8,
+                  marginBottom: 8
                 }}
               >
                 Weight: {w} ({weightMap[w]})
@@ -265,8 +265,8 @@ const meta = {
   title: 'Design Tokens/Typography',
   component: TypographyPage,
   parameters: {
-    layout: 'fullscreen',
-  },
+    layout: 'fullscreen'
+  }
 } satisfies Meta<typeof TypographyPage>;
 
 export default meta;

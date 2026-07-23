@@ -143,7 +143,6 @@ export const LowerThird: React.FC<LowerThirdProps> = ({
   barColor,
   position,
   animation,
-  duration,
   format,
   brandConfig
 }) => {

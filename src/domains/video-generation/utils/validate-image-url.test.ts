@@ -13,7 +13,7 @@ import {
   isAcceptedImageType,
   isWithinSizeLimit,
   isProductImageValue,
-  MAX_IMAGE_SIZE_BYTES,
+  MAX_IMAGE_SIZE_BYTES
 } from './validate-image-url';
 
 // ─── isAcceptedImageType ──────────────────────────────────────────────────────
@@ -76,11 +76,15 @@ describe('isProductImageValue', () => {
   });
 
   it('accepts http URL (dev scenarios)', () => {
-    expect(isProductImageValue('http://localhost:3001/uploads/image.png')).toBe(true);
+    expect(isProductImageValue('http://localhost:3001/uploads/image.png')).toBe(
+      true
+    );
   });
 
   it('accepts blob: objectURL', () => {
-    expect(isProductImageValue('blob:http://localhost:3000/abc-123')).toBe(true);
+    expect(isProductImageValue('blob:http://localhost:3000/abc-123')).toBe(
+      true
+    );
   });
 
   it('rejects empty string', () => {

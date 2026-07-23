@@ -23,8 +23,8 @@ function parseFontUrls(raw: string | undefined): string[] {
   if (!raw || raw.trim() === '') return [];
   return raw
     .split(/[\n,]+/)
-    .map((u) => u.trim())
-    .filter((u) => u.length > 0);
+    .map(u => u.trim())
+    .filter(u => u.length > 0);
 }
 
 // ─── Payload builder ──────────────────────────────────────────────────────────
@@ -50,18 +50,24 @@ export function buildBrandTokensPayload(
     // Surfaces & semantic inks
     ...(data.colorSurface ? { surface: data.colorSurface } : {}),
     ...(data.colorBorder ? { border: data.colorBorder } : {}),
-    ...(data.colorTextOnBackground ? { textOnBackground: data.colorTextOnBackground } : {}),
-    ...(data.colorTextOnSurface ? { textOnSurface: data.colorTextOnSurface } : {}),
-    ...(data.colorTextOnPrimary ? { textOnPrimary: data.colorTextOnPrimary } : {}),
+    ...(data.colorTextOnBackground
+      ? { textOnBackground: data.colorTextOnBackground }
+      : {}),
+    ...(data.colorTextOnSurface
+      ? { textOnSurface: data.colorTextOnSurface }
+      : {}),
+    ...(data.colorTextOnPrimary
+      ? { textOnPrimary: data.colorTextOnPrimary }
+      : {})
   } as BrandDesignTokens['colors'];
 
   // ─── Fonts ────────────────────────────────────────────────────────────────
   const fonts: BrandDesignTokens['fonts'] | undefined =
     data.fontHeading || data.fontBody
-      ? {
+      ? ({
           ...(data.fontHeading ? { heading: data.fontHeading } : {}),
-          ...(data.fontBody ? { body: data.fontBody } : {}),
-        } as BrandDesignTokens['fonts']
+          ...(data.fontBody ? { body: data.fontBody } : {})
+        } as BrandDesignTokens['fonts'])
       : undefined;
 
   // ─── Radius ───────────────────────────────────────────────────────────────
@@ -74,7 +80,7 @@ export function buildBrandTokensPayload(
     ? {
         button: data.radiusButton ?? 8,
         badge: data.radiusBadge ?? 8,
-        image: data.radiusImage ?? 12,
+        image: data.radiusImage ?? 12
       }
     : undefined;
 
@@ -88,7 +94,7 @@ export function buildBrandTokensPayload(
     ? {
         button: data.strokeButton ?? 1,
         card: data.strokeCard ?? 1,
-        badge: data.strokeBadge ?? 1,
+        badge: data.strokeBadge ?? 1
       }
     : undefined;
 
@@ -112,7 +118,7 @@ export function buildBrandTokensPayload(
           : {}),
         ...(data.productOverlayPosition !== undefined
           ? { productOverlayPosition: data.productOverlayPosition }
-          : {}),
+          : {})
       }
     : undefined;
 
@@ -132,6 +138,6 @@ export function buildBrandTokensPayload(
     ...(assets !== undefined ? { assets } : {}),
     customColors: (data.customColors ?? []).filter(
       (c): c is { name: string; hex: string } => !!c?.name && !!c?.hex
-    ),
+    )
   };
 }

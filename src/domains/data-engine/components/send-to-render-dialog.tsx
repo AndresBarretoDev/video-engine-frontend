@@ -19,7 +19,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,19 +29,19 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from '@/components/ui/select';
 
 import {
   createRenderBatchFromVariationsSchema,
-  type CreateRenderBatchFromVariationsInput,
+  type CreateRenderBatchFromVariationsInput
 } from '@/domains/render-jobs/schema';
 import { useCreateRenderBatch } from '@/domains/render-jobs/hooks/use-render-batches';
 import { renderJobsTextMaps } from '@/domains/render-jobs/text-maps';
@@ -62,7 +62,7 @@ export function SendToRenderDialog({
   open,
   onOpenChange,
   projectId,
-  selectedIndices,
+  selectedIndices
 }: SendToRenderDialogProps) {
   const { mutate: createBatch, isPending } = useCreateRenderBatch(projectId);
 
@@ -73,8 +73,8 @@ export function SendToRenderDialog({
       projectId,
       variationIndices: selectedIndices,
       priority: 'normal',
-      outputFormat: 'mp4',
-    },
+      outputFormat: 'mp4'
+    }
   });
 
   // Sync projectId and indices when dialog opens
@@ -85,7 +85,7 @@ export function SendToRenderDialog({
         projectId,
         variationIndices: selectedIndices,
         priority: 'normal',
-        outputFormat: 'mp4',
+        outputFormat: 'mp4'
       });
     }
   }, [open, projectId, selectedIndices, form]);
@@ -94,12 +94,12 @@ export function SendToRenderDialog({
     const payload = {
       ...data,
       priority: data.priority.toUpperCase() as typeof data.priority,
-      outputFormat: data.outputFormat.toUpperCase() as typeof data.outputFormat,
+      outputFormat: data.outputFormat.toUpperCase() as typeof data.outputFormat
     };
     createBatch(payload, {
       onSuccess: () => {
         onOpenChange(false);
-      },
+      }
     });
   }
 

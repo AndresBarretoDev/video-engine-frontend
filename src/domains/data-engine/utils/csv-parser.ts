@@ -8,7 +8,7 @@
 
 import Papa from 'papaparse';
 
-import type { CsvParseError, CsvParseResult, ParsedColumn } from '../types';
+import type { CsvParseError, CsvParseResult } from '../types';
 import { inferColumnTypes } from './type-inference';
 
 // ─── Constants ────────────────────────────────────────────────────────────────

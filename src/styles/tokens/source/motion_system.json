@@ -142,8 +142,21 @@
     },
     "implementation": {
       "performance_guidelines": {
-        "allowed_properties": ["opacity", "transform", "background-position", "color", "box-shadow"],
-        "forbidden_properties": ["width", "height", "top", "left", "margin", "padding"],
+        "allowed_properties": [
+          "opacity",
+          "transform",
+          "background-position",
+          "color",
+          "box-shadow"
+        ],
+        "forbidden_properties": [
+          "width",
+          "height",
+          "top",
+          "left",
+          "margin",
+          "padding"
+        ],
         "gradient_hack": "Para animar degradados performantes: usar background-size: 200% 200% y animar background-position."
       },
       "accessibility": {

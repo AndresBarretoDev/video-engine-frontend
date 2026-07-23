@@ -21,7 +21,10 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useUploadFile } from '@/lib/api/use-upload';
-import { isAcceptedImageType, isWithinSizeLimit } from '../utils/validate-image-url';
+import {
+  isAcceptedImageType,
+  isWithinSizeLimit
+} from '../utils/validate-image-url';
 import { videoGenerationTextMaps as t } from '../text-maps';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -63,12 +66,14 @@ export interface UseProductImageUploadReturn {
 
 export function useProductImageUpload({
   initialUrl,
-  onChange,
+  onChange
 }: UseProductImageUploadOptions): UseProductImageUploadReturn {
   const objectUrlRef = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [previewUrl, setPreviewUrl] = useState<string | null>(initialUrl ?? null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    initialUrl ?? null
+  );
   const [fileName, setFileName] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isPendingUpload, setIsPendingUpload] = useState(false);
@@ -192,6 +197,6 @@ export function useProductImageUpload({
     handlePickerClick,
     handleFileChange,
     handleFileDrop,
-    handleRemove,
+    handleRemove
   };
 }

@@ -20,9 +20,13 @@ import { EmptyState } from '@/components/shared/empty-state';
 import {
   useRenderBatch,
   useCancelRenderBatch,
-  useRetryFailedInBatch,
+  useRetryFailedInBatch
 } from '../hooks/use-render-batches';
-import { useRenderJobs, useCancelRenderJob, useRetryRenderJob } from '../hooks/use-render-jobs';
+import {
+  useRenderJobs,
+  useCancelRenderJob,
+  useRetryRenderJob
+} from '../hooks/use-render-jobs';
 import { RenderStatusBadge } from './render-status-badge';
 import { RenderProgressBar } from './render-progress-bar';
 import { BatchActionsBar } from './batch-actions-bar';
@@ -44,7 +48,7 @@ interface BatchDetailViewProps {
 export function BatchDetailView({
   projectId,
   batchId,
-  onBack,
+  onBack
 }: BatchDetailViewProps) {
   const [selectedJob, setSelectedJob] = useState<RenderJob | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -54,14 +58,14 @@ export function BatchDetailView({
     data: batch,
     isLoading: batchLoading,
     isError: batchError,
-    refetch: refetchBatch,
+    refetch: refetchBatch
   } = useRenderBatch(projectId, batchId);
 
   const {
     data: jobs,
     isLoading: jobsLoading,
     isError: jobsError,
-    refetch: refetchJobs,
+    refetch: refetchJobs
   } = useRenderJobs(projectId);
 
   const cancelBatch = useCancelRenderBatch(projectId);
@@ -111,7 +115,13 @@ export function BatchDetailView({
   if (!batch) return null;
 
   const batchStatus =
-    batch.status === 'processing' ? 'processing' : batch.status === 'completed' ? 'completed' : batch.status === 'failed' ? 'failed' : 'queued';
+    batch.status === 'processing'
+      ? 'processing'
+      : batch.status === 'completed'
+        ? 'completed'
+        : batch.status === 'failed'
+          ? 'failed'
+          : 'queued';
 
   return (
     <>
@@ -136,7 +146,7 @@ export function BatchDetailView({
                 <span>
                   {renderJobsTextMaps.batchProgress(
                     batch.completedJobs,
-                    batch.totalJobs,
+                    batch.totalJobs
                   )}
                 </span>
               </div>
@@ -153,10 +163,7 @@ export function BatchDetailView({
         </div>
 
         {/* Aggregate progress */}
-        <RenderProgressBar
-          progress={progressPercent}
-          status={batchStatus}
-        />
+        <RenderProgressBar progress={progressPercent} status={batchStatus} />
 
         {/* Job grid */}
         {batchJobs.length === 0 ? (

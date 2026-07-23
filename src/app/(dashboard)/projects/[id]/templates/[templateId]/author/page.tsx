@@ -22,7 +22,9 @@ interface ProjectAuthorPageProps {
   params: Promise<{ id: string; templateId: string }>;
 }
 
-export async function generateMetadata({ params }: ProjectAuthorPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params
+}: ProjectAuthorPageProps): Promise<Metadata> {
   const { templateId } = await params;
   return {
     title: `Author Video — ${templateId} | OP Video Engine`,
@@ -30,7 +32,9 @@ export async function generateMetadata({ params }: ProjectAuthorPageProps): Prom
   };
 }
 
-export default async function ProjectAuthorPage({ params }: ProjectAuthorPageProps) {
+export default async function ProjectAuthorPage({
+  params
+}: ProjectAuthorPageProps) {
   const { id, templateId } = await params;
 
   return (

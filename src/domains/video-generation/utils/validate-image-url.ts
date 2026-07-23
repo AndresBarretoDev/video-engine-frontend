@@ -14,7 +14,7 @@
 export const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/png',
-  'image/webp',
+  'image/webp'
 ] as const;
 
 /** 10 MB — matches POST /uploads backend contract */

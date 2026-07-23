@@ -16,7 +16,7 @@ import {
   XCircle,
   Ban,
   Pause,
-  CircleDot,
+  CircleDot
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -39,43 +39,43 @@ const STATUS_MAP: Record<StatusType, StatusConfig> = {
     label: renderJobsTextMaps.statusQueued,
     icon: Clock,
     className:
-      'border-[var(--status-pending-border)] text-[var(--status-pending-text)] bg-[var(--status-pending-bg)]',
+      'border-[var(--status-pending-border)] text-[var(--status-pending-text)] bg-[var(--status-pending-bg)]'
   },
   pending: {
     label: renderJobsTextMaps.statusQueued,
     icon: Clock,
     className:
-      'border-[var(--status-pending-border)] text-[var(--status-pending-text)] bg-[var(--status-pending-bg)]',
+      'border-[var(--status-pending-border)] text-[var(--status-pending-text)] bg-[var(--status-pending-bg)]'
   },
   processing: {
     label: renderJobsTextMaps.statusProcessing,
     icon: Loader2,
     className:
-      'border-[var(--status-in-review-border)] text-[var(--status-in-review-text)] bg-[var(--status-in-review-bg)]',
+      'border-[var(--status-in-review-border)] text-[var(--status-in-review-text)] bg-[var(--status-in-review-bg)]'
   },
   completed: {
     label: renderJobsTextMaps.statusCompleted,
     icon: CheckCircle2,
     className:
-      'border-[var(--status-approved-border)] text-[var(--status-approved-text)] bg-[var(--status-approved-bg)]',
+      'border-[var(--status-approved-border)] text-[var(--status-approved-text)] bg-[var(--status-approved-bg)]'
   },
   failed: {
     label: renderJobsTextMaps.statusFailed,
     icon: XCircle,
     className:
-      'border-[var(--status-rejected-border)] text-[var(--status-rejected-text)] bg-[var(--status-rejected-bg)]',
+      'border-[var(--status-rejected-border)] text-[var(--status-rejected-text)] bg-[var(--status-rejected-bg)]'
   },
   cancelled: {
     label: renderJobsTextMaps.statusCancelled,
     icon: Ban,
-    className: 'border-border text-muted-foreground bg-muted/20',
+    className: 'border-border text-muted-foreground bg-muted/20'
   },
   paused: {
     label: renderJobsTextMaps.statusPaused,
     icon: Pause,
     className:
-      'border-[var(--status-warning-border)] text-[var(--status-warning-text)] bg-[var(--status-warning-bg)]',
-  },
+      'border-[var(--status-warning-border)] text-[var(--status-warning-text)] bg-[var(--status-warning-bg)]'
+  }
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -88,7 +88,7 @@ export function RenderStatusBadge({ status }: RenderStatusBadgeProps) {
   const config = STATUS_MAP[status] ?? {
     label: status,
     icon: CircleDot,
-    className: 'border-border text-muted-foreground',
+    className: 'border-border text-muted-foreground'
   };
 
   const Icon = config.icon;
@@ -96,9 +96,7 @@ export function RenderStatusBadge({ status }: RenderStatusBadgeProps) {
 
   return (
     <Badge variant="outline" className={`gap-1.5 text-xs ${config.className}`}>
-      <Icon
-        className={`size-3 ${isAnimated ? 'animate-spin' : ''}`}
-      />
+      <Icon className={`size-3 ${isAnimated ? 'animate-spin' : ''}`} />
       {config.label}
     </Badge>
   );

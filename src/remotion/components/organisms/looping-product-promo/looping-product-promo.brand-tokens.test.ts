@@ -34,7 +34,7 @@ const FULL_BRAND: BrandConfig = {
       background: '#FAFAFA',
       text: '#111111',
       textInverse: '#FEFEFE',
-      surface: '#EEEEEE',       // distinct from background
+      surface: '#EEEEEE', // distinct from background
       border: '#C0C0C0',
       textOnBackground: '#222222',
       textOnSurface: '#333333',
@@ -55,7 +55,9 @@ const FULL_BRAND: BrandConfig = {
   },
   assets: {
     logo: { url: 'https://example.com/logo.png', width: 200, height: 80 },
-    fonts: ['https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap']
+    fonts: [
+      'https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap'
+    ]
   },
   defaults: {
     cortinillaEntrada: 'fade',
@@ -120,7 +122,11 @@ describe('resolveBrand: sources ALL identity tokens from brandConfig', () => {
   });
 
   it('springConfig comes from tokens.animation.springConfig', () => {
-    expect(resolved.springConfig).toEqual({ damping: 18, stiffness: 180, mass: 1 });
+    expect(resolved.springConfig).toEqual({
+      damping: 18,
+      stiffness: 180,
+      mass: 1
+    });
   });
 
   it('logoUrl comes from assets.logo.url', () => {
@@ -297,6 +303,8 @@ describe('Structural defaults differ: OP vs Airbnb (Level 2 — skeleton by bran
     const nike = resolveBrand(NIKE_BRAND_PRESET);
     expect(nike.defaults?.cortinillaCierre).toBe('none');
     expect(op.defaults?.cortinillaCierre).toBe('fade');
-    expect(nike.defaults?.cortinillaCierre).not.toBe(op.defaults?.cortinillaCierre);
+    expect(nike.defaults?.cortinillaCierre).not.toBe(
+      op.defaults?.cortinillaCierre
+    );
   });
 });

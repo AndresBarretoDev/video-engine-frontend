@@ -21,7 +21,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog';
 
 import { renderJobsTextMaps } from '../text-maps';
@@ -44,13 +44,12 @@ export function BatchActionsBar({
   onCancel,
   onRetryFailed,
   isCancelling,
-  isRetrying,
+  isRetrying
 }: BatchActionsBarProps) {
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showRetryDialog, setShowRetryDialog] = useState(false);
 
-  const canCancel =
-    batch.status === 'pending' || batch.status === 'processing';
+  const canCancel = batch.status === 'pending' || batch.status === 'processing';
   const canRetry = batch.failedJobs > 0;
   const canDownload = batch.status === 'completed';
 
@@ -93,7 +92,9 @@ export function BatchActionsBar({
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{renderJobsTextMaps.cancelBatch}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {renderJobsTextMaps.cancelBatch}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {renderJobsTextMaps.confirmCancelBatch}
             </AlertDialogDescription>
@@ -117,7 +118,9 @@ export function BatchActionsBar({
       <AlertDialog open={showRetryDialog} onOpenChange={setShowRetryDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{renderJobsTextMaps.retryFailed}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {renderJobsTextMaps.retryFailed}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {renderJobsTextMaps.confirmRetryFailed}
             </AlertDialogDescription>

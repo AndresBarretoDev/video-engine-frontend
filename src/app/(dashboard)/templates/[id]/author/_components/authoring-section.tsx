@@ -46,7 +46,12 @@ import {
 } from './template-authoring-registry';
 
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle
+} from '@/components/ui/sheet';
 import { Eye } from 'lucide-react';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -61,7 +66,10 @@ interface AuthoringSectionProps {
 
 // ─── Resolver (data + config) ───────────────────────────────────────────────
 
-export function AuthoringSection({ templateId, projectId }: AuthoringSectionProps) {
+export function AuthoringSection({
+  templateId,
+  projectId
+}: AuthoringSectionProps) {
   const { data: template, isLoading } = useTemplate(templateId);
 
   if (isLoading) {
@@ -110,7 +118,11 @@ interface AuthoringEditorProps {
   config: TemplateAuthoringConfig<any>;
 }
 
-function AuthoringEditor({ template, config, projectId }: AuthoringEditorProps) {
+function AuthoringEditor({
+  template,
+  config,
+  projectId
+}: AuthoringEditorProps) {
   const {
     activeFormat,
     setActiveFormat,
@@ -123,7 +135,7 @@ function AuthoringEditor({ template, config, projectId }: AuthoringEditorProps) 
     selectedFormats,
     addRenderJobEntries,
     setResultsSheetOpen,
-    resetEditor,
+    resetEditor
   } = useVideoGenerationStore();
 
   // Selected brand → Remotion brand config. Falls back to the template's preset
@@ -187,11 +199,13 @@ function AuthoringEditor({ template, config, projectId }: AuthoringEditorProps) 
   const compositionProps = config.assembleProps(authoringState);
 
   const activeFormatRef =
-    template.formats.find(f => f.format === activeFormat) ?? template.formats[0];
+    template.formats.find(f => f.format === activeFormat) ??
+    template.formats[0];
 
   // RENDER needs a PUBLIC image url (not a blob: that lives only in this browser).
   // config.isRenderReady encapsulates each template's image-field gate.
-  const isFormValid = form.formState.isValid && config.isRenderReady(form.getValues());
+  const isFormValid =
+    form.formState.isValid && config.isRenderReady(form.getValues());
 
   return (
     <div className="flex min-h-[calc(100vh-8rem)] flex-col gap-4 lg:flex-row">
@@ -211,9 +225,11 @@ function AuthoringEditor({ template, config, projectId }: AuthoringEditorProps) 
             onClick={toggleMobilePreview}
             aria-expanded={isMobilePreviewOpen}
             aria-controls="mobile-preview-sheet"
-            aria-label={isMobilePreviewOpen
-              ? videoGenerationTextMaps.previewMobileHide
-              : videoGenerationTextMaps.previewMobileToggle}
+            aria-label={
+              isMobilePreviewOpen
+                ? videoGenerationTextMaps.previewMobileHide
+                : videoGenerationTextMaps.previewMobileToggle
+            }
             className="gap-2 transition-transform active:scale-[0.96]"
           >
             <Eye className="size-4" aria-hidden />
@@ -234,7 +250,9 @@ function AuthoringEditor({ template, config, projectId }: AuthoringEditorProps) 
         <config.FormComponent form={form as UseFormReturn<FieldValues>} />
 
         <div className="flex flex-col gap-3">
-          <FormatSelector availableFormats={template.formats.map(f => f.format)} />
+          <FormatSelector
+            availableFormats={template.formats.map(f => f.format)}
+          />
           <SendToRenderButton
             templateId={template.id}
             projectId={projectId}

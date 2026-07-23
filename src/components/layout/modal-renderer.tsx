@@ -89,7 +89,6 @@ export function ModalRenderer() {
   if (props.type === 'dialog') {
     const DialogComponent = DIALOG_REGISTRY[activeModal];
     if (!DialogComponent) {
-      console.warn(`[ModalRenderer] No dialog registered for: ${activeModal}`);
       return null;
     }
     return <DialogComponent {...(props as DialogModalProps)} />;

@@ -106,7 +106,6 @@ export const PromoBar: React.FC<PromoBarProps> = ({
   position,
   icon,
   animation,
-  duration,
   format,
   brandConfig
 }) => {

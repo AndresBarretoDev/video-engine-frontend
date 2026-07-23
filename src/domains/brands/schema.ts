@@ -5,16 +5,20 @@ import { z } from 'zod';
 export const createBrandSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100),
   description: z.string().max(500).optional(),
-  logoUrl: z.string().url().optional(),
+  logoUrl: z.string().url().optional()
 });
 
 export type CreateBrandInput = z.infer<typeof createBrandSchema>;
 
-const hexColorField = z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a valid hex color').optional().or(z.literal(''));
+const hexColorField = z
+  .string()
+  .regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a valid hex color')
+  .optional()
+  .or(z.literal(''));
 
 export const customColorSchema = z.object({
   name: z.string().min(1, 'Color name is required').max(50),
-  hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a valid hex color'),
+  hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a valid hex color')
 });
 
 export type CustomColorInput = z.infer<typeof customColorSchema>;
@@ -49,14 +53,16 @@ export const brandTokensEditSchema = z.object({
 
   // ─── Structure — layout selectors ─────────────────────────────────────────
   promoBarStyle: z.enum(['top', 'bottom']).optional(),
-  productOverlayPosition: z.enum(['bottom-right', 'bottom-left', 'center']).optional(),
+  productOverlayPosition: z
+    .enum(['bottom-right', 'bottom-left', 'center'])
+    .optional(),
 
   // ─── Typography ───────────────────────────────────────────────────────────
   fontHeading: z.string().max(100).optional(),
   fontBody: z.string().max(100).optional(),
 
   // ─── Font asset URLs (comma or newline-separated CSS stylesheet URLs) ──────
-  fontUrls: z.string().max(2000).optional(),
+  fontUrls: z.string().max(2000).optional()
 });
 
 export type BrandTokensEditInput = z.infer<typeof brandTokensEditSchema>;

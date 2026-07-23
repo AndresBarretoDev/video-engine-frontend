@@ -117,7 +117,9 @@ export function VariationGrid({
             {data.items.map(variation => {
               const override = variation.props._templateOverride;
               const effectiveTemplateId =
-                typeof override === 'string' && override ? override : templateId;
+                typeof override === 'string' && override
+                  ? override
+                  : templateId;
               return (
                 <VariationCard
                   key={variation.index}

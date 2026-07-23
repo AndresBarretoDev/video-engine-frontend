@@ -26,20 +26,25 @@
   /* ========================================
    * Semantic Transitions — Button
    * ======================================== */
-  --transition-btn-hover-bg: background-position var(--duration-slow) var(--easing-premium),
+  --transition-btn-hover-bg:
+    background-position var(--duration-slow) var(--easing-premium),
     box-shadow var(--duration-slow) var(--easing-premium),
     opacity var(--duration-slow) var(--easing-premium);
-  --transition-btn-hover-content: color var(--duration-standard) var(--easing-ui),
+  --transition-btn-hover-content:
+    color var(--duration-standard) var(--easing-ui),
     transform var(--duration-standard) var(--easing-ui);
-  --transition-btn-press: transform var(--duration-fast) var(--easing-ui),
+  --transition-btn-press:
+    transform var(--duration-fast) var(--easing-ui),
     background-color var(--duration-fast) var(--easing-ui);
 
   /* ========================================
    * Semantic Transitions — Card
    * ======================================== */
-  --transition-card-hover: transform var(--duration-standard) var(--easing-ui),
+  --transition-card-hover:
+    transform var(--duration-standard) var(--easing-ui),
     box-shadow var(--duration-standard) var(--easing-ui);
-  --transition-card-featured: background-position var(--duration-slow) var(--easing-premium),
+  --transition-card-featured:
+    background-position var(--duration-slow) var(--easing-premium),
     box-shadow var(--duration-slow) var(--easing-premium);
 
   /* ========================================

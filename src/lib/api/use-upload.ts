@@ -30,8 +30,8 @@ async function uploadFile(file: File): Promise<UploadResponse> {
     formData,
     {
       withCredentials: true,
-      headers: { 'Content-Type': 'multipart/form-data' },
-    },
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }
   );
 
   return response.data;
@@ -42,6 +42,6 @@ export function useUploadFile() {
     mutationFn: uploadFile,
     onError: (error: Error) => {
       toast.error(error.message || layoutTextMap.imageUpload.uploadFailed);
-    },
+    }
   });
 }

@@ -124,7 +124,8 @@ export const renderJobsTextMaps = {
   // Dashboard
   renderDashboard: 'Render Jobs',
   noBatches: 'No render batches yet',
-  noBatchesDescription: 'Select variations in the Data Engine and click "Send to Render" to create your first batch.',
+  noBatchesDescription:
+    'Select variations in the Data Engine and click "Send to Render" to create your first batch.',
   searchPlaceholder: 'Search batches…',
   filterByStatus: 'Filter by status',
   allStatuses: 'All statuses',
@@ -137,7 +138,8 @@ export const renderJobsTextMaps = {
   cancelBatch: 'Cancel Batch',
   retryFailed: 'Retry Failed',
   downloadAll: 'Download All',
-  confirmCancelBatch: 'Are you sure you want to cancel all remaining jobs in this batch?',
+  confirmCancelBatch:
+    'Are you sure you want to cancel all remaining jobs in this batch?',
   confirmRetryFailed: 'This will retry all failed jobs in the batch. Continue?',
   noJobs: 'No jobs in this batch',
 
@@ -170,5 +172,5 @@ export const renderJobsTextMaps = {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   },
   resolutionLabel: (w: number, h: number) => `${w}×${h}`,
-  durationLabel: (seconds: number) => `${seconds}s`,
+  durationLabel: (seconds: number) => `${seconds}s`
 } as const;

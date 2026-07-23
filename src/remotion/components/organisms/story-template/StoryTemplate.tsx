@@ -29,7 +29,6 @@ export const StoryTemplate: React.FC<StoryTemplateProps> = ({
 }) => {
   const contentStart = HOOK_DURATION;
   const outroStart = totalDuration - OUTRO_DURATION;
-  const contentDuration = Math.max(outroStart - contentStart, 1);
 
   const productStart = contentStart + PRODUCT_OFFSET;
   const productDuration = Math.max(outroStart - productStart, 1);

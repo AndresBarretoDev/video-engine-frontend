@@ -17,8 +17,7 @@ export const renderJobKeys = {
     [...renderJobKeys.lists(projectId), filters ?? {}] as const,
   details: () => ['render-jobs', 'detail'] as const,
   detail: (jobId: string) => [...renderJobKeys.details(), jobId] as const,
-  progress: (jobId: string) =>
-    ['render-jobs', 'progress', jobId] as const,
+  progress: (jobId: string) => ['render-jobs', 'progress', jobId] as const,
 
   // Batches
   batches: (projectId: string) =>
@@ -29,5 +28,5 @@ export const renderJobKeys = {
     [...renderJobKeys.batches(projectId), batchId] as const,
 
   // Outputs
-  outputs: (jobId: string) => ['render-jobs', 'outputs', jobId] as const,
+  outputs: (jobId: string) => ['render-jobs', 'outputs', jobId] as const
 };

@@ -31,8 +31,6 @@ const SAMPLE_SIZE = 10;
 
 function isNumberValue(val: string): boolean {
   if (val.trim() === '') return false;
-  // Handle common number formats: 1,234.56 or 1.234,56 (Spanish)
-  const cleaned = val.replace(/[,.\s]/g, '').replace(',', '.');
   return (
     !isNaN(parseFloat(val.replace(/,/g, ''))) &&
     isFinite(Number(val.replace(/,/g, '')))

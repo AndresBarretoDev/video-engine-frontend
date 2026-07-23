@@ -34,7 +34,15 @@
       "padding": { "x": 32 }
     },
     "utility_gaps": {
-      "positive": { "gap_4": 4, "gap_6": 6, "gap_8": 8, "gap_12": 12, "gap_16": 16, "gap_24": 24, "gap_32": 32 },
+      "positive": {
+        "gap_4": 4,
+        "gap_6": 6,
+        "gap_8": 8,
+        "gap_12": 12,
+        "gap_16": 16,
+        "gap_24": 24,
+        "gap_32": 32
+      },
       "negative": { "tight": -1, "overlap": -32 }
     },
     "usage_notes": {
