@@ -8,7 +8,7 @@
  * retry path usable regardless of whether telemetry succeeds.
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { sendTelemetryEvent } from '@/lib/telemetry/client';
 import { createTelemetryEvent } from '@/lib/telemetry/contracts';
 
@@ -39,8 +39,12 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const retryButtonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     recordGlobalErrorTelemetry(error);
+    // Deterministic focus target for keyboard/AT users on this full-page failure.
+    retryButtonRef.current?.focus();
   }, [error]);
 
   return (
@@ -52,6 +56,7 @@ export default function GlobalError({
             An unexpected error occurred. You can try again.
           </p>
           <button
+            ref={retryButtonRef}
             type="button"
             onClick={() => reset()}
             className="rounded-md border px-4 py-2 text-sm"

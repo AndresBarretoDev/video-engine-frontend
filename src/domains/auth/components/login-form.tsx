@@ -12,7 +12,6 @@ import { authTextMaps } from '@/domains/auth/text-maps';
 import { EyePassword } from '@/components/atoms/eye-password';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Card,
   CardContent,
@@ -25,6 +24,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage
 } from '@/components/ui/form';
 
@@ -75,9 +75,9 @@ export function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <Label className="text-foreground">
+                  <FormLabel className="text-foreground">
                     {authTextMaps.emailLabel}
-                  </Label>
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -97,9 +97,9 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <Label className="text-foreground">
+                  <FormLabel className="text-foreground">
                     {authTextMaps.passwordLabel}
-                  </Label>
+                  </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -123,7 +123,9 @@ export function LoginForm() {
             />
 
             {serverError && (
-              <p className="text-destructive text-sm">{serverError}</p>
+              <p className="text-destructive text-sm" role="alert">
+                {serverError}
+              </p>
             )}
 
             <Button

@@ -84,6 +84,9 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# E2E real-auth credentials (never commit — see .env.e2e.example)
+.env.e2e
+
 # vercel
 .vercel
 
@@ -137,3 +140,8 @@ $RECYCLE.BIN/
 
 .cursor
 *storybook.log
+
+# Playwright artifacts
+test-results/
+playwright-report/
+playwright/.cache/

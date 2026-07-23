@@ -9,6 +9,7 @@
  * Spec: SPEC-LAYOUT-007
  */
 
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -42,7 +43,7 @@ export function AppBreadcrumbs() {
     <Breadcrumb>
       <BreadcrumbList>
         {crumbs.map((crumb, index) => (
-          <span key={crumb.href} className="flex items-center gap-1.5">
+          <Fragment key={crumb.href}>
             {index > 0 && <BreadcrumbSeparator />}
             <BreadcrumbItem>
               {crumb.isLast ? (
@@ -53,7 +54,7 @@ export function AppBreadcrumbs() {
                 </BreadcrumbLink>
               )}
             </BreadcrumbItem>
-          </span>
+          </Fragment>
         ))}
       </BreadcrumbList>
     </Breadcrumb>

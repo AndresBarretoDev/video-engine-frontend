@@ -1,12 +1,18 @@
+'use client';
+
 /**
  * OP Video Engine — Error Alert
  *
  * Displays an error message with an optional retry button.
  * Uses shadcn Alert component.
  *
+ * Recovery focus: the moment a recoverable failure becomes visible, focus
+ * moves deterministically to the retry action — no keyboard hunting.
+ *
  * Spec: SPEC-CROSS-002
  */
 
+import { useEffect, useRef } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
@@ -23,15 +29,30 @@ export function ErrorAlert({
   message = layoutTextMap.errors.retry,
   onRetry
 }: ErrorAlertProps) {
+  const retryButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    // Mount-only: focus once when the alert appears. Call sites pass a
+    // fresh inline `onRetry` on every render, so depending on it here
+    // would steal focus back on every parent re-render.
+    if (onRetry) retryButtonRef.current?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="flex flex-col items-start gap-4">
       <Alert variant="destructive" className="max-w-lg">
-        <AlertCircle className="size-4" />
+        <AlertCircle className="size-4" aria-hidden />
         <AlertTitle>{title}</AlertTitle>
         <AlertDescription>{message}</AlertDescription>
       </Alert>
       {onRetry && (
-        <Button variant="outline" size="sm" onClick={onRetry}>
+        <Button
+          ref={retryButtonRef}
+          variant="outline"
+          size="sm"
+          onClick={onRetry}
+        >
           {layoutTextMap.actions.retry}
         </Button>
       )}
