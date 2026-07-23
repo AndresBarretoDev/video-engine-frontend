@@ -27,6 +27,7 @@
     "lint:check": "eslint src --max-warnings=0",
     "type:check": "tsc --noEmit --incremental false",
     "test:unit": "vitest run",
+    "test:e2e": "playwright test",
     "check:ci": "pnpm run format:check && pnpm run lint:check && pnpm run type:check && pnpm run test:unit"
   },
   "dependencies": {
