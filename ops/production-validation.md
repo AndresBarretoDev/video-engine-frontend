@@ -1,6 +1,6 @@
 # Frontend Production Validation Handoff
 
-Status: `OWNER_BUILD_RECORDED` (F4 acceptance still `PENDING`)
+Status: `PENDING_F4_EVIDENCE`
 
 F1 establishes Node/pnpm identity, package/lock atomicity, and deterministic non-writing checks. It does not build, validate, or accept a release artifact.
 
