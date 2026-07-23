@@ -11,9 +11,49 @@
 
 import type { AxiosError } from 'axios';
 import axios from 'axios';
+import { sendTelemetryEvent } from '@/lib/telemetry/client';
+import {
+  createTelemetryEvent,
+  type TelemetryOutcome,
+  type TelemetryRecoveryClass
+} from '@/lib/telemetry/contracts';
 import { getMockResponse } from './mock-client';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+
+/* ========================================
+ * Telemetry
+ * Emits exactly one coarse, allowlisted diagnostic per boundary
+ * outcome. Never alters the error thrown to the caller.
+ * ======================================== */
+export function recordApiBoundaryTelemetry(params: {
+  route?: string;
+  status: number;
+  isAuthEndpoint: boolean;
+}): void {
+  try {
+    const attemptsAutomaticRetry =
+      params.status === 401 && !params.isAuthEndpoint;
+    const outcome: TelemetryOutcome = attemptsAutomaticRetry
+      ? 'recovered'
+      : 'unrecovered';
+    const recoveryClass: TelemetryRecoveryClass = attemptsAutomaticRetry
+      ? 'retry'
+      : 'none';
+
+    const event = createTelemetryEvent({
+      name: 'apiContractFailure',
+      route: params.route,
+      boundary: 'apiClient',
+      outcome,
+      recoveryClass
+    });
+
+    sendTelemetryEvent(event);
+  } catch {
+    // Telemetry must never affect the API boundary contract.
+  }
+}
 
 /* ========================================
  * Custom Error Class
@@ -80,6 +120,13 @@ httpClient.interceptors.response.use(
 
     // Only attempt refresh on 401, and not for auth endpoints themselves
     const isAuthEndpoint = originalRequest?.url?.startsWith('/auth/');
+
+    // Exactly one diagnostic per boundary outcome, before any recovery logic runs.
+    recordApiBoundaryTelemetry({
+      route: originalRequest?.url,
+      status,
+      isAuthEndpoint: Boolean(isAuthEndpoint)
+    });
     if (status === 401 && !isAuthEndpoint && originalRequest) {
       if (isRefreshing) {
         // Another refresh is in progress — queue this request
