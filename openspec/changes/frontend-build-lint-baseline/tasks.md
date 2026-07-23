@@ -56,4 +56,4 @@ For every unit, typecheck/unit/diff-check means `pnpm run type:check`, `pnpm run
 - [~] 3.1 **RED** — not run as a separate branch; residual full-source failures were captured in the JD audit. Process ceremony skipped.
 - [x] 3.2 **GREEN/REFACTOR**: `lint:check` set to full `src` with `--max-warnings=0`; no new ignores or global suppressions; no F1 behavior changes (dual re-judgment confirmed additive-only config).
 - [x] 3.3 Ran all unit + aggregate gates; zero lint errors/warnings over full `src`; no generated artifacts committed.
-- [ ] 3.4 Owner only: from an isolated candidate run frozen install and `pnpm build`; record exit, candidate SHA/tree, config/lock hashes, and `.next/BUILD_ID` in `ops/production-validation.md`. **← STILL PENDING (owner-run).**
+- [x] 3.4 Owner only: from an isolated candidate run frozen install and `pnpm build`; record exit, candidate SHA/tree, config/lock hashes, and `.next/BUILD_ID` in `ops/production-validation.md`. Done: owner build exit 0 (no errors), frozen install exit 0, candidate `08b4e24`, BUILD_ID `QFsbA9L7E36SWf1fWel1N` — see `ops/production-validation.md`. **← STILL PENDING (owner-run).**
