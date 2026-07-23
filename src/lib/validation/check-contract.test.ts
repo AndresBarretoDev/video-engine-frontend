@@ -357,7 +357,7 @@ describe('frontend runtime contract', () => {
 
   it('marks the prior verification report as non-authoritative', () => {
     const report = readRepositoryFile(
-      'openspec/changes/frontend-runtime-check-contract/verify-report.md'
+      'openspec/changes/archive/2026-07-23-frontend-runtime-check-contract/source/verify-report.md'
     );
 
     expect(report).toMatch(/^# Superseded Verification Report/);
