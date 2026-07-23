@@ -26,12 +26,33 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
  * Emits exactly one coarse, allowlisted diagnostic per boundary
  * outcome. Never alters the error thrown to the caller.
  * ======================================== */
+
+// React Query's default `retry: 1` (src/lib/providers.tsx) means a single
+// failing endpoint is retried automatically once (~1s backoff) before the
+// failure ever reaches the UI. Each attempt fails at the HTTP layer
+// independently, so without this guard the same boundary outcome would emit
+// one diagnostic per attempt instead of exactly one — violating the
+// documented contract above. Window comfortably covers the default backoff
+// without suppressing a genuinely new failure on the same route/status.
+const RECENT_FAILURE_WINDOW_MS = 3000;
+const recentFailures = new Map<string, number>();
+
+function isDuplicateWithinWindow(key: string): boolean {
+  const now = Date.now();
+  const last = recentFailures.get(key);
+  recentFailures.set(key, now);
+  return last !== undefined && now - last < RECENT_FAILURE_WINDOW_MS;
+}
+
 export function recordApiBoundaryTelemetry(params: {
   route?: string;
   status: number;
   isAuthEndpoint: boolean;
 }): void {
   try {
+    const dedupeKey = `${params.route ?? 'unknown'}:${params.status}`;
+    if (isDuplicateWithinWindow(dedupeKey)) return;
+
     const attemptsAutomaticRetry =
       params.status === 401 && !params.isAuthEndpoint;
     const recoveryClass: TelemetryRecoveryClass = attemptsAutomaticRetry
