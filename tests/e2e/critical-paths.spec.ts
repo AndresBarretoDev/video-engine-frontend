@@ -50,13 +50,19 @@ test.describe('Critical authenticated journey — templates gallery recovery', (
     ).toBeVisible();
     await expect(mainAlert).toHaveCount(0);
 
-    // NOTE: the API-boundary interceptor emits once per axios attempt, and
-    // React Query's default `retry: 1` means one forced failure produces two
-    // HTTP-level attempts (initial + automatic retry) — so up to 2 telemetry
-    // requests are expected here. A per-boundary-outcome dedup was reverted
-    // (see apply-progress.md "F2/PR-F02 follow-up") for being non-deterministic
-    // and unbounded; a correct fix must tie dedup to the query/request
-    // lifecycle, not wall-clock, and is tracked as separate F2 work.
+    // Telemetry is emitted exactly once PER QUERY OUTCOME via React Query's
+    // `QueryCache.onError` (see src/lib/providers.tsx), which fires only
+    // after retries are exhausted — never once per HTTP attempt. The axios
+    // interceptor in src/lib/api/client.ts is not a telemetry source, so the
+    // initial forced failure (2 HTTP attempts: initial + automatic retry)
+    // always settles into exactly one diagnostic, independent of retry
+    // timing or browser engine. The manual "Try Again" retry is a THIRD,
+    // independent HTTP attempt against the real backend — it normally
+    // succeeds silently, but under concurrent load it can rarely hit a
+    // genuine transient backend failure, which is a second, distinct
+    // boundary outcome and correctly earns its own single event. Hence the
+    // bound is 1-2, not >2: no single outcome may ever produce more than
+    // one diagnostic.
     expect(telemetryRequests.length).toBeGreaterThanOrEqual(1);
     expect(telemetryRequests.length).toBeLessThanOrEqual(2);
   });

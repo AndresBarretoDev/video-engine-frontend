@@ -18,7 +18,7 @@ beforeEach(() => {
 });
 
 describe('api client boundary wiring', () => {
-  it('preserves the public API surface and emits exactly one allowlisted event per failure', async () => {
+  it('preserves the public API surface and is not itself a telemetry emission source', async () => {
     const apiClientModule = await import('@/lib/api/client');
     const { sendTelemetryEvent } = await import('./client');
 
@@ -26,42 +26,13 @@ describe('api client boundary wiring', () => {
     expect(typeof apiClientModule.ApiError).toBe('function');
     expect(apiClientModule.httpClient).toBeDefined();
 
-    apiClientModule.recordApiBoundaryTelemetry({
-      route: '/api/render-jobs',
-      status: 500,
-      isAuthEndpoint: false
-    });
-
-    expect(sendTelemetryEvent).toHaveBeenCalledTimes(1);
-    const event = vi.mocked(sendTelemetryEvent).mock.calls[0][0];
-    expect(Object.keys(event).sort()).toEqual(ALLOWED_KEYS);
-    expect(event.boundary).toBe('apiClient');
-    expect(event.outcome).toBe('unrecovered');
-  });
-
-  it('classifies a non-auth 401 as an attempted retry recovery and never throws on transport failure', async () => {
-    const { recordApiBoundaryTelemetry } = await import('@/lib/api/client');
-    const { sendTelemetryEvent } = await import('./client');
-
-    recordApiBoundaryTelemetry({
-      route: '/api/projects',
-      status: 401,
-      isAuthEndpoint: false
-    });
-    const event = vi.mocked(sendTelemetryEvent).mock.calls[0][0];
-    expect(event.recoveryClass).toBe('retry');
-    expect(event.outcome).toBe('unrecovered');
-
-    vi.mocked(sendTelemetryEvent).mockImplementationOnce(() => {
-      throw new Error('transport exploded');
-    });
-    expect(() =>
-      recordApiBoundaryTelemetry({
-        route: '/api/projects',
-        status: 500,
-        isAuthEndpoint: false
-      })
-    ).not.toThrow();
+    // Regression guard: the per-HTTP-attempt emitter must stay removed.
+    // React Query's `retry: 1` means one logical outcome can trigger 2+
+    // HTTP attempts — an interceptor-level emitter would duplicate events.
+    expect(
+      (apiClientModule as Record<string, unknown>).recordApiBoundaryTelemetry
+    ).toBeUndefined();
+    expect(sendTelemetryEvent).not.toHaveBeenCalled();
   });
 });
 
@@ -131,7 +102,45 @@ describe('joint apiClient + React Query wiring (exactly-once)', () => {
 
     expect(sendTelemetryEvent).toHaveBeenCalledTimes(1);
     expect(vi.mocked(sendTelemetryEvent).mock.calls[0][0].boundary).toBe(
-      'apiClient'
+      'queryCache'
+    );
+  });
+
+  it('emits exactly one event per outcome even when React Query retries the apiClient call across multiple HTTP attempts', async () => {
+    // Regression test for the real matrix defect: with `retry: 1`, a single
+    // logical query outcome produced 2+ telemetry events because the axios
+    // interceptor emitted once PER ATTEMPT. The fix ties emission to the
+    // query lifecycle (onError, after retries exhaust) instead of wall-clock
+    // HTTP attempts.
+    const { apiClient, httpClient } = await import('@/lib/api/client');
+    const { createAppQueryClient } = await import('@/lib/providers');
+    const { sendTelemetryEvent } = await import('./client');
+    const originalAdapter = httpClient.defaults.adapter;
+    let attempts = 0;
+    httpClient.defaults.adapter = () => {
+      attempts += 1;
+      return Promise.reject({
+        config: { url: '/x' },
+        response: { status: 500 }
+      });
+    };
+
+    await expect(
+      createAppQueryClient().fetchQuery({
+        queryKey: ['wiring-joint-retry-failure'],
+        queryFn: () => apiClient('/x'),
+        retry: 1,
+        retryDelay: 0
+      })
+    ).rejects.toBeInstanceOf(Error);
+    httpClient.defaults.adapter = originalAdapter;
+
+    // Proves the retry actually happened (the condition that used to
+    // multiply telemetry events) while the outcome is still recorded once.
+    expect(attempts).toBeGreaterThanOrEqual(2);
+    expect(sendTelemetryEvent).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(sendTelemetryEvent).mock.calls[0][0].boundary).toBe(
+      'queryCache'
     );
   });
 });

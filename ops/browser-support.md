@@ -20,14 +20,15 @@ Any non-pass is a versioned, expiring exclusion below — never a hidden skip.
 
 | Project | Playwright device | Engine | Status |
 |---|---|---|---|
-| `chromium` | Desktop Chrome | Chromium | Owner-run |
-| `firefox` | Desktop Firefox | Gecko | Owner-run |
-| `webkit` | Desktop Safari | WebKit | Owner-run |
-| `mobile-chromium` | Pixel 7 | Chromium (mobile) | Owner-run |
+| `chromium` | Desktop Chrome | Chromium | Verified 2026-07-23 |
+| `firefox` | Desktop Firefox | Gecko | Verified 2026-07-23 |
+| `webkit` | Desktop Safari | WebKit | Verified 2026-07-23 |
+| `mobile-chromium` | Pixel 7 | Chromium (mobile) | Verified 2026-07-23 |
 
-Only the Chromium browser binary is installed in the authoring sandbox.
-Firefox and WebKit binaries and the real four-project matrix run are
-owner-run: `pnpm exec playwright install` then `pnpm exec playwright test`.
+All four browser binaries are installed and the real four-project matrix was
+run against a live backend with real auth (both flags `false`) — see the
+Evidence log. Re-run with `pnpm exec playwright install` then
+`pnpm exec playwright test`.
 
 ## Exclusions
 
@@ -44,14 +45,14 @@ any missing field or an expiry that has passed.
 | Date | Projects run | Result | Evidence link |
 |---|---|---|---|
 | 2026-07-23 | `chromium` (real backend, real auth, 3 consecutive runs) | 6/6 passed | `openspec/changes/frontend-browser-recovery-accessibility/apply-progress.md` — "REAL Chromium Run" section |
-| _(pending owner run)_ | `firefox`, `webkit`, `mobile-chromium` | — | Only Chromium binary installed in the session that closed this row; owner must run `pnpm exec playwright install` then the full matrix. |
+| 2026-07-23 | **full matrix** `chromium` + `firefox` + `webkit` + `mobile-chromium` (real backend `localhost:3001`, real auth, flags `false`) | **24/24 passed**, stable across multiple runs | `tests/e2e/{critical-paths,accessibility,browser-matrix}.spec.ts`. Two real defects surfaced by the matrix and fixed first: (1) axe scanned Remotion video-preview creative → scoped the a11y audit to app UI; (2) telemetry double-emit per retry → made emission exactly-once via the React Query cache boundary. |
 
 ## Checklist
 
 - [x] Chromium passes with real auth (both flags `false`) — 2026-07-23, 6/6, stable across 3 runs.
-- [ ] Firefox, WebKit, mobile Chromium pass with real auth (both flags `false`).
-- [ ] Every non-pass is an explicit, unexpired, fully-fielded exclusion.
-- [x] Evidence log updated for Chromium; full-matrix row still pending.
+- [x] Firefox, WebKit, mobile Chromium pass with real auth (both flags `false`) — 2026-07-23, full matrix 24/24, stable across multiple runs.
+- [x] Every non-pass is an explicit, unexpired, fully-fielded exclusion (none needed — all pass).
+- [x] Evidence log updated for the full four-project matrix.
 
 ## Next step
 

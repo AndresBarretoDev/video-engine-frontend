@@ -84,20 +84,6 @@ function resolveTimestamp(explicit: unknown): string {
     : new Date().toISOString();
 }
 
-const recordedErrors = new WeakSet<object>();
-
-/** Tags an error as already recorded, so a downstream boundary can skip it. */
-export function markTelemetryRecorded(error: unknown): void {
-  if (error !== null && typeof error === 'object') recordedErrors.add(error);
-}
-
-/** True when `markTelemetryRecorded` already tagged this exact error. */
-export function isTelemetryRecorded(error: unknown): boolean {
-  return (
-    error !== null && typeof error === 'object' && recordedErrors.has(error)
-  );
-}
-
 /**
  * Creates a single, immutable telemetry event from raw boundary input.
  * Every field outside this allowlist is dropped before transport.
