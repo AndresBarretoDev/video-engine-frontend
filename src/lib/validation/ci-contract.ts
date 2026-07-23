@@ -142,6 +142,37 @@ export function validateSharedCandidateIdentity(
       ];
 }
 
+const DISPATCH_GUARD = /if:\s*.*github\.event_name\s*==\s*'workflow_dispatch'/;
+export function validateOwnerDispatchGate(
+  workflowYaml: string,
+  jobNames: string[]
+): string[] {
+  return jobNames
+    .filter(job => !DISPATCH_GUARD.test(extractJobBlock(workflowYaml, job)))
+    .map(job => `Job "${job}" must be gated to run only on workflow_dispatch`);
+}
+
+export function validatePermissions(workflowYaml: string): string[] {
+  const match = workflowYaml.match(/^permissions:\n((?:\s+.+\n?)+)/m);
+  if (!match) return ['Workflow must declare a top-level permissions block'];
+  return /write-all|:\s*write\b/.test(match[1])
+    ? ['Workflow permissions must be least-privilege (no write access)']
+    : [];
+}
+
+export function validateCandidateShaCheckout(
+  workflowYaml: string,
+  jobName: string
+): string[] {
+  const [, after = ''] =
+    extractJobBlock(workflowYaml, jobName).match(
+      /uses:\s*actions\/checkout@v4\n((?:\s{8,}.+\n?)*)/
+    ) ?? [];
+  return /ref:\s*.*candidate_sha/.test(after)
+    ? []
+    : [`Job "${jobName}" checkout must pin ref to the candidate_sha input`];
+}
+
 export function validateWorkflowContract(workflowYaml: string): string[] {
   return [
     ...validateNoInjectedCommands(workflowYaml),
@@ -154,6 +185,10 @@ export function validateWorkflowContract(workflowYaml: string): string[] {
     ...validateConcurrency(workflowYaml),
     ...validateCleanupRetention(workflowYaml, 7),
     ...validateStagingGate(workflowYaml),
-    ...validateSharedCandidateIdentity(workflowYaml)
+    ...validateSharedCandidateIdentity(workflowYaml),
+    ...validateOwnerDispatchGate(workflowYaml, ['build', 'staging-gate']),
+    ...validatePermissions(workflowYaml),
+    ...validateCandidateShaCheckout(workflowYaml, 'build'),
+    ...validateCandidateShaCheckout(workflowYaml, 'staging-gate')
   ];
 }

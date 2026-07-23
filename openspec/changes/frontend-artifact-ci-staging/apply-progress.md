@@ -19,7 +19,7 @@ staging execution and image build/publish/deploy remain explicitly **owner-run**
 | `src/lib/validation/ci-contract.test.ts` | Create | 154 |
 | `.github/workflows/frontend-ci.yml` | Create | 109 |
 | `tests/e2e/staging.spec.ts` | Create | 103 |
-| `ops/production-validation.md` | Modify | +70/-14 |
+| `ops/production-validation.md` | Modify | +56/-14 (`git diff --stat`: `1 file changed, 56 insertions(+), 14 deletions(-)`) |
 
 Gross diff ~982 lines across 11 files — over the 330-400 "authored changed
 lines" forecast in `tasks.md`. Deviation: the forecast did not anticipate the

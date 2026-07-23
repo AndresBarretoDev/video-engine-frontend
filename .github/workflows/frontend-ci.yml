@@ -16,6 +16,9 @@ on:
         description: 'Owner-supplied staging API target'
         required: true
 
+permissions:
+  contents: read
+
 concurrency:
   group: frontend-ci-${{ github.ref }}
   cancel-in-progress: true
@@ -43,11 +46,13 @@ jobs:
   build:
     name: Owner-run production build
     needs: [checks]
-    if: success()
+    if: ${{ github.event_name == 'workflow_dispatch' && success() }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.candidate_sha }}
       - uses: pnpm/action-setup@v4
         with:
           version: 10.15.1
@@ -75,12 +80,14 @@ jobs:
   staging-gate:
     name: Real staging validation gate
     needs: [build]
-    if: success()
+    if: ${{ github.event_name == 'workflow_dispatch' && success() }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment: staging
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.candidate_sha }}
       - uses: pnpm/action-setup@v4
         with:
           version: 10.15.1

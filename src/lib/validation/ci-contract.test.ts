@@ -4,12 +4,15 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import {
+  validateCandidateShaCheckout,
   validateCleanupRetention,
   validateConcurrency,
   validateFixedCommands,
   validateJobNeeds,
   validateJobTimeout,
   validateNoInjectedCommands,
+  validateOwnerDispatchGate,
+  validatePermissions,
   validateSharedCandidateIdentity,
   validateStagingGate,
   validateWorkflowContract
@@ -144,6 +147,33 @@ describe('fixed repo-local commands', () => {
 
   it('accepts the real workflow fixed commands', () => {
     expect(validateFixedCommands(realWorkflow)).toEqual([]);
+  });
+});
+
+describe('owner-dispatch gating, least-privilege permissions, pinned checkout', () => {
+  it('gates jobs, restricts permissions, and pins checkout to candidate_sha', () => {
+    expect(
+      validateOwnerDispatchGate('jobs:\n  build:\n    if: success()\n', [
+        'build'
+      ])
+    ).toContain('Job "build" must be gated to run only on workflow_dispatch');
+    ['name: x\n', 'permissions:\n  contents: write\n'].forEach(yaml =>
+      expect(validatePermissions(yaml)).not.toEqual([])
+    );
+    expect(
+      validateCandidateShaCheckout(
+        'jobs:\n  build:\n    steps:\n      - uses: actions/checkout@v4\n',
+        'build'
+      )
+    ).not.toEqual([]);
+    expect(
+      validateOwnerDispatchGate(realWorkflow, ['build', 'staging-gate'])
+    ).toEqual([]);
+    expect(validatePermissions(realWorkflow)).toEqual([]);
+    expect(validateCandidateShaCheckout(realWorkflow, 'build')).toEqual([]);
+    expect(validateCandidateShaCheckout(realWorkflow, 'staging-gate')).toEqual(
+      []
+    );
   });
 });
 
