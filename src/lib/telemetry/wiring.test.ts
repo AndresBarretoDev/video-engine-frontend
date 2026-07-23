@@ -50,7 +50,7 @@ describe('api client boundary wiring', () => {
     });
     const event = vi.mocked(sendTelemetryEvent).mock.calls[0][0];
     expect(event.recoveryClass).toBe('retry');
-    expect(event.outcome).toBe('recovered');
+    expect(event.outcome).toBe('unrecovered');
 
     vi.mocked(sendTelemetryEvent).mockImplementationOnce(() => {
       throw new Error('transport exploded');
@@ -108,6 +108,31 @@ describe('React Query boundary wiring', () => {
       })
     ).resolves.toBe('ok');
     expect(sendTelemetryEvent).not.toHaveBeenCalled();
+  });
+});
+
+describe('joint apiClient + React Query wiring (exactly-once)', () => {
+  it('emits exactly one event when a queryFn failure comes from apiClient', async () => {
+    const { apiClient, httpClient } = await import('@/lib/api/client');
+    const { createAppQueryClient } = await import('@/lib/providers');
+    const { sendTelemetryEvent } = await import('./client');
+    const originalAdapter = httpClient.defaults.adapter;
+    httpClient.defaults.adapter = () =>
+      Promise.reject({ config: { url: '/x' }, response: { status: 500 } });
+
+    await expect(
+      createAppQueryClient().fetchQuery({
+        queryKey: ['wiring-joint-failure'],
+        queryFn: () => apiClient('/x'),
+        retry: false
+      })
+    ).rejects.toBeInstanceOf(Error);
+    httpClient.defaults.adapter = originalAdapter;
+
+    expect(sendTelemetryEvent).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(sendTelemetryEvent).mock.calls[0][0].boundary).toBe(
+      'apiClient'
+    );
   });
 });
 

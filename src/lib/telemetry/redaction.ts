@@ -46,7 +46,10 @@ export function redactRoute(value: unknown): string {
     if (url.username || url.password) return 'unknown';
     if (isAbsolute && PRIVATE_HOSTNAME_PATTERN.test(url.hostname))
       return 'unknown';
-    return (isAbsolute ? url.pathname : path).slice(0, MAX_LENGTH) || '/';
+    const finalPath =
+      (isAbsolute ? url.pathname : path).slice(0, MAX_LENGTH) || '/';
+    // Tokens in the retained path itself must be dropped too, not just the query string.
+    return FORBIDDEN_PATTERN.test(finalPath) ? 'unknown' : finalPath;
   } catch {
     return 'unknown';
   }

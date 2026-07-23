@@ -22,6 +22,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { sendTelemetryEvent } from '@/lib/telemetry/client';
 import {
   createTelemetryEvent,
+  isTelemetryRecorded,
   type TelemetryBoundary
 } from '@/lib/telemetry/contracts';
 import { useThemeStore } from '@/domains/layout/stores/theme-store';
@@ -30,8 +31,13 @@ import { useThemeStore } from '@/domains/layout/stores/theme-store';
  * Emits exactly one coarse, allowlisted diagnostic for a React Query
  * cache failure. React Query alone owns the retry/error surfaced to
  * callers — this is a side effect only, never a second failure path.
+ * Skips errors already tagged by the originating boundary (e.g. apiClient).
  */
-function recordQueryBoundaryTelemetry(boundary: TelemetryBoundary): void {
+function recordQueryBoundaryTelemetry(
+  boundary: TelemetryBoundary,
+  error: unknown
+): void {
+  if (isTelemetryRecorded(error)) return;
   try {
     const event = createTelemetryEvent({
       name: 'apiContractFailure',
@@ -50,10 +56,10 @@ function recordQueryBoundaryTelemetry(boundary: TelemetryBoundary): void {
 export function createAppQueryClient(): QueryClient {
   return new QueryClient({
     queryCache: new QueryCache({
-      onError: () => recordQueryBoundaryTelemetry('queryCache')
+      onError: error => recordQueryBoundaryTelemetry('queryCache', error)
     }),
     mutationCache: new MutationCache({
-      onError: () => recordQueryBoundaryTelemetry('mutationCache')
+      onError: error => recordQueryBoundaryTelemetry('mutationCache', error)
     }),
     defaultOptions: {
       queries: {

@@ -26,6 +26,7 @@ describe('redactRoute', () => {
     ['http://192.168.1.5/admin', 'unknown'],
     ['https://service.internal/status', 'unknown'],
     ['https://app.example.com/dashboard?secret=1', '/dashboard'],
+    ['/reset-password/eyJhbGciOiJIUzI1NiJ9', 'unknown'],
     [{ route: '/x' }, 'unknown'],
     [['/x'], 'unknown'],
     [new Error('/private?token=abc'), 'unknown']

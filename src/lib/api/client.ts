@@ -14,7 +14,7 @@ import axios from 'axios';
 import { sendTelemetryEvent } from '@/lib/telemetry/client';
 import {
   createTelemetryEvent,
-  type TelemetryOutcome,
+  markTelemetryRecorded,
   type TelemetryRecoveryClass
 } from '@/lib/telemetry/contracts';
 import { getMockResponse } from './mock-client';
@@ -34,18 +34,16 @@ export function recordApiBoundaryTelemetry(params: {
   try {
     const attemptsAutomaticRetry =
       params.status === 401 && !params.isAuthEndpoint;
-    const outcome: TelemetryOutcome = attemptsAutomaticRetry
-      ? 'recovered'
-      : 'unrecovered';
     const recoveryClass: TelemetryRecoveryClass = attemptsAutomaticRetry
       ? 'retry'
       : 'none';
 
+    // Always 'unrecovered': recorded before any refresh/retry resolves.
     const event = createTelemetryEvent({
       name: 'apiContractFailure',
       route: params.route,
       boundary: 'apiClient',
-      outcome,
+      outcome: 'unrecovered',
       recoveryClass
     });
 
@@ -67,6 +65,17 @@ export class ApiError extends Error {
     super(message);
     this.name = 'ApiError';
   }
+}
+
+/** Builds an `ApiError` tagged as already-recorded to prevent a duplicate. */
+function createRecordedApiError(
+  message: string,
+  status: number,
+  code?: string
+): ApiError {
+  const apiError = new ApiError(message, status, code);
+  markTelemetryRecorded(apiError);
+  return apiError;
 }
 
 /* ========================================
@@ -120,6 +129,8 @@ httpClient.interceptors.response.use(
 
     // Only attempt refresh on 401, and not for auth endpoints themselves
     const isAuthEndpoint = originalRequest?.url?.startsWith('/auth/');
+    const sessionExpiredError = () =>
+      createRecordedApiError('Session expired', 401, 'SESSION_EXPIRED');
 
     // Exactly one diagnostic per boundary outcome, before any recovery logic runs.
     recordApiBoundaryTelemetry({
@@ -135,7 +146,7 @@ httpClient.interceptors.response.use(
             if (success) {
               resolve(httpClient(originalRequest));
             } else {
-              reject(new ApiError('Session expired', 401, 'SESSION_EXPIRED'));
+              reject(sessionExpiredError());
             }
           });
         });
@@ -156,7 +167,7 @@ httpClient.interceptors.response.use(
         if (typeof window !== 'undefined') {
           window.location.href = '/login';
         }
-        throw new ApiError('Session expired', 401, 'SESSION_EXPIRED');
+        throw sessionExpiredError();
       }
     }
 
@@ -168,7 +179,7 @@ httpClient.interceptors.response.use(
     // AuthProvider catches the error and sets isAuthenticated: false.
     // Do NOT redirect here or it causes an infinite loop on /login.
 
-    throw new ApiError(message, status, code);
+    throw createRecordedApiError(message, status, code);
   }
 );
 

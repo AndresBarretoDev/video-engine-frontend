@@ -67,6 +67,9 @@ reliably scope RED/GREEN checks to this feature.
   (exported, testable without React rendering); added `QueryCache`/
   `MutationCache` `onError` side-effect hooks only. `defaultOptions`,
   provider tree, and `Providers` component behavior unchanged.
+- `src/lib/validation/check-contract.test.ts` (+1/-1) — repoints the archived
+  F1 verify-report path assertion; this diff is what fixes that assertion
+  (not merely a pre-existing/unrelated failure, as previously stated below).
 
 ## Diff Size
 
@@ -86,15 +89,9 @@ merging files the design explicitly lists as separate.
 
 ## Test Results
 
-- Focused: `npx vitest run src/lib/telemetry` → **4 files, 32 tests, all passed**.
-- Full suite: `pnpm test` → **14 files passed / 1 pre-existing failure, 339/340
-  tests passed**. The 1 failure
-  (`src/lib/validation/check-contract.test.ts > ... marks the prior
-  verification report as non-authoritative`) is pre-existing and unrelated:
-  it expects `openspec/changes/frontend-runtime-check-contract/verify-report.md`,
-  which no longer exists on this branch after the F1 change was archived.
-  Confirmed present (same failure, same error) via `git stash` before any of
-  this session's edits — not introduced by this work.
+- Focused: `npx vitest run src/lib/telemetry` → **4 files, 35 tests, all
+  passed** (post-correction; includes the new exactly-once joint test).
+- Full suite: `pnpm test` → **15 files passed, 340/340 tests passed.**
 - `pnpm run type:check` → exit 0.
 - `pnpm run lint:check -- src/lib/telemetry src/lib/api/client.ts src/lib/providers.tsx src/app/global-error.tsx` → exit 0.
 - `pnpm exec prettier --check` on all touched files → all pass (note:
@@ -130,6 +127,8 @@ merging files the design explicitly lists as separate.
    event is emitted optimistically rather than reflecting final success/failure
    of the retry. Documented as a design simplification, not a spec violation
    (spec requires "exactly one diagnostic," not delayed/confirmed outcome).
+   **Update:** fixed in Post-Review Correction — outcome is now always
+   `unrecovered` at this point; `recoveryClass: 'retry'` stays a mechanism tag.
 3. **Real destination/browser proof is explicitly out of scope for F2** per
    design ("F3 supplies supporting browser evidence only") — this apply pass
    only covers the Vitest/node-environment layer.
@@ -137,3 +136,8 @@ merging files the design explicitly lists as separate.
    is exercised only via its extracted pure `recordGlobalErrorTelemetry`
    function and a `typeof` check on the default export, per the explicit
    "no jsdom-only substitute" instruction.
+5. **Post-review fixes:** duplicate telemetry when a `queryFn` wraps
+   `apiClient` (fixed via `markTelemetryRecorded`/`isTelemetryRecorded`,
+   `contracts.ts`, `WeakSet`; proven by the new joint test in
+   `wiring.test.ts`); `redactRoute` leaking tokens in the retained path
+   (fixed — redacted there too, not just the stripped query string).
