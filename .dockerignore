@@ -1,0 +1,17 @@
+node_modules
+.git
+.next
+.env
+.env.*
+!.env.e2e.example
+tests
+docs
+openspec
+ops
+.storybook
+storybook-static
+coverage
+playwright-report
+test-results
+.github
+*.md
