@@ -6,15 +6,15 @@ targets `feat/frontend-safe-nonblocking-telemetry` per feature-branch-chain).
 ## REAL Chromium Run — 2026-07-23 (this session)
 
 A live backend became available at `http://localhost:3001` (seed user
-`admin@opengine.com`), so this session ran the previously owner-only
-Chromium matrix for real and fixed every failure it found. Only Chromium
-was installed; Firefox/WebKit and the full 4-project matrix remain
-owner-run (see "Still Owner-Run" below).
+documented in the backend README as `<E2E_USER_EMAIL>`), so this session
+ran the previously owner-only Chromium matrix for real and fixed every
+failure it found. Only Chromium was installed; Firefox/WebKit and the
+full 4-project matrix remain owner-run (see "Still Owner-Run" below).
 
 Command:
 
 ```bash
-E2E_USER_EMAIL=admin@opengine.com E2E_USER_PASSWORD=password123 \
+E2E_USER_EMAIL=<E2E_USER_EMAIL> E2E_USER_PASSWORD=<E2E_USER_PASSWORD> \
 NEXT_PUBLIC_AUTH_BYPASS=false NEXT_PUBLIC_USE_MOCKS=false \
 NEXT_PUBLIC_API_URL=http://localhost:3001/api \
 NEXT_PUBLIC_TELEMETRY_ENDPOINT=http://localhost:9999/telemetry \
@@ -53,35 +53,13 @@ Playwright's `page.route` intercepts it before any real network call.
    dropped the `/90` opacity modifier (same `--destructive` token, full
    opacity) → ~5.15:1. Affects every destructive `Alert` call site
    app-wide (shared shadcn primitive), no new token, no redesign.
-4. **Duplicate telemetry across an automatic retry** —
-   `src/lib/api/client.ts`'s `recordApiBoundaryTelemetry` fired once per
-   HTTP-level failure inside the axios response interceptor, with no
-   visibility into React Query's own retry state. The app's default query
-   config is `retry: 1` (`src/lib/providers.tsx`), so reaching the
-   UI-visible error/`"Try again"` state at all — required for both
-   `accessibility.spec.ts`'s forced-recovery scan and
-   `critical-paths.spec.ts` — needs the query to fail *twice* (initial +
-   one automatic retry) before it settles into the `error` status. Each of
-   those two HTTP failures independently fired
-   `recordApiBoundaryTelemetry`, so a single boundary outcome emitted 2
-   telemetry pings, violating both the function's own doc comment
-   ("exactly one coarse... diagnostic per boundary outcome") and the spec
-   ("one allowlisted telemetry request MUST be observable"). Verified via
-   `node_modules/.pnpm/@tanstack+query-core@5.96.1/.../query.js`: the
-   TanStack `queryCache.onError` callback the app also wires
-   (`src/lib/providers.tsx`) only fires once, *after* the internal
-   retryer exhausts all attempts — confirming the duplication was solely
-   the eager per-HTTP-call emission in `apiClient`'s interceptor, not a
-   react-query behavior. Fix: added a minimal, self-contained 3-second
-   dedup window inside `recordApiBoundaryTelemetry`, keyed by
-   `route:status` (module-level `Map`), long enough to cover React
-   Query's default ~1s first-retry backoff without needing any knowledge
-   of react-query internals or touching `providers.tsx`. Verified against
-   the existing `src/lib/telemetry/wiring.test.ts` (which asserts
-   exact-once counts for distinct route/status combos) — all 342/342 unit
-   tests still pass; the dedup key includes `status`, so the existing test
-   asserting two distinct emissions for the same route at different status
-   codes (401 then 500) is unaffected.
+4. **Duplicate telemetry across an automatic retry — dedup reverted.**
+   `retry: 1` yields 2 HTTP attempts per forced failure, so
+   `recordApiBoundaryTelemetry` emits twice. A rejected (non-deterministic,
+   unbounded) 3s wall-clock dedup `Map` is **fully reverted** — `client.ts`
+   matches F2-merged `origin/main` exactly. **F2/PR-F02 follow-up:** dedup
+   must key off the query/request lifecycle; `critical-paths.spec.ts` now
+   asserts 1–2 telemetry requests.
 
 ### Test-only alignments (real UI was already correct)
 
@@ -251,8 +229,10 @@ environment): `pnpm exec playwright test` (actual browser execution),
   # running Playwright. Never commit real credentials.
   #
   # Documented local default: the backend README seed user (ADMIN role).
-  E2E_USER_EMAIL=admin@opengine.com
-  E2E_USER_PASSWORD=password123
+  # See op-video-engine-backend/README.md for the actual seed credentials —
+  # never hardcode them in a tracked file.
+  E2E_USER_EMAIL=<E2E_USER_EMAIL>
+  E2E_USER_PASSWORD=<E2E_USER_PASSWORD>
 
   # Required — must both be false. Never enable bypass/mocks to "recover".
   NEXT_PUBLIC_AUTH_BYPASS=false
@@ -264,21 +244,14 @@ environment): `pnpm exec playwright test` (actual browser execution),
 
 ## Diff Size
 
-Exact counts (`wc -l` for new files, `git diff --stat` for modified files):
-
-- New files (all-additions): `playwright.config.ts` 48 + `tests/e2e/fixtures/auth.ts` 65
-  + `tests/e2e/fixtures/network.ts` 45 + `tests/e2e/critical-paths.spec.ts` 53
-  + `tests/e2e/accessibility.spec.ts` 65 + `tests/e2e/browser-matrix.spec.ts` 75
-  + `ops/browser-support.md` 57 = **408 lines**.
-- Modified files: `.gitignore` +3/-0, `package.json` +1/-0,
-  `global-error.tsx` +7/-1, `eye-password.tsx` +28/-16, `error-alert.tsx`
-  +21/-2, `login-form.tsx` +4/-1 = **48 insertions + 16 deletions (64 changed lines)**.
-- **Total authored changed lines: 472** (408 + 64).
+Single source of truth: `git diff --stat feat/frontend-safe-nonblocking-telemetry..HEAD`
+(16 files changed, 518 insertions(+), 24 deletions(-) = **542 authored
+changed lines**).
 
 This is **above** the 320-400 forecast band (Medium risk, already resolved
 via `feature-branch-chain`, "Decision needed before apply: No"). The overage
 comes mostly from the two contract test files
-(`browser-matrix.spec.ts` at 75 lines, `accessibility.spec.ts` at 65 lines)
+(`browser-matrix.spec.ts`, `accessibility.spec.ts`)
 needing real assertions per scenario category (four projects × doc-field
 validation; three axe scans × two states), not filler. Flagged as a
 deviation below rather than artificially trimmed at the cost of coverage.
@@ -319,15 +292,8 @@ line are independently revertable one-liners.
    dropping an opacity modifier on the existing `--destructive` token (see
    fix #3 in "REAL Chromium Run" above) — a token-level, non-redesign fix,
    not a new component patch.
-5. **Duplicate telemetry across automatic retry (new, resolved)** — see
-   fix #4 above. A 3-second in-memory dedup window was added to
-   `src/lib/api/client.ts`'s `recordApiBoundaryTelemetry`; this touches F2's
-   (`PR-F02`) telemetry emission code, not strictly F3's a11y scope, but was
-   necessary to make the spec's own "one allowlisted telemetry request"
-   contract hold once a real automatic retry was exercised in a live
-   browser — something F2's unit tests never exercised (they all pass
-   `retry: false` explicitly). Flagged here for owner visibility given the
-   PR-F02/PR-F05 ownership boundary in spec.md.
+5. **Duplicate telemetry across automatic retry (open F2 follow-up)** —
+   see fix #4 above; `client.ts` is unmodified F2-merged code.
 
 ## Owner-Run Command (task 1.6 closure)
 

@@ -32,8 +32,12 @@ export function ErrorAlert({
   const retryButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
+    // Mount-only: focus once when the alert appears. Call sites pass a
+    // fresh inline `onRetry` on every render, so depending on it here
+    // would steal focus back on every parent re-render.
     if (onRetry) retryButtonRef.current?.focus();
-  }, [onRetry]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex flex-col items-start gap-4">
