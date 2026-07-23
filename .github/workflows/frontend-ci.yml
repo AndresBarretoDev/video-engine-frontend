@@ -1,0 +1,116 @@
+name: Frontend CI
+
+# Owner-dispatched CI (F4, PR-F03/PR-F04). Checks run on review PRs; the
+# build and staging-gate jobs require an owner workflow_dispatch supplying
+# the candidate SHA and staging API target — this workflow never mutates
+# remote branch-protection settings and never auto-promotes on cancel.
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      candidate_sha:
+        description: 'Reviewed candidate commit SHA to build and promote'
+        required: true
+      api_url:
+        description: 'Owner-supplied staging API target'
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: frontend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Named focused checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run format:check
+      - run: pnpm run lint:check
+      - run: pnpm run type:check
+      - run: pnpm run test:unit
+
+  build:
+    name: Owner-run production build
+    needs: [checks]
+    if: ${{ github.event_name == 'workflow_dispatch' && success() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.candidate_sha }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build candidate (identity passed via env, never interpolated in a shell command)
+        run: pnpm run build
+        env:
+          NEXT_PUBLIC_BUILD_SHA: ${{ github.event.inputs.candidate_sha || github.sha }}
+          NEXT_PUBLIC_API_URL: ${{ github.event.inputs.api_url }}
+      - name: Upload BUILD_ID evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-id-${{ github.sha }}
+          path: .next/BUILD_ID
+          retention-days: 7
+      - name: Clean build cache
+        if: always()
+        run: rm -rf .next/cache
+
+  staging-gate:
+    name: Real staging validation gate
+    needs: [build]
+    if: ${{ github.event_name == 'workflow_dispatch' && success() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.candidate_sha }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Playwright staging journey (real auth, both flags false)
+        run: pnpm exec playwright test tests/e2e/staging.spec.ts --project=chromium
+        env:
+          NEXT_PUBLIC_AUTH_BYPASS: 'false'
+          NEXT_PUBLIC_USE_MOCKS: 'false'
+          NEXT_PUBLIC_BUILD_SHA: ${{ github.event.inputs.candidate_sha || github.sha }}
+          PLAYWRIGHT_BASE_URL: ${{ vars.STAGING_BASE_URL }}
+      - name: Upload staging evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-evidence-${{ github.sha }}
+          path: playwright-report/
+          retention-days: 7
+      - name: Clean staging credentials from runner
+        if: always()
+        run: rm -rf ~/.cache/ms-playwright
