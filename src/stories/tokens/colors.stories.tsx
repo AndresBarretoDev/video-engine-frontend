@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 const ColorSwatch = ({
   name,
   value,
-  textColor = 'white',
+  textColor = 'white'
 }: {
   name: string;
   value: string;
@@ -23,7 +23,7 @@ const ColorSwatch = ({
       padding: '6px 4px',
       fontSize: 10,
       fontWeight: 600,
-      border: '1px solid rgba(255,255,255,0.1)',
+      border: '1px solid rgba(255,255,255,0.1)'
     }}
   >
     <span>{name}</span>
@@ -36,7 +36,7 @@ const ColorSwatch = ({
 const SurfacePair = ({
   level,
   bg,
-  contrast,
+  contrast
 }: {
   level: string;
   bg: string;
@@ -48,7 +48,7 @@ const SurfacePair = ({
       borderRadius: 12,
       overflow: 'hidden',
       border: '1px solid rgba(255,255,255,0.1)',
-      marginBottom: 8,
+      marginBottom: 8
     }}
   >
     <div
@@ -61,7 +61,7 @@ const SurfacePair = ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 11,
+        fontSize: 11
       }}
     >
       <strong>Level {level} BG</strong>
@@ -79,7 +79,7 @@ const SurfacePair = ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 11,
+        fontSize: 11
       }}
     >
       <strong>Contrast</strong>
@@ -94,7 +94,7 @@ const StatusBadge = ({
   label,
   bg,
   text,
-  border,
+  border
 }: {
   label: string;
   bg: string;
@@ -112,7 +112,7 @@ const StatusBadge = ({
       fontWeight: 600,
       background: bg,
       color: text,
-      border: `1px solid ${border}`,
+      border: `1px solid ${border}`
     }}
   >
     <div
@@ -120,7 +120,7 @@ const StatusBadge = ({
         width: 8,
         height: 8,
         borderRadius: '50%',
-        background: text,
+        background: text
       }}
     />
     {label}
@@ -129,7 +129,7 @@ const StatusBadge = ({
 
 const Section = ({
   title,
-  children,
+  children
 }: {
   title: string;
   children: React.ReactNode;
@@ -140,7 +140,7 @@ const Section = ({
         fontSize: 16,
         fontWeight: 600,
         color: '#8C8C8C',
-        marginBottom: 16,
+        marginBottom: 16
       }}
     >
       {title}
@@ -156,7 +156,7 @@ function ColorsPage() {
         background: '#000',
         color: '#F5F5F5',
         padding: 32,
-        fontFamily: 'Mulish, sans-serif',
+        fontFamily: 'Mulish, sans-serif'
       }}
     >
       <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>
@@ -205,7 +205,7 @@ function ColorsPage() {
             fontSize: 13,
             color: '#6E6E6E',
             marginTop: 16,
-            marginBottom: 8,
+            marginBottom: 8
           }}
         >
           Disabled
@@ -281,7 +281,7 @@ function ColorsPage() {
                 fontWeight: 600,
                 fontFamily: 'monospace',
                 color: alpha > 60 ? '#000' : '#888',
-                border: '1px solid rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.05)'
               }}
             >
               {alpha}
@@ -307,7 +307,7 @@ function ColorsPage() {
                 fontWeight: 600,
                 fontFamily: 'monospace',
                 color: alpha > 60 ? '#fff' : '#aaa',
-                border: alpha === 0 ? '1px dashed #333' : '1px solid rgba(255,255,255,0.05)',
+                border: alpha === 0 ? '1px dashed #333' : '1px solid rgba(255,255,255,0.05)'
               }}
             >
               {alpha}
@@ -332,7 +332,7 @@ function ColorsPage() {
                 fontSize: 9,
                 fontWeight: 600,
                 fontFamily: 'monospace',
-                color: alpha > 40 ? '#fff' : '#aaa',
+                color: alpha > 40 ? '#fff' : '#aaa'
               }}
             >
               {alpha}
@@ -348,8 +348,8 @@ const meta = {
   title: 'Design Tokens/Colors',
   component: ColorsPage,
   parameters: {
-    layout: 'fullscreen',
-  },
+    layout: 'fullscreen'
+  }
 } satisfies Meta<typeof ColorsPage>;
 
 export default meta;

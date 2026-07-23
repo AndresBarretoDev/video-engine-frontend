@@ -26,7 +26,9 @@ import { BrandConfigSchema } from '@/remotion/types/brand-config.types';
 export const StayPromoSlotsSchema = z.object({
   listingName: z.string().default('Beautiful Beach House'),
   location: z.string().default('Malibu, California'),
-  heroImage: z.string().default('https://placehold.co/1080x920/FF5A5F/FFFFFF?text=Stay'),
+  heroImage: z
+    .string()
+    .default('https://placehold.co/1080x920/FF5A5F/FFFFFF?text=Stay'),
   rating: z.string().default('4.92'),
   reviewCount: z.string().optional(),
   pricePerNight: z.string().default('250'),

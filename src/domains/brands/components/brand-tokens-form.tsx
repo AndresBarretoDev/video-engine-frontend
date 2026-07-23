@@ -26,20 +26,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription,
+  FormDescription
 } from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 
 import { brandTokensEditSchema } from '../schema';
 import type { BrandTokensEditInput } from '../schema';
-import type { BrandConfig, BrandDesignTokens } from '../types';
+import type { BrandConfig } from '../types';
 import { brandsTextMaps } from '../text-maps';
 import { useUpdateBrandTokens } from '../hooks/use-brands';
 import { ColorPickerField } from './color-picker-field';
@@ -55,15 +55,21 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
   const { mutate: updateTokens, isPending } = useUpdateBrandTokens(brand.id);
 
   const existingTokens = brand.tokens as Record<string, unknown> | undefined;
-  const existingColors = (existingTokens?.colors as Record<string, string>) ?? {};
+  const existingColors =
+    (existingTokens?.colors as Record<string, string>) ?? {};
   const existingFonts = (existingTokens?.fonts as Record<string, string>) ?? {};
   const existingCustomColors =
     (existingTokens?.customColors as { name: string; hex: string }[]) ?? [];
-  const existingRadius = (existingTokens?.radius as Record<string, number>) ?? {};
-  const existingStroke = (existingTokens?.stroke as Record<string, number>) ?? {};
-  const existingStructure = (existingTokens?.structure as Record<string, string>) ?? {};
+  const existingRadius =
+    (existingTokens?.radius as Record<string, number>) ?? {};
+  const existingStroke =
+    (existingTokens?.stroke as Record<string, number>) ?? {};
+  const existingStructure =
+    (existingTokens?.structure as Record<string, string>) ?? {};
   const existingFontUrls =
-    (existingTokens?.assets as { fonts?: string[] } | undefined)?.fonts?.join('\n') ?? '';
+    (existingTokens?.assets as { fonts?: string[] } | undefined)?.fonts?.join(
+      '\n'
+    ) ?? '';
 
   const defaultValues = useMemo<BrandTokensEditInput>(
     () => ({
@@ -89,32 +95,39 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
       strokeBadge: existingStroke.badge ?? 1,
 
       // Structure
-      cortinillaEntrada: (existingStructure.cortinillaEntrada as 'fade' | 'none' | 'slide') ?? 'fade',
-      cortinillaCierre: (existingStructure.cortinillaCierre as 'fade' | 'none' | 'slide') ?? 'fade',
-      promoBarStyle: (existingStructure.promoBarStyle as 'top' | 'bottom') ?? 'bottom',
+      cortinillaEntrada:
+        (existingStructure.cortinillaEntrada as 'fade' | 'none' | 'slide') ??
+        'fade',
+      cortinillaCierre:
+        (existingStructure.cortinillaCierre as 'fade' | 'none' | 'slide') ??
+        'fade',
+      promoBarStyle:
+        (existingStructure.promoBarStyle as 'top' | 'bottom') ?? 'bottom',
       productOverlayPosition:
-        (existingStructure.productOverlayPosition as 'bottom-right' | 'bottom-left' | 'center') ??
-        'bottom-right',
+        (existingStructure.productOverlayPosition as
+          | 'bottom-right'
+          | 'bottom-left'
+          | 'center') ?? 'bottom-right',
 
       // Typography
       fontHeading: existingFonts.heading ?? '',
       fontBody: existingFonts.body ?? '',
 
       // Font URLs
-      fontUrls: existingFontUrls,
+      fontUrls: existingFontUrls
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [brand.id],
+    [brand.id]
   );
 
   const form = useForm<BrandTokensEditInput>({
     resolver: zodResolver(brandTokensEditSchema),
-    defaultValues,
+    defaultValues
   });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: 'customColors',
+    name: 'customColors'
   });
 
   const watchedValues = form.watch();
@@ -139,10 +152,10 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-foreground text-lg font-semibold">
             {brandsTextMaps.tokensEditorTitle}
           </h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {brandsTextMaps.tokensEditorDescription}
           </p>
         </div>
@@ -152,10 +165,9 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
           {/* ── Left column — form fields ─────────────────────────────────── */}
           <div className="space-y-6 lg:col-span-3">
-
             {/* ── Section: Core colors ──────────────────────────────────────── */}
             <div className="space-y-4">
-              <h3 className="text-sm font-medium text-muted-foreground">
+              <h3 className="text-muted-foreground text-sm font-medium">
                 {brandsTextMaps.sectionColors}
               </h3>
 
@@ -219,10 +231,10 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
             {/* ── Section: Surfaces & Text ──────────────────────────────────── */}
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-muted-foreground">
+                <h3 className="text-muted-foreground text-sm font-medium">
                   {brandsTextMaps.sectionSurfacesAndText}
                 </h3>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-muted-foreground mt-0.5 text-xs">
                   {brandsTextMaps.sectionSurfacesDescription}
                 </p>
               </div>
@@ -338,7 +350,7 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
             {/* ── Section: Custom Colors ────────────────────────────────────── */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium text-muted-foreground">
+                <h3 className="text-muted-foreground text-sm font-medium">
                   {brandsTextMaps.sectionCustomColors}
                 </h3>
                 <Button
@@ -356,7 +368,7 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
               {fields.map((field, index) => (
                 <div key={field.id} className="flex items-end gap-3">
                   <div className="flex-1 space-y-1.5">
-                    <label className="text-sm font-medium text-foreground">
+                    <label className="text-foreground text-sm font-medium">
                       {brandsTextMaps.customColorName}
                     </label>
                     <Input
@@ -365,8 +377,11 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                       className="text-sm"
                     />
                     {form.formState.errors.customColors?.[index]?.name && (
-                      <p className="text-xs text-destructive">
-                        {form.formState.errors.customColors[index]?.name?.message}
+                      <p className="text-destructive text-xs">
+                        {
+                          form.formState.errors.customColors[index]?.name
+                            ?.message
+                        }
                       </p>
                     )}
                   </div>
@@ -374,9 +389,16 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   <div className="space-y-1.5">
                     <ColorPickerField
                       label=""
-                      value={form.watch(`customColors.${index}.hex`) ?? '#000000'}
-                      onChange={(val) => form.setValue(`customColors.${index}.hex`, val)}
-                      error={form.formState.errors.customColors?.[index]?.hex?.message}
+                      value={
+                        form.watch(`customColors.${index}.hex`) ?? '#000000'
+                      }
+                      onChange={val =>
+                        form.setValue(`customColors.${index}.hex`, val)
+                      }
+                      error={
+                        form.formState.errors.customColors?.[index]?.hex
+                          ?.message
+                      }
                     />
                   </div>
 
@@ -384,7 +406,7 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="size-9 shrink-0 text-destructive hover:text-destructive"
+                    className="text-destructive hover:text-destructive size-9 shrink-0"
                     onClick={() => remove(index)}
                   >
                     <Trash2 className="size-4" />
@@ -393,7 +415,7 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
               ))}
 
               {fields.length === 0 && (
-                <p className="text-xs text-muted-foreground py-2">
+                <p className="text-muted-foreground py-2 text-xs">
                   {brandsTextMaps.addCustomColor}
                 </p>
               )}
@@ -404,10 +426,10 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
             {/* ── Section: Shape ────────────────────────────────────────────── */}
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-muted-foreground">
+                <h3 className="text-muted-foreground text-sm font-medium">
                   {brandsTextMaps.sectionShape}
                 </h3>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-muted-foreground mt-0.5 text-xs">
                   {brandsTextMaps.sectionShapeDescription}
                 </p>
               </div>
@@ -419,15 +441,21 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   name="radiusButton"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">{brandsTextMaps.labelRadiusButton}</FormLabel>
+                      <FormLabel className="text-xs">
+                        {brandsTextMaps.labelRadiusButton}
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={0}
                           {...field}
                           value={field.value ?? ''}
-                          onChange={(e) =>
-                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          onChange={e =>
+                            field.onChange(
+                              e.target.value === ''
+                                ? undefined
+                                : Number(e.target.value)
+                            )
                           }
                           className="text-sm"
                         />
@@ -441,15 +469,21 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   name="radiusBadge"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">{brandsTextMaps.labelRadiusBadge}</FormLabel>
+                      <FormLabel className="text-xs">
+                        {brandsTextMaps.labelRadiusBadge}
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={0}
                           {...field}
                           value={field.value ?? ''}
-                          onChange={(e) =>
-                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          onChange={e =>
+                            field.onChange(
+                              e.target.value === ''
+                                ? undefined
+                                : Number(e.target.value)
+                            )
                           }
                           className="text-sm"
                         />
@@ -463,15 +497,21 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   name="radiusImage"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">{brandsTextMaps.labelRadiusImage}</FormLabel>
+                      <FormLabel className="text-xs">
+                        {brandsTextMaps.labelRadiusImage}
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={0}
                           {...field}
                           value={field.value ?? ''}
-                          onChange={(e) =>
-                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          onChange={e =>
+                            field.onChange(
+                              e.target.value === ''
+                                ? undefined
+                                : Number(e.target.value)
+                            )
                           }
                           className="text-sm"
                         />
@@ -489,15 +529,21 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   name="strokeButton"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">{brandsTextMaps.labelStrokeButton}</FormLabel>
+                      <FormLabel className="text-xs">
+                        {brandsTextMaps.labelStrokeButton}
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={0}
                           {...field}
                           value={field.value ?? ''}
-                          onChange={(e) =>
-                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          onChange={e =>
+                            field.onChange(
+                              e.target.value === ''
+                                ? undefined
+                                : Number(e.target.value)
+                            )
                           }
                           className="text-sm"
                         />
@@ -511,15 +557,21 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   name="strokeCard"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">{brandsTextMaps.labelStrokeCard}</FormLabel>
+                      <FormLabel className="text-xs">
+                        {brandsTextMaps.labelStrokeCard}
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={0}
                           {...field}
                           value={field.value ?? ''}
-                          onChange={(e) =>
-                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          onChange={e =>
+                            field.onChange(
+                              e.target.value === ''
+                                ? undefined
+                                : Number(e.target.value)
+                            )
                           }
                           className="text-sm"
                         />
@@ -533,15 +585,21 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   name="strokeBadge"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-xs">{brandsTextMaps.labelStrokeBadge}</FormLabel>
+                      <FormLabel className="text-xs">
+                        {brandsTextMaps.labelStrokeBadge}
+                      </FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={0}
                           {...field}
                           value={field.value ?? ''}
-                          onChange={(e) =>
-                            field.onChange(e.target.value === '' ? undefined : Number(e.target.value))
+                          onChange={e =>
+                            field.onChange(
+                              e.target.value === ''
+                                ? undefined
+                                : Number(e.target.value)
+                            )
                           }
                           className="text-sm"
                         />
@@ -558,10 +616,10 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
             {/* ── Section: Structure ────────────────────────────────────────── */}
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-muted-foreground">
+                <h3 className="text-muted-foreground text-sm font-medium">
                   {brandsTextMaps.sectionStructure}
                 </h3>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-muted-foreground mt-0.5 text-xs">
                   {brandsTextMaps.sectionStructureDescription}
                 </p>
               </div>
@@ -572,17 +630,28 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   name="cortinillaEntrada"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{brandsTextMaps.labelCortinillaEntrada}</FormLabel>
-                      <Select value={field.value ?? 'fade'} onValueChange={field.onChange}>
+                      <FormLabel>
+                        {brandsTextMaps.labelCortinillaEntrada}
+                      </FormLabel>
+                      <Select
+                        value={field.value ?? 'fade'}
+                        onValueChange={field.onChange}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="fade">{brandsTextMaps.optionFade}</SelectItem>
-                          <SelectItem value="none">{brandsTextMaps.optionNone}</SelectItem>
-                          <SelectItem value="slide">{brandsTextMaps.optionSlide}</SelectItem>
+                          <SelectItem value="fade">
+                            {brandsTextMaps.optionFade}
+                          </SelectItem>
+                          <SelectItem value="none">
+                            {brandsTextMaps.optionNone}
+                          </SelectItem>
+                          <SelectItem value="slide">
+                            {brandsTextMaps.optionSlide}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -595,17 +664,28 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   name="cortinillaCierre"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{brandsTextMaps.labelCortinillaCierre}</FormLabel>
-                      <Select value={field.value ?? 'fade'} onValueChange={field.onChange}>
+                      <FormLabel>
+                        {brandsTextMaps.labelCortinillaCierre}
+                      </FormLabel>
+                      <Select
+                        value={field.value ?? 'fade'}
+                        onValueChange={field.onChange}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="fade">{brandsTextMaps.optionFade}</SelectItem>
-                          <SelectItem value="none">{brandsTextMaps.optionNone}</SelectItem>
-                          <SelectItem value="slide">{brandsTextMaps.optionSlide}</SelectItem>
+                          <SelectItem value="fade">
+                            {brandsTextMaps.optionFade}
+                          </SelectItem>
+                          <SelectItem value="none">
+                            {brandsTextMaps.optionNone}
+                          </SelectItem>
+                          <SelectItem value="slide">
+                            {brandsTextMaps.optionSlide}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -619,15 +699,22 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{brandsTextMaps.labelPromoBarStyle}</FormLabel>
-                      <Select value={field.value ?? 'bottom'} onValueChange={field.onChange}>
+                      <Select
+                        value={field.value ?? 'bottom'}
+                        onValueChange={field.onChange}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="top">{brandsTextMaps.optionTop}</SelectItem>
-                          <SelectItem value="bottom">{brandsTextMaps.optionBottom}</SelectItem>
+                          <SelectItem value="top">
+                            {brandsTextMaps.optionTop}
+                          </SelectItem>
+                          <SelectItem value="bottom">
+                            {brandsTextMaps.optionBottom}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -640,7 +727,9 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                   name="productOverlayPosition"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{brandsTextMaps.labelProductOverlayPosition}</FormLabel>
+                      <FormLabel>
+                        {brandsTextMaps.labelProductOverlayPosition}
+                      </FormLabel>
                       <Select
                         value={field.value ?? 'bottom-right'}
                         onValueChange={field.onChange}
@@ -657,7 +746,9 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                           <SelectItem value="bottom-left">
                             {brandsTextMaps.optionBottomLeft}
                           </SelectItem>
-                          <SelectItem value="center">{brandsTextMaps.optionCenter}</SelectItem>
+                          <SelectItem value="center">
+                            {brandsTextMaps.optionCenter}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -671,7 +762,7 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
 
             {/* ── Section: Typography ───────────────────────────────────────── */}
             <div className="space-y-4">
-              <h3 className="text-sm font-medium text-muted-foreground">
+              <h3 className="text-muted-foreground text-sm font-medium">
                 {brandsTextMaps.sectionTypography}
               </h3>
 
@@ -681,16 +772,23 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{brandsTextMaps.labelFontHeading}</FormLabel>
-                    <Select value={field.value ?? ''} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value ?? ''}
+                      onValueChange={field.onChange}
+                    >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={brandsTextMaps.placeholderFontHeading} />
+                          <SelectValue
+                            placeholder={brandsTextMaps.placeholderFontHeading}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {FONT_OPTIONS.map((font) => (
+                        {FONT_OPTIONS.map(font => (
                           <SelectItem key={font.value} value={font.value}>
-                            <span style={{ fontFamily: font.value }}>{font.label}</span>
+                            <span style={{ fontFamily: font.value }}>
+                              {font.label}
+                            </span>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -706,16 +804,23 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{brandsTextMaps.labelFontBody}</FormLabel>
-                    <Select value={field.value ?? ''} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value ?? ''}
+                      onValueChange={field.onChange}
+                    >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder={brandsTextMaps.placeholderFontBody} />
+                          <SelectValue
+                            placeholder={brandsTextMaps.placeholderFontBody}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {FONT_OPTIONS.map((font) => (
+                        {FONT_OPTIONS.map(font => (
                           <SelectItem key={font.value} value={font.value}>
-                            <span style={{ fontFamily: font.value }}>{font.label}</span>
+                            <span style={{ fontFamily: font.value }}>
+                              {font.label}
+                            </span>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -742,7 +847,7 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
                         value={field.value ?? ''}
                         placeholder={brandsTextMaps.placeholderFontUrls}
                         rows={3}
-                        className="text-sm font-mono resize-none"
+                        className="resize-none font-mono text-sm"
                       />
                     </FormControl>
                     <FormDescription className="text-xs">
@@ -757,25 +862,27 @@ export function BrandTokensForm({ brand }: BrandTokensFormProps) {
             <Separator />
 
             <Button type="submit" disabled={isPending}>
-              {isPending ? brandsTextMaps.saveTokens + '…' : brandsTextMaps.saveTokens}
+              {isPending
+                ? brandsTextMaps.saveTokens + '…'
+                : brandsTextMaps.saveTokens}
             </Button>
           </div>
 
           {/* ── Right column — live preview ───────────────────────────────── */}
-          <div className="lg:col-span-2 lg:sticky lg:top-24 lg:self-start">
+          <div className="lg:sticky lg:top-24 lg:col-span-2 lg:self-start">
             <BrandTokenPreview
               brandName={brand.name}
               colors={{
                 primary: watchedValues.colorPrimary ?? '',
                 secondary: watchedValues.colorSecondary ?? '',
-                accent: watchedValues.colorAccent ?? '',
+                accent: watchedValues.colorAccent ?? ''
               }}
               customColors={watchedValues.customColors?.filter(
-                (c): c is { name: string; hex: string } => !!c?.name && !!c?.hex,
+                (c): c is { name: string; hex: string } => !!c?.name && !!c?.hex
               )}
               fonts={{
                 heading: watchedValues.fontHeading ?? '',
-                body: watchedValues.fontBody ?? '',
+                body: watchedValues.fontBody ?? ''
               }}
             />
           </div>

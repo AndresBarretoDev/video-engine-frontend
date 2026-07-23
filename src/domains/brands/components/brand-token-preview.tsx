@@ -27,25 +27,25 @@ export function BrandTokenPreview({
   brandName,
   colors,
   customColors,
-  fonts,
+  fonts
 }: BrandTokenPreviewProps) {
   const headingFont = fonts.heading || 'inherit';
   const bodyFont = fonts.body || 'inherit';
 
   return (
     <div className="space-y-3">
-      <p className="text-sm font-medium text-muted-foreground">
+      <p className="text-muted-foreground text-sm font-medium">
         {brandsTextMaps.previewTitle}
       </p>
 
-      <div className="overflow-hidden rounded-[var(--radius-12)] border border-border">
+      <div className="border-border overflow-hidden rounded-[var(--radius-12)] border">
         {/* Header bar with primary color */}
         <div
           className="px-4 py-3"
           style={{ backgroundColor: colors.primary || '#1a1a1a' }}
         >
           <h3
-            className="text-lg font-bold text-white truncate"
+            className="truncate text-lg font-bold text-white"
             style={{ fontFamily: headingFont }}
           >
             {brandName || 'Brand Name'}
@@ -56,7 +56,7 @@ export function BrandTokenPreview({
         <div className="space-y-4 p-4">
           {/* Sample text */}
           <p
-            className="text-sm text-foreground leading-relaxed"
+            className="text-foreground text-sm leading-relaxed"
             style={{ fontFamily: bodyFont }}
           >
             {brandsTextMaps.previewSampleText}
@@ -67,10 +67,10 @@ export function BrandTokenPreview({
             {colors.primary && (
               <div className="flex items-center gap-2">
                 <div
-                  className="size-6 shrink-0 rounded-full border border-border"
+                  className="border-border size-6 shrink-0 rounded-full border"
                   style={{ backgroundColor: colors.primary }}
                 />
-                <span className="text-xs font-mono text-muted-foreground">
+                <span className="text-muted-foreground font-mono text-xs">
                   {colors.primary}
                 </span>
               </div>
@@ -78,10 +78,10 @@ export function BrandTokenPreview({
             {colors.secondary && (
               <div className="flex items-center gap-2">
                 <div
-                  className="size-6 shrink-0 rounded-full border border-border"
+                  className="border-border size-6 shrink-0 rounded-full border"
                   style={{ backgroundColor: colors.secondary }}
                 />
-                <span className="text-xs font-mono text-muted-foreground">
+                <span className="text-muted-foreground font-mono text-xs">
                   {colors.secondary}
                 </span>
               </div>
@@ -89,25 +89,27 @@ export function BrandTokenPreview({
             {colors.accent && (
               <div className="flex items-center gap-2">
                 <div
-                  className="size-6 shrink-0 rounded-full border border-border"
+                  className="border-border size-6 shrink-0 rounded-full border"
                   style={{ backgroundColor: colors.accent }}
                 />
-                <span className="text-xs font-mono text-muted-foreground">
+                <span className="text-muted-foreground font-mono text-xs">
                   {colors.accent}
                 </span>
               </div>
             )}
-            {customColors?.filter((c) => c.name && c.hex).map((c) => (
-              <div key={c.name} className="flex items-center gap-2">
-                <div
-                  className="size-6 shrink-0 rounded-full border border-border"
-                  style={{ backgroundColor: c.hex }}
-                />
-                <span className="text-xs font-mono text-muted-foreground">
-                  {c.name}
-                </span>
-              </div>
-            ))}
+            {customColors
+              ?.filter(c => c.name && c.hex)
+              .map(c => (
+                <div key={c.name} className="flex items-center gap-2">
+                  <div
+                    className="border-border size-6 shrink-0 rounded-full border"
+                    style={{ backgroundColor: c.hex }}
+                  />
+                  <span className="text-muted-foreground font-mono text-xs">
+                    {c.name}
+                  </span>
+                </div>
+              ))}
           </div>
 
           {/* Mock CTA button */}
@@ -115,7 +117,7 @@ export function BrandTokenPreview({
             className="rounded-[var(--radius-8)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
             style={{
               backgroundColor: colors.accent || colors.primary || '#1a1a1a',
-              fontFamily: headingFont,
+              fontFamily: headingFont
             }}
             type="button"
           >

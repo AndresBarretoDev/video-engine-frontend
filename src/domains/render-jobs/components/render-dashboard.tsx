@@ -17,7 +17,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { ErrorAlert } from '@/components/shared/error-alert';
@@ -36,7 +36,10 @@ function DashboardSkeleton() {
   return (
     <div className="space-y-4">
       {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="border-border rounded-[var(--radius-12)] border p-4">
+        <div
+          key={i}
+          className="border-border rounded-[var(--radius-12)] border p-4"
+        >
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Skeleton className="h-5 w-48" />
@@ -66,10 +69,18 @@ export function RenderDashboard({ projectId }: RenderDashboardProps) {
 
   // Polling is data-driven inside useRenderBatches: it auto-polls while any
   // batch is pending/processing and stops when all are terminal. No flag needed.
-  const { data: batches, isLoading, isError, refetch } = useRenderBatches(
-    projectId,
-    { status: statusFilter === 'all' ? undefined : statusFilter as RenderBatch['status'], search: search || undefined },
-  );
+  const {
+    data: batches,
+    isLoading,
+    isError,
+    refetch
+  } = useRenderBatches(projectId, {
+    status:
+      statusFilter === 'all'
+        ? undefined
+        : (statusFilter as RenderBatch['status']),
+    search: search || undefined
+  });
 
   // If a batch is selected, show its detail view
   if (selectedBatchId) {
@@ -97,11 +108,21 @@ export function RenderDashboard({ projectId }: RenderDashboardProps) {
             <SelectValue placeholder={renderJobsTextMaps.filterByStatus} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{renderJobsTextMaps.allStatuses}</SelectItem>
-            <SelectItem value="pending">{renderJobsTextMaps.statusQueued}</SelectItem>
-            <SelectItem value="processing">{renderJobsTextMaps.statusProcessing}</SelectItem>
-            <SelectItem value="completed">{renderJobsTextMaps.statusCompleted}</SelectItem>
-            <SelectItem value="failed">{renderJobsTextMaps.statusFailed}</SelectItem>
+            <SelectItem value="all">
+              {renderJobsTextMaps.allStatuses}
+            </SelectItem>
+            <SelectItem value="pending">
+              {renderJobsTextMaps.statusQueued}
+            </SelectItem>
+            <SelectItem value="processing">
+              {renderJobsTextMaps.statusProcessing}
+            </SelectItem>
+            <SelectItem value="completed">
+              {renderJobsTextMaps.statusCompleted}
+            </SelectItem>
+            <SelectItem value="failed">
+              {renderJobsTextMaps.statusFailed}
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>

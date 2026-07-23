@@ -25,7 +25,7 @@ const PRIORITY_LABEL: Record<string, string> = {
   low: renderJobsTextMaps.priorityLow,
   normal: renderJobsTextMaps.priorityNormal,
   high: renderJobsTextMaps.priorityHigh,
-  urgent: renderJobsTextMaps.priorityUrgent,
+  urgent: renderJobsTextMaps.priorityUrgent
 };
 
 const PRIORITY_CLASS: Record<string, string> = {
@@ -33,7 +33,7 @@ const PRIORITY_CLASS: Record<string, string> = {
   normal: 'border-border text-muted-foreground',
   high: 'border-[var(--status-warning-border)] text-[var(--status-warning-text)] bg-[var(--status-warning-bg)]',
   urgent:
-    'border-[var(--status-rejected-border)] text-[var(--status-rejected-text)] bg-[var(--status-rejected-bg)]',
+    'border-[var(--status-rejected-border)] text-[var(--status-rejected-text)] bg-[var(--status-rejected-bg)]'
 };
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -52,24 +52,30 @@ export function BatchCard({ batch, onClick }: BatchCardProps) {
       : 0;
 
   const batchStatus =
-    batch.status === 'processing' ? 'processing' : batch.status === 'completed' ? 'completed' : batch.status === 'failed' ? 'failed' : 'queued';
+    batch.status === 'processing'
+      ? 'processing'
+      : batch.status === 'completed'
+        ? 'completed'
+        : batch.status === 'failed'
+          ? 'failed'
+          : 'queued';
 
   const formattedDate = new Intl.DateTimeFormat('en-GB', {
     day: '2-digit',
     month: 'short',
     hour: '2-digit',
-    minute: '2-digit',
+    minute: '2-digit'
   }).format(new Date(batch.createdAt));
 
   return (
     <Card
-      className="group cursor-pointer transition-colors hover:bg-accent/30"
+      className="group hover:bg-accent/30 cursor-pointer transition-colors"
       onClick={() => onClick(batch.id)}
     >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
-            <p className="text-foreground truncate font-semibold leading-tight">
+            <p className="text-foreground truncate leading-tight font-semibold">
               {batch.name}
             </p>
             <p className="text-muted-foreground mt-0.5 text-xs">
@@ -101,7 +107,12 @@ export function BatchCard({ batch, onClick }: BatchCardProps) {
 
         {/* Job counts */}
         <div className="text-muted-foreground flex items-center gap-3 text-xs">
-          <span>{renderJobsTextMaps.batchProgress(batch.completedJobs, batch.totalJobs)}</span>
+          <span>
+            {renderJobsTextMaps.batchProgress(
+              batch.completedJobs,
+              batch.totalJobs
+            )}
+          </span>
           {batch.failedJobs > 0 && (
             <span className="text-[var(--status-rejected-text)]">
               {batch.failedJobs} {renderJobsTextMaps.failedJobs.toLowerCase()}

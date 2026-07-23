@@ -22,7 +22,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 import { ImageUpload } from '@/components/shared/image-upload';
@@ -43,7 +43,7 @@ export function BrandForm({ brand }: BrandFormProps) {
 
   const { mutate: createBrand, isPending: isCreating } = useCreateBrand();
   const { mutate: updateBrand, isPending: isUpdating } = useUpdateBrand(
-    brand?.id ?? '',
+    brand?.id ?? ''
   );
 
   const isPending = isCreating || isUpdating;
@@ -60,7 +60,7 @@ export function BrandForm({ brand }: BrandFormProps) {
       return {
         name: brand.name,
         description: brand.description ?? '',
-        logoUrl: existingLogoUrl,
+        logoUrl: existingLogoUrl
       };
     }
     return { name: '', description: '', logoUrl: undefined };
@@ -68,7 +68,7 @@ export function BrandForm({ brand }: BrandFormProps) {
 
   const form = useForm<CreateBrandInput>({
     resolver: zodResolver(createBrandSchema),
-    defaultValues,
+    defaultValues
   });
 
   function onSubmit(data: CreateBrandInput) {
@@ -79,18 +79,21 @@ export function BrandForm({ brand }: BrandFormProps) {
       tokens: {
         ...existingTokens,
         logo: logoUrl
-          ? { ...((existingTokens.logo as Record<string, unknown>) ?? {}), url: logoUrl }
-          : null,
-      },
+          ? {
+              ...((existingTokens.logo as Record<string, unknown>) ?? {}),
+              url: logoUrl
+            }
+          : null
+      }
     };
 
     if (isEditMode) {
       updateBrand(payload as Partial<CreateBrandInput>, {
-        onSuccess: () => router.push('/brands'),
+        onSuccess: () => router.push('/brands')
       });
     } else {
       createBrand(payload as CreateBrandInput, {
-        onSuccess: () => router.push('/brands'),
+        onSuccess: () => router.push('/brands')
       });
     }
   }
@@ -100,10 +103,10 @@ export function BrandForm({ brand }: BrandFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* Header */}
         <div>
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-foreground text-lg font-semibold">
             {brandsTextMaps.tabOverview}
           </h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {isEditMode
               ? brandsTextMaps.editBrandDescription
               : brandsTextMaps.newBrandDescription}

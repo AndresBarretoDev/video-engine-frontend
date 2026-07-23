@@ -35,7 +35,7 @@ interface RulesListProps {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function RulesList({ projectId, columns }: RulesListProps) {
+export function RulesList({ columns }: RulesListProps) {
   const rulesDraft = useDataEngineStore(s => s.rulesDraft);
   const addRuleDraft = useDataEngineStore(s => s.addRuleDraft);
   const updateRuleDraft = useDataEngineStore(s => s.updateRuleDraft);

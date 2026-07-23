@@ -23,14 +23,14 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { ImageUpload } from '@/components/shared/image-upload';
@@ -52,7 +52,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
 
   const { mutate: createProject, isPending: isCreating } = useCreateProject();
   const { mutate: updateProject, isPending: isUpdating } = useUpdateProject(
-    project?.id ?? '',
+    project?.id ?? ''
   );
   const { data: brands, isLoading: brandsLoading } = useBrands();
 
@@ -68,7 +68,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
         visibility: project.visibility,
         brandId: project.brandId ?? undefined,
         campaignId: project.campaignId ?? undefined,
-        ...(isEditMode && { thumbnailUrl: project.thumbnailUrl ?? undefined }),
+        ...(isEditMode && { thumbnailUrl: project.thumbnailUrl ?? undefined })
       };
     }
     return {
@@ -76,13 +76,13 @@ export function ProjectForm({ project }: ProjectFormProps) {
       description: '',
       visibility: 'private',
       brandId: undefined,
-      campaignId: undefined,
+      campaignId: undefined
     };
   }, [project, isEditMode]);
 
   const form = useForm<CreateProjectInput | UpdateProjectInput>({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues
   });
 
   function onSubmit(data: CreateProjectInput | UpdateProjectInput) {
@@ -90,14 +90,14 @@ export function ProjectForm({ project }: ProjectFormProps) {
       // Explicitly send thumbnailUrl: null when removed (undefined won't clear it)
       const payload = {
         ...data,
-        thumbnailUrl: (data as UpdateProjectInput).thumbnailUrl ?? null,
+        thumbnailUrl: (data as UpdateProjectInput).thumbnailUrl ?? null
       };
       updateProject(payload as UpdateProjectInput, {
-        onSuccess: () => router.push('/projects'),
+        onSuccess: () => router.push('/projects')
       });
     } else {
       createProject(data as CreateProjectInput, {
-        onSuccess: () => router.push('/projects'),
+        onSuccess: () => router.push('/projects')
       });
     }
   }
@@ -107,10 +107,10 @@ export function ProjectForm({ project }: ProjectFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* Header */}
         <div>
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-foreground text-lg font-semibold">
             {projectsTextMaps.pageTitle}
           </h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {isEditMode
               ? projectsTextMaps.editProjectDescription
               : projectsTextMaps.newProjectDescription}
@@ -170,9 +170,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
                     <FormLabel>{projectsTextMaps.labelBrand}</FormLabel>
                     <Select
                       value={field.value ?? ''}
-                      onValueChange={(val) =>
-                        field.onChange(val || undefined)
-                      }
+                      onValueChange={val => field.onChange(val || undefined)}
                       disabled={brandsLoading}
                     >
                       <FormControl>
@@ -183,7 +181,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {brands?.map((brand) => (
+                        {brands?.map(brand => (
                           <SelectItem key={brand.id} value={brand.id}>
                             {brand.name}
                           </SelectItem>
@@ -205,9 +203,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue
-                            placeholder={
-                              projectsTextMaps.placeholderVisibility
-                            }
+                            placeholder={projectsTextMaps.placeholderVisibility}
                           />
                         </SelectTrigger>
                       </FormControl>

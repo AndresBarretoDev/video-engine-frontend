@@ -13,9 +13,7 @@ import {
   assembleCompositionProps,
   assembleStayCompositionProps
 } from './assemble-composition-props';
-import {
-  mapBrandConfigToRemotionBrand
-} from './brand-config-mapper';
+import { mapBrandConfigToRemotionBrand } from './brand-config-mapper';
 import type { ProductFormData, StayFormData, AuthoringState } from '../types';
 import type { BrandConfig as RemotionBrandConfig } from '@/remotion/types/brand-config.types';
 

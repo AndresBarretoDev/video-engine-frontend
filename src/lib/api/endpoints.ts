@@ -117,8 +117,7 @@ export const API_ENDPOINTS = {
     byProject: (projectId: string) => `/projects/${projectId}/render-jobs`,
     batchByProject: (projectId: string) =>
       `/projects/${projectId}/render-jobs/batch`,
-    batches: (projectId: string) =>
-      `/projects/${projectId}/render-batches`,
+    batches: (projectId: string) => `/projects/${projectId}/render-batches`,
     batchById: (projectId: string, batchId: string) =>
       `/projects/${projectId}/render-batches/${batchId}`,
     batchCancel: (projectId: string, batchId: string) =>
@@ -126,10 +125,8 @@ export const API_ENDPOINTS = {
     batchRetryFailed: (projectId: string, batchId: string) =>
       `/projects/${projectId}/render-batches/${batchId}/retry-failed`,
     outputs: (jobId: string) => `/render-jobs/${jobId}/outputs`,
-    download: (outputId: string) =>
-      `/render-jobs/outputs/${outputId}/download`,
-    batchDownload: (batchId: string) =>
-      `/render-batches/${batchId}/download`
+    download: (outputId: string) => `/render-jobs/outputs/${outputId}/download`,
+    batchDownload: (batchId: string) => `/render-batches/${batchId}/download`
   },
 
   /* Reviews Module */
@@ -163,7 +160,6 @@ export const API_ENDPOINTS = {
      *   Behavior: Creates N render jobs (one per format selected).
      *   NOT the batch endpoint — dedicated single-product entry point.
      */
-    renderSingle: (projectId: string) =>
-      `/projects/${projectId}/render-single`
+    renderSingle: (projectId: string) => `/projects/${projectId}/render-single`
   }
 } as const;

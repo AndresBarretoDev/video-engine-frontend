@@ -59,20 +59,6 @@ const BOOLEAN_OPERATORS: { value: ConditionOperator; label: string }[] = [
   { value: 'is_not_empty', label: dataEngineTextMaps.operatorIsNotEmpty }
 ];
 
-const ALL_OPERATORS: { value: ConditionOperator; label: string }[] = [
-  { value: 'equals', label: dataEngineTextMaps.operatorEquals },
-  { value: 'not_equals', label: dataEngineTextMaps.operatorNotEquals },
-  { value: 'contains', label: dataEngineTextMaps.operatorContains },
-  { value: 'gt', label: dataEngineTextMaps.operatorGreaterThan },
-  { value: 'lt', label: dataEngineTextMaps.operatorLessThan },
-  { value: 'gte', label: dataEngineTextMaps.operatorGte },
-  { value: 'lte', label: dataEngineTextMaps.operatorLte },
-  { value: 'is_true', label: dataEngineTextMaps.operatorIsTrue },
-  { value: 'is_false', label: dataEngineTextMaps.operatorIsFalse },
-  { value: 'is_empty', label: dataEngineTextMaps.operatorIsEmpty },
-  { value: 'is_not_empty', label: dataEngineTextMaps.operatorIsNotEmpty }
-];
-
 const ACTION_OPTIONS: { value: RuleActionType; label: string }[] = [
   { value: 'show', label: dataEngineTextMaps.actionShow },
   { value: 'hide', label: dataEngineTextMaps.actionHide },
@@ -118,7 +104,6 @@ interface RuleRowProps {
 export function RuleRow({
   rule,
   index,
-  totalRules,
   columns,
   onChange,
   onDelete

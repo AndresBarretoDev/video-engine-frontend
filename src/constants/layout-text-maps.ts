@@ -63,9 +63,10 @@ export const layoutTextMap = {
     profile: 'Profile',
     settings: 'Settings',
     logoutTitle: 'Close session',
-    logoutDescription: 'You are about to sign out. Any unsaved changes will be lost.',
+    logoutDescription:
+      'You are about to sign out. Any unsaved changes will be lost.',
     logoutConfirm: 'Sign out',
-    logoutCancel: 'Stay',
+    logoutCancel: 'Stay'
   },
 
   /* Image upload */
@@ -74,7 +75,7 @@ export const layoutTextMap = {
     dragAndDrop: 'or drag and drop file here',
     supportedFormats: 'JPG, PNG, WebP, SVG or GIF',
     changeImage: 'Change image',
-    uploadFailed: 'Failed to upload file',
+    uploadFailed: 'Failed to upload file'
   },
 
   /* Role display names */

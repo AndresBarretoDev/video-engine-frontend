@@ -89,8 +89,7 @@ export function MappingTab({ projectId, dataSource }: MappingTabProps) {
     mappingIsDirty,
     setMappingDraft,
     updateMappingEntry,
-    removeMappingEntry,
-    markMappingClean
+    removeMappingEntry
   } = useDataEngineStore();
 
   // Local UI state
@@ -161,11 +160,6 @@ export function MappingTab({ projectId, dataSource }: MappingTabProps) {
 
   function handleSaveTransform(updated: MappingDraftEntry) {
     updateMappingEntry(updated);
-  }
-
-  function handleSaveMappings() {
-    // Client-side mode: mark draft as clean (Zustand-only persistence)
-    markMappingClean();
   }
 
   function handleContinue() {

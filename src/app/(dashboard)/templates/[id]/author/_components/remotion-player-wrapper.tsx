@@ -111,8 +111,9 @@ export function RemotionPlayerWrapper({
 
   // Phase 4: load brand fonts into the preview so typography actually shows.
   // Reads assets.fonts from brandConfig when present; graceful no-op if absent.
-  const brandFontUrls = (compositionProps as { brandConfig?: { assets?: { fonts?: string[] } } })
-    ?.brandConfig?.assets?.fonts;
+  const brandFontUrls = (
+    compositionProps as { brandConfig?: { assets?: { fonts?: string[] } } }
+  )?.brandConfig?.assets?.fonts;
   useBrandFonts(brandFontUrls);
 
   return (
@@ -129,7 +130,7 @@ export function RemotionPlayerWrapper({
        * For 1:1 it's square at whatever fits.
        */}
       <div
-        className="w-full overflow-hidden rounded-[var(--radius-12)] border border-border bg-[var(--color-surface-1,hsl(var(--muted)))/20]"
+        className="border-border w-full overflow-hidden rounded-[var(--radius-12)] border bg-[var(--color-surface-1,hsl(var(--muted)))/20]"
         style={{
           aspectRatio,
           maxHeight: '100%',

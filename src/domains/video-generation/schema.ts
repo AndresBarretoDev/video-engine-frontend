@@ -29,7 +29,10 @@ export const productFormSchema = z.object({
   productImage: z
     .string()
     .min(1, 'Product image is required')
-    .refine(isProductImageValue, 'Must be a valid image URL or an uploaded image'),
+    .refine(
+      isProductImageValue,
+      'Must be a valid image URL or an uploaded image'
+    ),
   priceCurrent: z
     .string()
     .min(1, 'Price is required')
@@ -66,7 +69,10 @@ export const stayFormSchema = z.object({
   heroImage: z
     .string()
     .min(1, 'Hero image is required')
-    .refine(isProductImageValue, 'Must be a valid image URL or an uploaded image'),
+    .refine(
+      isProductImageValue,
+      'Must be a valid image URL or an uploaded image'
+    ),
   rating: z
     .string()
     .min(1, 'Rating is required')

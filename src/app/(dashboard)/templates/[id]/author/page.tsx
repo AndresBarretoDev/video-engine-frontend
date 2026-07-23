@@ -19,11 +19,14 @@ interface AuthorPageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: AuthorPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params
+}: AuthorPageProps): Promise<Metadata> {
   const { id } = await params;
   return {
     title: `Author Video — ${id} | OP Video Engine`,
-    description: 'Fill in product details and preview the video live before rendering.'
+    description:
+      'Fill in product details and preview the video live before rendering.'
   };
 }
 

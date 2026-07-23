@@ -26,8 +26,8 @@ export const TRANSITIONS: Partial<Record<ProjectStatus, TransitionConfig[]>> = {
       confirmTitle: '',
       confirmDescription: '',
       confirmLabel: '',
-      successToast: projectsTextMaps.transitionStarted,
-    },
+      successToast: projectsTextMaps.transitionStarted
+    }
   ],
   'in-progress': [
     {
@@ -38,8 +38,8 @@ export const TRANSITIONS: Partial<Record<ProjectStatus, TransitionConfig[]>> = {
       confirmTitle: '',
       confirmDescription: '',
       confirmLabel: '',
-      successToast: projectsTextMaps.transitionSubmitted,
-    },
+      successToast: projectsTextMaps.transitionSubmitted
+    }
   ],
   review: [
     {
@@ -50,7 +50,7 @@ export const TRANSITIONS: Partial<Record<ProjectStatus, TransitionConfig[]>> = {
       confirmTitle: projectsTextMaps.approveTitle,
       confirmDescription: projectsTextMaps.approveDescription,
       confirmLabel: projectsTextMaps.confirmApprove,
-      successToast: projectsTextMaps.transitionApproved,
+      successToast: projectsTextMaps.transitionApproved
     },
     {
       target: 'draft',
@@ -60,9 +60,9 @@ export const TRANSITIONS: Partial<Record<ProjectStatus, TransitionConfig[]>> = {
       confirmTitle: projectsTextMaps.rejectTitle,
       confirmDescription: projectsTextMaps.rejectDescription,
       confirmLabel: projectsTextMaps.confirmReject,
-      successToast: projectsTextMaps.transitionRejected,
-    },
-  ],
+      successToast: projectsTextMaps.transitionRejected
+    }
+  ]
 };
 
 /**
@@ -72,5 +72,5 @@ export const WORKFLOW_STEPS: { status: ProjectStatus; label: string }[] = [
   { status: 'draft', label: projectsTextMaps.stepDraft },
   { status: 'in-progress', label: projectsTextMaps.stepInProgress },
   { status: 'review', label: projectsTextMaps.stepReview },
-  { status: 'approved', label: projectsTextMaps.stepApproved },
+  { status: 'approved', label: projectsTextMaps.stepApproved }
 ];

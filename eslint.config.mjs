@@ -10,6 +10,15 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: [
+      '.next/**',
+      'coverage/**',
+      'playwright-report/**',
+      'storybook-static/**',
+      'test-results/**'
+    ]
+  },
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   ...compat.config({
     ignorePatterns: ['./src/components/ui/**'],
@@ -27,7 +36,16 @@ const eslintConfig = [
       camelcase: [
         'error',
         {
-          allow: ['api_url', 'Geist_Mono']
+          allow: [
+            'api_url',
+            'Geist_Mono',
+            'image_url',
+            'video_url',
+            'original_price',
+            'required_error',
+            'product_name',
+            'has_discount'
+          ]
         }
       ],
       'no-unused-vars': 'off',

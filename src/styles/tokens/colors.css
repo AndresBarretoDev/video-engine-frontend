@@ -11,45 +11,45 @@
    * Raw Colors — OP Blue Scale
    * Primary: op-blue-600 (#4361EF)
    * ======================================== */
-  --color-op-blue-50: #F6F8FF;
-  --color-op-blue-100: #F0F3FE;
-  --color-op-blue-200: #DCE3FD;
-  --color-op-blue-300: #C1CFFC;
-  --color-op-blue-400: #97B1F9;
-  --color-op-blue-500: #6689F4;
-  --color-op-blue-600: #4361EF;
-  --color-op-blue-700: #2C40E4;
-  --color-op-blue-800: #242DD1;
-  --color-op-blue-900: #2327AA;
-  --color-op-blue-950: #191A52;
+  --color-op-blue-50: #f6f8ff;
+  --color-op-blue-100: #f0f3fe;
+  --color-op-blue-200: #dce3fd;
+  --color-op-blue-300: #c1cffc;
+  --color-op-blue-400: #97b1f9;
+  --color-op-blue-500: #6689f4;
+  --color-op-blue-600: #4361ef;
+  --color-op-blue-700: #2c40e4;
+  --color-op-blue-800: #242dd1;
+  --color-op-blue-900: #2327aa;
+  --color-op-blue-950: #191a52;
 
   /* ========================================
    * General Surfaces — Dark Mode First
    * Pairs of background + contrast for hierarchy
    * ======================================== */
   --surface-level-0-bg: #000000;
-  --surface-level-0-contrast: #FFFFFF;
+  --surface-level-0-contrast: #ffffff;
   --surface-level-1-bg: #080808;
-  --surface-level-1-contrast: #F5F5F5;
-  --surface-level-2-bg: #0D0D0D;
-  --surface-level-2-contrast: #DCDCDC;
+  --surface-level-1-contrast: #f5f5f5;
+  --surface-level-2-bg: #0d0d0d;
+  --surface-level-2-contrast: #dcdcdc;
   --surface-level-3-bg: #131313;
-  --surface-level-3-contrast: #8C8C8C;
+  --surface-level-3-contrast: #8c8c8c;
   --surface-level-4-bg: #191919;
-  --surface-level-4-contrast: #6E6E6E;
+  --surface-level-4-contrast: #6e6e6e;
   --surface-level-5-bg: #202020;
   --surface-level-5-contrast: #545454;
-  --surface-level-6-bg: #3B3B3B;
-  --surface-level-6-contrast: #3B3B3B;
+  --surface-level-6-bg: #3b3b3b;
+  --surface-level-6-contrast: #3b3b3b;
 
   /* ========================================
    * Component Colors — Button
    * ======================================== */
-  --btn-principal-light: #6689F4;
-  --btn-principal-light-medium: #4361EF;
-  --btn-principal-medium: #2C40E4;
-  --btn-principal-dark: #2327AA;
-  --btn-principal-text: #FFFFFF;
+  --btn-principal-light: #6689f4;
+  --btn-principal-light-medium: #4361ef;
+  --btn-principal-medium: #2c40e4;
+  --btn-principal-dark: #2327aa;
+  --btn-principal-text: #ffffff;
   --btn-disable-light: #545454;
   --btn-disable-dark: #202020;
   --btn-disable-text: #545454;
@@ -60,16 +60,16 @@
   --secondary-fill-invisible: rgba(255, 255, 255, 0);
   --secondary-fill-default: rgba(255, 255, 255, 0.15);
   --secondary-fill-hover: rgba(255, 255, 255, 0.25);
-  --secondary-stroke-default-light: #DCDCDC;
+  --secondary-stroke-default-light: #dcdcdc;
   --secondary-stroke-default-shadow: #131313;
-  --secondary-stroke-hover-light: #FFFFFF;
+  --secondary-stroke-hover-light: #ffffff;
   --secondary-stroke-hover-shadow: #202020;
 
   /* ========================================
    * Component Colors — Card
    * ======================================== */
-  --card-bg: #0D0D0D;
-  --card-fg: #FFFFFF;
+  --card-bg: #0d0d0d;
+  --card-fg: #ffffff;
   --card-gradient-shadow: #131313;
   --card-gradient-light: #191919;
 

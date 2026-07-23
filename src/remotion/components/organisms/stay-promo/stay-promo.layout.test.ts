@@ -15,10 +15,7 @@
  * 6. CTA box is wide enough for text without overflow
  */
 import { describe, it, expect, beforeEach } from 'vitest';
-import {
-  getStayPromoLayout,
-  type StayPromoLayout
-} from './stay-promo.layout';
+import { getStayPromoLayout, type StayPromoLayout } from './stay-promo.layout';
 import { FORMAT_DIMENSIONS } from '@/remotion/types/video-format.types';
 import type { VideoFormat } from '@/remotion/types/video-format.types';
 
@@ -62,7 +59,7 @@ const FORMATS: VideoFormat[] = ['16:9', '9:16', '1:1'];
 
 describe('getStayPromoLayout', () => {
   describe('returns a valid layout object for each format', () => {
-    FORMATS.forEach((format) => {
+    FORMATS.forEach(format => {
       it(`returns layout for ${format}`, () => {
         const layout = getStayPromoLayout(format);
         expect(layout).toBeDefined();
@@ -118,7 +115,9 @@ describe('getStayPromoLayout', () => {
       const layout = getStayPromoLayout('9:16');
       const canvas = FORMAT_DIMENSIONS['9:16'];
       expect(layout.heroImage.y).toBeGreaterThanOrEqual(0);
-      expect(layout.heroImage.y + layout.heroImage.height).toBeLessThanOrEqual(canvas.height * 0.6);
+      expect(layout.heroImage.y + layout.heroImage.height).toBeLessThanOrEqual(
+        canvas.height * 0.6
+      );
     });
 
     it('info card starts below the hero image', () => {
@@ -138,7 +137,9 @@ describe('getStayPromoLayout', () => {
       const layout = getStayPromoLayout('1:1');
       const canvas = FORMAT_DIMENSIONS['1:1'];
       expect(layout.heroImage.y).toBeGreaterThanOrEqual(0);
-      expect(layout.heroImage.y + layout.heroImage.height).toBeLessThanOrEqual(canvas.height * 0.55);
+      expect(layout.heroImage.y + layout.heroImage.height).toBeLessThanOrEqual(
+        canvas.height * 0.55
+      );
     });
 
     it('info card starts below hero image', () => {
@@ -154,7 +155,7 @@ describe('getStayPromoLayout', () => {
   });
 
   describe('NO-OVERFLOW — all elements must fit within canvas bounds', () => {
-    FORMATS.forEach((format) => {
+    FORMATS.forEach(format => {
       describe(`format ${format}`, () => {
         let layout: StayPromoLayout;
         let canvas: { width: number; height: number };
@@ -203,7 +204,7 @@ describe('getStayPromoLayout', () => {
     // In portrait/square, info card elements stack vertically
     const VERTICAL_FORMATS: VideoFormat[] = ['9:16', '1:1'];
 
-    VERTICAL_FORMATS.forEach((format) => {
+    VERTICAL_FORMATS.forEach(format => {
       describe(`format ${format}`, () => {
         let layout: StayPromoLayout;
 
@@ -257,7 +258,6 @@ describe('getStayPromoLayout', () => {
         });
 
         it('ctaButton fits within infoCard bottom', () => {
-          const infoCardBottom = layout.infoCard.y + layout.infoCard.height;
           const ctaBottom = layout.ctaButton.y + layout.ctaButton.height;
           const canvas = FORMAT_DIMENSIONS[format];
           expect(ctaBottom).toBeLessThanOrEqual(canvas.height);
@@ -277,14 +277,18 @@ describe('getStayPromoLayout', () => {
         const infoRight = layout.infoCard.x + layout.infoCard.width;
         const infoBottom = layout.infoCard.y + layout.infoCard.height;
         // Listing name must fit within info card horizontally
-        expect(layout.listingName.x + layout.listingName.width).toBeLessThanOrEqual(infoRight);
-        expect(layout.ctaButton.y + layout.ctaButton.height).toBeLessThanOrEqual(infoBottom);
+        expect(
+          layout.listingName.x + layout.listingName.width
+        ).toBeLessThanOrEqual(infoRight);
+        expect(
+          layout.ctaButton.y + layout.ctaButton.height
+        ).toBeLessThanOrEqual(infoBottom);
       });
     });
   });
 
   describe('CTA button is wide enough (min 200px) to hold text', () => {
-    FORMATS.forEach((format) => {
+    FORMATS.forEach(format => {
       it(`CTA has at least 200px width in ${format}`, () => {
         const layout = getStayPromoLayout(format);
         expect(layout.ctaButton.width).toBeGreaterThanOrEqual(200);

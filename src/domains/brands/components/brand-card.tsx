@@ -63,7 +63,8 @@ export function BrandCard({
 
   // Extract color swatches from brand.tokens.colors (seed format)
   const seedColors = brandTokens?.colors as Record<string, string> | undefined;
-  const customColors = (brandTokens?.customColors as { name: string; hex: string }[]) ?? [];
+  const customColors =
+    (brandTokens?.customColors as { name: string; hex: string }[]) ?? [];
   const derivedTokens: Partial<BrandTokens> = {
     ...tokens,
     ...(seedColors?.primary && { colorPrimary: seedColors.primary }),
@@ -204,7 +205,7 @@ export function BrandCard({
               label={brandsTextMaps.colorAccent}
             />
           )}
-          {customColors.map((c) => (
+          {customColors.map(c => (
             <ColorSwatch key={c.name} color={c.hex} label={c.name} />
           ))}
           {!derivedTokens.colorPrimary &&

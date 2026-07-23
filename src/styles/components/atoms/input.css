@@ -5,19 +5,19 @@
     1px 1px 1px 0px var(--white-alpha-15) inset;
 
   label {
-    @apply text-[var(--white-alpha-35)] w-full text-[11px] leading-[12px];
+    @apply w-full text-[11px] leading-[12px] text-[var(--white-alpha-35)];
   }
 
   .input-text__input {
     @apply flex items-center gap-[4px];
 
     .input-text__show-password {
-      @apply text-[var(--white-alpha-55)] cursor-pointer [&>svg]:size-[16px];
+      @apply cursor-pointer text-[var(--white-alpha-55)] [&>svg]:size-[16px];
     }
   }
 
   input {
-    @apply text-[var(--white-alpha-55)] space-y-[4px] rounded-none border-none !bg-transparent p-0 shadow-none focus-within:outline-0 hover:shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0;
+    @apply space-y-[4px] rounded-none border-none !bg-transparent p-0 text-[var(--white-alpha-55)] shadow-none focus-within:outline-0 hover:shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0;
 
     &:focus {
       @apply text-[var(--white-alpha-85)];

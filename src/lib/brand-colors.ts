@@ -143,11 +143,7 @@ export const getLidlShadow = (
   color: 'blue' | 'yellow' | 'red' = 'blue',
   intensity: 'light' | 'medium' | 'heavy' = 'medium'
 ) => {
-  const colorMap = {
-    blue: lidlColors.blue.primary,
-    yellow: lidlColors.yellow.primary,
-    red: lidlColors.red.primary
-  };
+  void color;
 
   const intensityMap = {
     light: '0.1',

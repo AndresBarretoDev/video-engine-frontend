@@ -79,15 +79,15 @@ function buildLayout16x9(): StayPromoLayout {
   const { width: W, height: H } = FORMAT_DIMENSIONS['16:9'];
 
   const HERO_W = 1040; // ~54% of 1920
-  const HERO_H = H;    // full height
+  const HERO_H = H; // full height
   const HERO_X = 0;
   const HERO_Y = 0;
 
   const GAP = 40;
   const INFO_X = HERO_X + HERO_W + GAP; // 1040 + 40 = 1080
-  const INFO_W = W - INFO_X - 40;        // 1920 - 1080 - 40 = 800
+  const INFO_W = W - INFO_X - 40; // 1920 - 1080 - 40 = 800
   const INFO_Y = 60;
-  const INFO_H = H - INFO_Y * 2;         // 1080 - 120 = 960
+  const INFO_H = H - INFO_Y * 2; // 1080 - 120 = 960
 
   // VERIFY: heroRight (1040) <= infoLeft (1080) ✓
   // VERIFY: INFO_X + INFO_W = 1080 + 800 = 1880 ≤ 1920 ✓
@@ -141,16 +141,21 @@ function buildLayout16x9(): StayPromoLayout {
     textAlign: 'left',
     heroImage: { x: HERO_X, y: HERO_Y, width: HERO_W, height: HERO_H },
     infoCard: { x: INFO_X, y: INFO_Y, width: INFO_W, height: INFO_H },
-    listingName: { x: INNER_X, y: LISTING_NAME_Y, width: INNER_W, height: LISTING_NAME_H },
+    listingName: {
+      x: INNER_X,
+      y: LISTING_NAME_Y,
+      width: INNER_W,
+      height: LISTING_NAME_H
+    },
     location: { x: INNER_X, y: LOCATION_Y, width: INNER_W, height: LOCATION_H },
     rating: { x: INNER_X, y: RATING_Y, width: INNER_W, height: RATING_H },
     pricePerNight: { x: INNER_X, y: PRICE_Y, width: INNER_W, height: PRICE_H },
     ctaButton: { x: CTA_X, y: CTA_Y, width: CTA_W, height: CTA_H },
     logo: { x: LOGO_X, y: LOGO_Y, width: LOGO_W, height: LOGO_H },
     fontSize: {
-      listingName: 48,   // reduced from 56: at 48px "Beautiful Beach House in Malibu"
-                          // wraps cleanly to 2 lines within the 720px column.
-                          // 56px was too large: ~750px/line exceeds the 720px column.
+      listingName: 48, // reduced from 56: at 48px "Beautiful Beach House in Malibu"
+      // wraps cleanly to 2 lines within the 720px column.
+      // 56px was too large: ~750px/line exceeds the 720px column.
       location: 34,
       rating: 38,
       price: 76,
@@ -174,22 +179,22 @@ function buildLayout9x16(): StayPromoLayout {
   // Hero fills full width, below header bar
   const HERO_X = 0;
   const HERO_Y = HEADER_H; // 100 — NOT at y=0, differs from 16:9
-  const HERO_W = W;         // 1080
-  const HERO_H = 840;       // hero ends at 940
+  const HERO_W = W; // 1080
+  const HERO_H = 840; // hero ends at 940
   // VERIFY: HERO_Y + HERO_H = 100 + 840 = 940 ≤ 1920 ✓
 
   // Info card: flush below hero
   const PADDING = 48;
   const INFO_X = 0;
   const INFO_Y = HERO_Y + HERO_H; // 100 + 840 = 940
-  const INFO_W = W;               // 1080
-  const INFO_H = H - INFO_Y;      // 1920 - 940 = 980
+  const INFO_W = W; // 1080
+  const INFO_H = H - INFO_Y; // 1920 - 940 = 980
   // VERIFY: INFO_Y + INFO_H = 940 + 980 = 1920 = H ✓
 
   // Inner text area: padded within info card
   const INNER_X = PADDING;
   const INNER_W = W - PADDING * 2; // 1080 - 96 = 984px
-  const INNER_TOP = INFO_Y + 48;   // 940 + 48 = 988
+  const INNER_TOP = INFO_Y + 48; // 940 + 48 = 988
 
   const LISTING_NAME_Y = INNER_TOP; // 988
   // 72px font × 1.25 lineHeight = 90px/line; allow 2 lines = 180px + 12px breathing = 192px.
@@ -216,7 +221,7 @@ function buildLayout9x16(): StayPromoLayout {
   const CTA_W = 560;
   const CTA_H = 88;
   const CTA_Y = PRICE_Y + PRICE_H + CTA_GAP; // 1504 + 32 = 1536
-  const CTA_X = (W - CTA_W) / 2;             // centered
+  const CTA_X = (W - CTA_W) / 2; // centered
   // bottom = 1536 + 88 = 1624 ≤ 1920 ✓
 
   // Logo: top header bar, centered
@@ -232,7 +237,12 @@ function buildLayout9x16(): StayPromoLayout {
     textAlign: 'center',
     heroImage: { x: HERO_X, y: HERO_Y, width: HERO_W, height: HERO_H },
     infoCard: { x: INFO_X, y: INFO_Y, width: INFO_W, height: INFO_H },
-    listingName: { x: INNER_X, y: LISTING_NAME_Y, width: INNER_W, height: LISTING_NAME_H },
+    listingName: {
+      x: INNER_X,
+      y: LISTING_NAME_Y,
+      width: INNER_W,
+      height: LISTING_NAME_H
+    },
     location: { x: INNER_X, y: LOCATION_Y, width: INNER_W, height: LOCATION_H },
     rating: { x: INNER_X, y: RATING_Y, width: INNER_W, height: RATING_H },
     pricePerNight: { x: INNER_X, y: PRICE_Y, width: INNER_W, height: PRICE_H },
@@ -259,7 +269,7 @@ function buildLayout1x1(): StayPromoLayout {
 
   const HERO_X = 0;
   const HERO_Y = 0;
-  const HERO_W = W;   // 1080
+  const HERO_W = W; // 1080
   const HERO_H = 460; // ~43% of 1080
 
   const PADDING = 40;
@@ -271,7 +281,7 @@ function buildLayout1x1(): StayPromoLayout {
 
   const INNER_X = PADDING;
   const INNER_W = W - PADDING * 2; // 1080 - 80 = 1000px
-  const INNER_TOP = INFO_Y + 36;   // 460 + 36 = 496
+  const INNER_TOP = INFO_Y + 36; // 460 + 36 = 496
 
   const LISTING_NAME_Y = INNER_TOP;
   const LISTING_NAME_H = 80;
@@ -296,7 +306,7 @@ function buildLayout1x1(): StayPromoLayout {
   const CTA_W = 420;
   const CTA_H = 72;
   const CTA_Y = PRICE_Y + PRICE_H + CTA_GAP; // 826 + 20 = 846
-  const CTA_X = (W - CTA_W) / 2;             // centered
+  const CTA_X = (W - CTA_W) / 2; // centered
   // bottom = 846 + 72 = 918 ≤ 1080 ✓
 
   // Logo overlaid on hero top-left
@@ -312,15 +322,20 @@ function buildLayout1x1(): StayPromoLayout {
     textAlign: 'center',
     heroImage: { x: HERO_X, y: HERO_Y, width: HERO_W, height: HERO_H },
     infoCard: { x: INFO_X, y: INFO_Y, width: INFO_W, height: INFO_H },
-    listingName: { x: INNER_X, y: LISTING_NAME_Y, width: INNER_W, height: LISTING_NAME_H },
+    listingName: {
+      x: INNER_X,
+      y: LISTING_NAME_Y,
+      width: INNER_W,
+      height: LISTING_NAME_H
+    },
     location: { x: INNER_X, y: LOCATION_Y, width: INNER_W, height: LOCATION_H },
     rating: { x: INNER_X, y: RATING_Y, width: INNER_W, height: RATING_H },
     pricePerNight: { x: INNER_X, y: PRICE_Y, width: INNER_W, height: PRICE_H },
     ctaButton: { x: CTA_X, y: CTA_Y, width: CTA_W, height: CTA_H },
     logo: { x: LOGO_X, y: LOGO_Y, width: LOGO_W, height: LOGO_H },
     fontSize: {
-      listingName: 44,  // reduced from 58: at 44px "Beautiful Beach House in Malibu"
-                         // fits in ~770px — single line within 1000px column, no overflow.
+      listingName: 44, // reduced from 58: at 44px "Beautiful Beach House in Malibu"
+      // fits in ~770px — single line within 1000px column, no overflow.
       location: 34,
       rating: 38,
       price: 68,
@@ -346,6 +361,7 @@ export function getStayPromoLayout(format: VideoFormat): StayPromoLayout {
       return buildLayout1x1();
     default: {
       const _exhaustive: never = format;
+      void _exhaustive;
       return buildLayout16x9();
     }
   }

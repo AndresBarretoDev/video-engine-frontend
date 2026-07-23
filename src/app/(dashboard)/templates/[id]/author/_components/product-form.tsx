@@ -42,8 +42,11 @@ export function ProductForm({ form }: ProductFormProps) {
   return (
     <Form {...form}>
       {/* Not a <form> submission — parent triggers render via button */}
-      <div className="flex flex-col gap-4" role="group" aria-label={t.formSectionLabel}>
-
+      <div
+        className="flex flex-col gap-4"
+        role="group"
+        aria-label={t.formSectionLabel}
+      >
         {/* ─── Required fields ──────────────────────────────────────────────── */}
 
         <FormField
@@ -80,7 +83,7 @@ export function ProductForm({ form }: ProductFormProps) {
                  */}
                 <ProductImageUpload
                   value={field.value}
-                  onChange={(url) => field.onChange(url ?? '')}
+                  onChange={url => field.onChange(url ?? '')}
                   hasError={!!fieldState.error}
                 />
               </FormControl>

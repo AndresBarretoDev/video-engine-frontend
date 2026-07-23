@@ -18,7 +18,9 @@ import { BrandConfigSchema } from '@/remotion/types/brand-config.types';
 
 export const LoopingProductPromoSlotsSchema = z.object({
   productName: z.string().default('Product Name'),
-  productImage: z.string().default('https://placehold.co/600x600/1a1a3e/white?text=Product'),
+  productImage: z
+    .string()
+    .default('https://placehold.co/600x600/1a1a3e/white?text=Product'),
   priceCurrent: z.string().default('0.00'),
   priceOriginal: z.string().optional(),
   promoTag: z.string().optional(),
@@ -26,7 +28,9 @@ export const LoopingProductPromoSlotsSchema = z.object({
   legalText: z.string().optional()
 });
 
-export type LoopingProductPromoSlots = z.infer<typeof LoopingProductPromoSlotsSchema>;
+export type LoopingProductPromoSlots = z.infer<
+  typeof LoopingProductPromoSlotsSchema
+>;
 
 // ─── Timing ───────────────────────────────────────────────────────────────────
 
@@ -36,11 +40,18 @@ export const LoopingProductPromoTimingSchema = z.object({
   outroDurationInFrames: z.number().int().positive().default(60)
 });
 
-export type LoopingProductPromoTiming = z.infer<typeof LoopingProductPromoTimingSchema>;
+export type LoopingProductPromoTiming = z.infer<
+  typeof LoopingProductPromoTimingSchema
+>;
 
 // ─── Logo position ────────────────────────────────────────────────────────────
 
-export const LogoPositionSchema = z.enum(['top-left', 'top-right', 'bottom-left', 'bottom-right']);
+export const LogoPositionSchema = z.enum([
+  'top-left',
+  'top-right',
+  'bottom-left',
+  'bottom-right'
+]);
 export type LogoPosition = z.infer<typeof LogoPositionSchema>;
 
 // ─── Root schema ─────────────────────────────────────────────────────────────
@@ -53,4 +64,6 @@ export const LoopingProductPromoSchema = z.object({
   logoPosition: LogoPositionSchema.default('top-left')
 });
 
-export type LoopingProductPromoProps = z.infer<typeof LoopingProductPromoSchema>;
+export type LoopingProductPromoProps = z.infer<
+  typeof LoopingProductPromoSchema
+>;

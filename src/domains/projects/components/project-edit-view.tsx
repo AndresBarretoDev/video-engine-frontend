@@ -66,7 +66,7 @@ export function ProjectEditView({ id }: ProjectEditViewProps) {
     <div className="space-y-6">
       {/* Status workflow section */}
       <section className="space-y-4">
-        <h2 className="text-sm font-medium text-muted-foreground">
+        <h2 className="text-muted-foreground text-sm font-medium">
           {projectsTextMaps.workflowStatus}
         </h2>
         <StatusStepper currentStatus={project.status} />

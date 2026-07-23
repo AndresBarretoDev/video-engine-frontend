@@ -11,7 +11,6 @@
  */
 
 import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 import { videoGenerationTextMaps as t } from '@/domains/video-generation/text-maps';
 import { useVideoGenerationStore } from '@/domains/video-generation/stores/video-generation-store';
 import type { VideoFormat } from '@/remotion/types/video-format.types';
@@ -27,7 +26,7 @@ interface FormatSelectorProps {
 const FORMAT_DISPLAY: Record<VideoFormat, { label: string; sub: string }> = {
   '16:9': { label: t.format16x9, sub: t.formatLandscape },
   '9:16': { label: t.format9x16, sub: t.formatVertical },
-  '1:1':  { label: t.format1x1,  sub: t.formatSquare },
+  '1:1': { label: t.format1x1, sub: t.formatSquare }
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -63,7 +62,7 @@ export function FormatSelector({ availableFormats }: FormatSelectorProps) {
                 isSelected
                   ? 'border-primary bg-primary/5'
                   : 'border-border bg-background hover:bg-muted/40',
-                isOnlyOne ? 'cursor-not-allowed opacity-60' : '',
+                isOnlyOne ? 'cursor-not-allowed opacity-60' : ''
               ].join(' ')}
             >
               <Checkbox
@@ -85,7 +84,9 @@ export function FormatSelector({ availableFormats }: FormatSelectorProps) {
           );
         })}
       </div>
-      <p className="text-muted-foreground text-[11px]">{t.formatSelectorHint}</p>
+      <p className="text-muted-foreground text-[11px]">
+        {t.formatSelectorHint}
+      </p>
     </div>
   );
 }

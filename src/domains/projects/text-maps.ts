@@ -191,5 +191,5 @@ export const projectsTextMaps = {
   transitionSubmitted: 'Submitted for review',
   transitionApproved: 'Project approved',
   transitionRejected: 'Changes requested — project returned to draft',
-  errorTransition: 'Failed to update project status',
+  errorTransition: 'Failed to update project status'
 } as const;

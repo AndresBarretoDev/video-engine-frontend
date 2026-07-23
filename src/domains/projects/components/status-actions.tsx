@@ -17,11 +17,14 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog';
 
 import type { ProjectStatus } from '../types';
-import { TRANSITIONS, type TransitionConfig } from '../constants/status-transitions';
+import {
+  TRANSITIONS,
+  type TransitionConfig
+} from '../constants/status-transitions';
 import { useUpdateProjectStatus } from '../hooks/use-projects';
 import { projectsTextMaps } from '../text-maps';
 
@@ -30,11 +33,13 @@ interface StatusActionsProps {
   currentStatus: ProjectStatus;
 }
 
-export function StatusActions({ projectId, currentStatus }: StatusActionsProps) {
+export function StatusActions({
+  projectId,
+  currentStatus
+}: StatusActionsProps) {
   const [pendingTransition, setPendingTransition] =
     useState<TransitionConfig | null>(null);
-  const { mutate: updateStatus, isPending } =
-    useUpdateProjectStatus(projectId);
+  const { mutate: updateStatus, isPending } = useUpdateProjectStatus(projectId);
 
   const transitions = TRANSITIONS[currentStatus] ?? [];
 
@@ -43,7 +48,7 @@ export function StatusActions({ projectId, currentStatus }: StatusActionsProps) 
   function executeTransition(transition: TransitionConfig) {
     updateStatus(
       { status: transition.target, successToast: transition.successToast },
-      { onSuccess: () => setPendingTransition(null) },
+      { onSuccess: () => setPendingTransition(null) }
     );
   }
 
@@ -58,7 +63,7 @@ export function StatusActions({ projectId, currentStatus }: StatusActionsProps) 
   return (
     <>
       <div className="flex items-center gap-3">
-        {transitions.map((transition) => (
+        {transitions.map(transition => (
           <Button
             key={transition.target}
             variant={transition.variant}
@@ -74,7 +79,7 @@ export function StatusActions({ projectId, currentStatus }: StatusActionsProps) 
       {/* Confirmation dialog */}
       <AlertDialog
         open={!!pendingTransition}
-        onOpenChange={(open) => {
+        onOpenChange={open => {
           if (!open) setPendingTransition(null);
         }}
       >

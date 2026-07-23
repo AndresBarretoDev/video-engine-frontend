@@ -4,7 +4,7 @@ import { useState } from 'react';
 const DurationBar = ({
   label,
   ms,
-  usage,
+  usage
 }: {
   label: string;
   ms: number;
@@ -16,7 +16,7 @@ const DurationBar = ({
         display: 'flex',
         alignItems: 'center',
         gap: 12,
-        marginBottom: 4,
+        marginBottom: 4
       }}
     >
       <div
@@ -31,7 +31,7 @@ const DurationBar = ({
           justifyContent: 'center',
           fontSize: 10,
           fontFamily: 'monospace',
-          color: '#F5F5F5',
+          color: '#F5F5F5'
         }}
       >
         {ms}ms
@@ -49,7 +49,7 @@ const DurationBar = ({
 const EasingDemo = ({
   label,
   value,
-  usage,
+  usage
 }: {
   label: string;
   value: string;
@@ -64,7 +64,7 @@ const EasingDemo = ({
           display: 'flex',
           alignItems: 'center',
           gap: 12,
-          marginBottom: 8,
+          marginBottom: 8
         }}
       >
         <span style={{ fontSize: 13, fontWeight: 600, color: '#F5F5F5' }}>
@@ -88,7 +88,7 @@ const EasingDemo = ({
           borderRadius: 8,
           position: 'relative',
           cursor: 'pointer',
-          border: '1px solid rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.1)'
         }}
         onClick={() => setActive((prev) => !prev)}
       >
@@ -101,7 +101,7 @@ const EasingDemo = ({
             position: 'absolute',
             left: active ? 'calc(100% - 40px)' : 0,
             top: 0,
-            transition: `left 600ms ${value}`,
+            transition: `left 600ms ${value}`
           }}
         />
         <span
@@ -111,7 +111,7 @@ const EasingDemo = ({
             top: '50%',
             transform: 'translateY(-50%)',
             fontSize: 9,
-            color: '#545454',
+            color: '#545454'
           }}
         >
           click to animate
@@ -123,7 +123,7 @@ const EasingDemo = ({
 
 const Section = ({
   title,
-  children,
+  children
 }: {
   title: string;
   children: React.ReactNode;
@@ -134,7 +134,7 @@ const Section = ({
         fontSize: 16,
         fontWeight: 600,
         color: '#8C8C8C',
-        marginBottom: 16,
+        marginBottom: 16
       }}
     >
       {title}
@@ -150,7 +150,7 @@ function MotionPage() {
         background: '#000',
         color: '#F5F5F5',
         padding: 32,
-        fontFamily: 'Mulish, sans-serif',
+        fontFamily: 'Mulish, sans-serif'
       }}
     >
       <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>
@@ -208,14 +208,14 @@ function MotionPage() {
             background: '#0D0D0D',
             borderRadius: 12,
             padding: 24,
-            border: '1px solid rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.1)'
           }}
         >
           <table
             style={{
               width: '100%',
               fontSize: 12,
-              borderCollapse: 'collapse',
+              borderCollapse: 'collapse'
             }}
           >
             <thead>
@@ -319,7 +319,7 @@ function MotionPage() {
             borderRadius: 12,
             padding: 24,
             border: '1px solid rgba(255,255,255,0.1)',
-            fontSize: 12,
+            fontSize: 12
           }}
         >
           <p style={{ color: '#22C55E', marginBottom: 8 }}>
@@ -344,8 +344,8 @@ const meta = {
   title: 'Design Tokens/Motion',
   component: MotionPage,
   parameters: {
-    layout: 'fullscreen',
-  },
+    layout: 'fullscreen'
+  }
 } satisfies Meta<typeof MotionPage>;
 
 export default meta;

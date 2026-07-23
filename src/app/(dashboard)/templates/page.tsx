@@ -24,7 +24,9 @@ interface TemplatesPageProps {
   searchParams: Promise<{ projectId?: string }>;
 }
 
-export default async function TemplatesPage({ searchParams }: TemplatesPageProps) {
+export default async function TemplatesPage({
+  searchParams
+}: TemplatesPageProps) {
   const { projectId } = await searchParams;
 
   return (

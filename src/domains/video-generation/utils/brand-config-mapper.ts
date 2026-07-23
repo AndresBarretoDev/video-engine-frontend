@@ -82,8 +82,6 @@ export interface BrandConfigInput {
 
 const NEUTRAL_TEXT = '#111111';
 const NEUTRAL_TEXT_INVERSE = '#F5F5F5';
-const NEUTRAL_SURFACE = '#F2F2F2';
-const NEUTRAL_BORDER = '#CCCCCC';
 const NEUTRAL_TEXT_ON_SURFACE = '#111111';
 
 // ─── Pure mapping function ────────────────────────────────────────────────────
@@ -122,8 +120,12 @@ export function mapBrandConfigToRemotionBrand(
         text: colorText,
         textInverse: colorTextInverse,
         // New fields — pass through when present:
-        ...(brand.colorSurface !== undefined ? { surface: brand.colorSurface } : {}),
-        ...(brand.colorBorder !== undefined ? { border: brand.colorBorder } : {}),
+        ...(brand.colorSurface !== undefined
+          ? { surface: brand.colorSurface }
+          : {}),
+        ...(brand.colorBorder !== undefined
+          ? { border: brand.colorBorder }
+          : {}),
         // Semantic text inks — use declared values; fall back to text/textInverse or neutral
         textOnBackground: brand.colorTextOnBackground ?? colorText,
         textOnSurface: brand.colorTextOnSurface ?? NEUTRAL_TEXT_ON_SURFACE,
@@ -234,7 +236,8 @@ export function resolveRemotionBrand(
     fontFamilyHeading: tokens.fonts?.heading ?? 'Inter, sans-serif',
     fontFamilyBody: tokens.fonts?.body ?? 'Inter, sans-serif',
 
-    logoUrl: tokens.logo?.url ?? 'https://placehold.co/240x80/CCCCCC/333333?text=Logo',
+    logoUrl:
+      tokens.logo?.url ?? 'https://placehold.co/240x80/CCCCCC/333333?text=Logo',
     logoWidth: tokens.logo?.width,
     logoHeight: tokens.logo?.height,
     logoWhiteUrl: tokens.logo?.whiteUrl,
@@ -247,7 +250,8 @@ export function resolveRemotionBrand(
           cortinillaEntrada: tokens.structure.cortinillaEntrada ?? 'fade',
           cortinillaCierre: tokens.structure.cortinillaCierre ?? 'fade',
           promoBarStyle: tokens.structure.promoBarStyle ?? 'bottom',
-          productOverlayPosition: tokens.structure.productOverlayPosition ?? 'bottom-right'
+          productOverlayPosition:
+            tokens.structure.productOverlayPosition ?? 'bottom-right'
         }
       : undefined,
     // assets.fonts: populated from the brand's stored font stylesheet URLs (Phase 5)

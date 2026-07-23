@@ -369,8 +369,7 @@ export const ShapeElement: React.FC<ShapeElementProps> = ({
   animation,
   opacity: baseOpacity,
   delay,
-  format,
-  brandConfig: _brandConfig
+  format
 }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();

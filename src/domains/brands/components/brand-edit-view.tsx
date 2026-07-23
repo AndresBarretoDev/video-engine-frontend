@@ -48,7 +48,9 @@ export function BrandEditView({ id }: BrandEditViewProps) {
 
       <Tabs defaultValue="overview">
         <TabsList>
-          <TabsTrigger value="overview">{brandsTextMaps.tabOverview}</TabsTrigger>
+          <TabsTrigger value="overview">
+            {brandsTextMaps.tabOverview}
+          </TabsTrigger>
           <TabsTrigger value="tokens">{brandsTextMaps.tabTokens}</TabsTrigger>
         </TabsList>
 

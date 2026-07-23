@@ -34,7 +34,7 @@ export function RenderJobCard({
   job,
   onCancel,
   onRetry,
-  onClick,
+  onClick
 }: RenderJobCardProps) {
   const canCancel = job.status === 'queued' || job.status === 'processing';
   const canRetry = job.status === 'failed';

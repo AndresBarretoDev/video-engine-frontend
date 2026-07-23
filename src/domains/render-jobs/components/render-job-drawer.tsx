@@ -14,13 +14,13 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
+  SheetTitle
 } from '@/components/ui/sheet';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
+  AccordionTrigger
 } from '@/components/ui/accordion';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -45,19 +45,18 @@ interface RenderJobDrawerProps {
 
 export function RenderJobDrawer({
   job,
-  projectId,
   isOpen,
-  onClose,
+  onClose
 }: RenderJobDrawerProps) {
   const isProcessing = job?.status === 'processing';
 
   const { data: progress } = useRenderProgress(
     job?.id ?? '',
-    isOpen && isProcessing,
+    isOpen && isProcessing
   );
 
   const { data: outputs, isLoading: outputsLoading } = useRenderOutputs(
-    job?.status === 'completed' ? (job?.id ?? '') : '',
+    job?.status === 'completed' ? (job?.id ?? '') : ''
   );
 
   if (!job) return null;
@@ -66,7 +65,7 @@ export function RenderJobDrawer({
     progress: job.progress,
     status: job.status,
     framesCurrent: job.framesCurrent,
-    framesTotal: job.framesTotal,
+    framesTotal: job.framesTotal
   };
 
   const formattedCreated = new Intl.DateTimeFormat('en-GB', {
@@ -74,7 +73,7 @@ export function RenderJobDrawer({
     month: 'short',
     year: 'numeric',
     hour: '2-digit',
-    minute: '2-digit',
+    minute: '2-digit'
   }).format(new Date(job.createdAt));
 
   return (
@@ -113,13 +112,11 @@ export function RenderJobDrawer({
           <Accordion type="multiple" defaultValue={['logs', 'output']}>
             {/* Logs */}
             <AccordionItem value="logs">
-              <AccordionTrigger>{renderJobsTextMaps.logsSection}</AccordionTrigger>
+              <AccordionTrigger>
+                {renderJobsTextMaps.logsSection}
+              </AccordionTrigger>
               <AccordionContent>
-                <RenderLogViewer
-                  logs={
-                    progress?.logs ?? []
-                  }
-                />
+                <RenderLogViewer logs={progress?.logs ?? []} />
               </AccordionContent>
             </AccordionItem>
 
@@ -131,11 +128,11 @@ export function RenderJobDrawer({
                 </AccordionTrigger>
                 <AccordionContent>
                   {progress?.logs?.filter(l =>
-                    l.toLowerCase().includes('error'),
+                    l.toLowerCase().includes('error')
                   ).length ? (
                     <RenderLogViewer
                       logs={progress.logs.filter(l =>
-                        l.toLowerCase().includes('error'),
+                        l.toLowerCase().includes('error')
                       )}
                     />
                   ) : (

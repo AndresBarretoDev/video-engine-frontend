@@ -38,8 +38,11 @@ export function StayForm({ form }: StayFormProps) {
   return (
     <Form {...form}>
       {/* Not a <form> submission — parent triggers render via button */}
-      <div className="flex flex-col gap-4" role="group" aria-label={t.stayFormSectionLabel}>
-
+      <div
+        className="flex flex-col gap-4"
+        role="group"
+        aria-label={t.stayFormSectionLabel}
+      >
         {/* ─── Required fields ──────────────────────────────────────────────── */}
 
         <FormField
@@ -87,7 +90,7 @@ export function StayForm({ form }: StayFormProps) {
               <FormControl>
                 <ProductImageUpload
                   value={field.value}
-                  onChange={(url) => field.onChange(url ?? '')}
+                  onChange={url => field.onChange(url ?? '')}
                   hasError={!!fieldState.error}
                 />
               </FormControl>

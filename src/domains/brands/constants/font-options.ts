@@ -41,7 +41,7 @@ export const FONT_OPTIONS: FontOption[] = [
   { value: 'Arial', label: 'Arial', source: 'system' },
   { value: 'Helvetica Neue', label: 'Helvetica Neue', source: 'system' },
   { value: 'Georgia', label: 'Georgia', source: 'system' },
-  { value: 'Times New Roman', label: 'Times New Roman', source: 'system' },
+  { value: 'Times New Roman', label: 'Times New Roman', source: 'system' }
 ];
 
 /**
@@ -49,9 +49,9 @@ export const FONT_OPTIONS: FontOption[] = [
  * Loads all weights (400, 700) for each font.
  */
 export function getGoogleFontsUrl(): string {
-  const googleFonts = FONT_OPTIONS.filter((f) => f.source === 'google');
+  const googleFonts = FONT_OPTIONS.filter(f => f.source === 'google');
   const families = googleFonts
-    .map((f) => `family=${f.value.replace(/ /g, '+')}:wght@400;700`)
+    .map(f => `family=${f.value.replace(/ /g, '+')}:wght@400;700`)
     .join('&');
   return `https://fonts.googleapis.com/css2?${families}&display=swap`;
 }

@@ -31,8 +31,7 @@ import { dataEngineTextMaps } from '../text-maps';
 import type {
   MappingDraftEntry,
   ParsedColumn,
-  TemplatePropDefinition,
-  Transform
+  TemplatePropDefinition
 } from '../types';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

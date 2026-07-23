@@ -33,12 +33,20 @@ interface BrandSelectorProps {
   className?: string;
 }
 
-export function BrandSelector({ value, onChange, id = 'brand-selector', className }: BrandSelectorProps) {
+export function BrandSelector({
+  value,
+  onChange,
+  id = 'brand-selector',
+  className
+}: BrandSelectorProps) {
   const { data: brands, isLoading } = useBrands();
 
   return (
     <div className={className}>
-      <Label htmlFor={id} className="text-foreground mb-1.5 block text-sm font-medium">
+      <Label
+        htmlFor={id}
+        className="text-foreground mb-1.5 block text-sm font-medium"
+      >
         {t.selectorLabel}
       </Label>
       <Select
@@ -47,10 +55,14 @@ export function BrandSelector({ value, onChange, id = 'brand-selector', classNam
         disabled={isLoading}
       >
         <SelectTrigger id={id} className="w-full" aria-label={t.selectorLabel}>
-          <SelectValue placeholder={isLoading ? t.selectorLoading : t.selectorPlaceholder} />
+          <SelectValue
+            placeholder={isLoading ? t.selectorLoading : t.selectorPlaceholder}
+          />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={DEFAULT_VALUE}>{t.selectorDefaultOption}</SelectItem>
+          <SelectItem value={DEFAULT_VALUE}>
+            {t.selectorDefaultOption}
+          </SelectItem>
           {(brands ?? [])
             .filter(b => b.isActive)
             .map(brand => (

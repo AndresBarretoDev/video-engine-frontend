@@ -79,12 +79,15 @@ function LivePreview({ templateRef, component, ariaLabel }: LivePreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const observerCallback = useCallback((entries: IntersectionObserverEntry[]) => {
-    const [entry] = entries;
-    if (entry?.isIntersecting) {
-      setIsVisible(true);
-    }
-  }, []);
+  const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      if (entry?.isIntersecting) {
+        setIsVisible(true);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     const el = containerRef.current;
@@ -99,7 +102,10 @@ function LivePreview({ templateRef, component, ariaLabel }: LivePreviewProps) {
 
   const defaultProps = COMPOSITION_DEFAULT_PROPS[templateRef.compositionId];
   // Enforce format override to match the displayed composition format
-  const inputProps: AnyProps = { ...(defaultProps ?? {}), format: templateRef.format };
+  const inputProps: AnyProps = {
+    ...(defaultProps ?? {}),
+    format: templateRef.format
+  };
 
   // Aspect ratio based on composition dimensions
   const aspectRatio = templateRef.width / templateRef.height;
@@ -137,7 +143,7 @@ function LivePreview({ templateRef, component, ariaLabel }: LivePreviewProps) {
       {/* Play indicator overlay — subtle, disappears on hover */}
       {isVisible && (
         <div
-          className="absolute bottom-2 right-2 flex items-center gap-1 rounded-[var(--radius-8)] bg-black/50 px-2 py-1 text-xs text-white opacity-70 transition-opacity hover:opacity-0"
+          className="absolute right-2 bottom-2 flex items-center gap-1 rounded-[var(--radius-8)] bg-black/50 px-2 py-1 text-xs text-white opacity-70 transition-opacity hover:opacity-0"
           aria-hidden
         >
           <Play className="size-2.5 fill-white" />
@@ -171,7 +177,7 @@ export function TemplateCard({ template, projectId }: TemplateCardProps) {
     : `/templates/${template.id}/author`;
 
   return (
-    <Card className="group border-border bg-card hover:bg-accent/30 flex flex-col overflow-hidden transition-colors pt-0">
+    <Card className="group border-border bg-card hover:bg-accent/30 flex flex-col overflow-hidden pt-0 transition-colors">
       {/* ─── Live preview ──────────────────────────────────────────────── */}
       {component && previewRef ? (
         <LivePreview
@@ -192,7 +198,7 @@ export function TemplateCard({ template, projectId }: TemplateCardProps) {
       {/* ─── Card body ─────────────────────────────────────────────────── */}
       <CardContent className="flex flex-1 flex-col gap-2 pt-4 pb-2">
         <h3
-          className="text-foreground truncate text-sm font-semibold leading-tight"
+          className="text-foreground truncate text-sm leading-tight font-semibold"
           title={template.name}
         >
           {template.name}
@@ -223,9 +229,7 @@ export function TemplateCard({ template, projectId }: TemplateCardProps) {
       {/* ─── Action ────────────────────────────────────────────────────── */}
       <CardFooter className="pt-0 pb-4">
         <Button asChild size="sm" className="w-full">
-          <Link href={authorHref}>
-            {templatesTextMaps.cardSelectLabel}
-          </Link>
+          <Link href={authorHref}>{templatesTextMaps.cardSelectLabel}</Link>
         </Button>
       </CardFooter>
     </Card>

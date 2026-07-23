@@ -42,7 +42,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog';
 import { LogOut, ChevronsUpDown } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -233,13 +233,17 @@ export function AppSidebar() {
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{layoutTextMap.userSection.logoutTitle}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {layoutTextMap.userSection.logoutTitle}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {layoutTextMap.userSection.logoutDescription}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{layoutTextMap.userSection.logoutCancel}</AlertDialogCancel>
+            <AlertDialogCancel>
+              {layoutTextMap.userSection.logoutCancel}
+            </AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               onClick={async () => {

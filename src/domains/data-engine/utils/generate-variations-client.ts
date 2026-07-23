@@ -220,9 +220,7 @@ export function applyVariationFilters(
   }
 
   if (status === 'errors') {
-    filtered = filtered.filter(v =>
-      v.errors.some(e => e.severity === 'error')
-    );
+    filtered = filtered.filter(v => v.errors.some(e => e.severity === 'error'));
   } else if (status === 'valid') {
     filtered = filtered.filter(
       v => !v.errors.some(e => e.severity === 'error')

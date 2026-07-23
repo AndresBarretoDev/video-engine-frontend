@@ -20,7 +20,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
+  SheetDescription
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { useVideoGenerationStore } from '@/domains/video-generation/stores/video-generation-store';
@@ -31,8 +31,12 @@ import { RenderJobResultCard } from './render-job-result-card';
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function RenderResultsSheet() {
-  const { isResultsSheetOpen, setResultsSheetOpen, renderJobEntries, readyOutputs } =
-    useVideoGenerationStore();
+  const {
+    isResultsSheetOpen,
+    setResultsSheetOpen,
+    renderJobEntries,
+    readyOutputs
+  } = useVideoGenerationStore();
 
   if (renderJobEntries.length === 0) return null;
 
@@ -56,10 +60,7 @@ export function RenderResultsSheet() {
 
   return (
     <Sheet open={isResultsSheetOpen} onOpenChange={setResultsSheetOpen}>
-      <SheetContent
-        side="bottom"
-        className="flex max-h-[85dvh] flex-col gap-0"
-      >
+      <SheetContent side="bottom" className="flex max-h-[85dvh] flex-col gap-0">
         <SheetHeader className="shrink-0 border-b pb-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>

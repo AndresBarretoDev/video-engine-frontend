@@ -9,7 +9,10 @@
 'use client';
 import React from 'react';
 import { useNode } from '@craftjs/core';
-import { SpikeProductCard, type SpikeProductCardProps } from './SpikeProductCard';
+import {
+  SpikeProductCard,
+  type SpikeProductCardProps
+} from './SpikeProductCard';
 
 export const CraftProductCard: React.FC<SpikeProductCardProps> & {
   craft?: unknown;
@@ -17,11 +20,11 @@ export const CraftProductCard: React.FC<SpikeProductCardProps> & {
   const {
     connectors: { connect, drag },
     selected
-  } = useNode((node) => ({ selected: node.events.selected }));
+  } = useNode(node => ({ selected: node.events.selected }));
 
   return (
     <div
-      ref={(ref) => {
+      ref={ref => {
         if (ref) connect(drag(ref));
       }}
       style={{
@@ -42,7 +45,7 @@ const ProductSettings: React.FC = () => {
     productName,
     price,
     color
-  } = useNode((node) => ({
+  } = useNode(node => ({
     productName: node.data.props.productName as string,
     price: node.data.props.price as string,
     color: node.data.props.color as string
@@ -54,7 +57,7 @@ const ProductSettings: React.FC = () => {
         <span>Producto</span>
         <input
           value={productName}
-          onChange={(e) =>
+          onChange={e =>
             setProp((p: SpikeProductCardProps) => {
               p.productName = e.target.value;
             })
@@ -65,7 +68,7 @@ const ProductSettings: React.FC = () => {
         <span>Precio</span>
         <input
           value={price}
-          onChange={(e) =>
+          onChange={e =>
             setProp((p: SpikeProductCardProps) => {
               p.price = e.target.value;
             })
@@ -77,7 +80,7 @@ const ProductSettings: React.FC = () => {
         <input
           type="color"
           value={color}
-          onChange={(e) =>
+          onChange={e =>
             setProp((p: SpikeProductCardProps) => {
               p.color = e.target.value;
             })

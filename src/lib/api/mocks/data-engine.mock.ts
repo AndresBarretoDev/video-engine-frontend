@@ -432,7 +432,7 @@ function buildResolvedProps(
   };
 }
 
-function buildVariationErrors(product: (typeof PRODUCTS)[0], index: number) {
+function buildVariationErrors(product: (typeof PRODUCTS)[0]) {
   const errors = [];
 
   // Rows 16 and 23 have no image_url
@@ -453,7 +453,7 @@ export const mockVariations: Variation[] = PRODUCTS.map((product, index) => ({
   rowData: product as Record<string, unknown>,
   props: buildResolvedProps(product),
   resolvedProps: buildResolvedProps(product),
-  errors: buildVariationErrors(product, index),
+  errors: buildVariationErrors(product),
   selected: false,
   thumbnailUrl: undefined,
   isSkipped: false

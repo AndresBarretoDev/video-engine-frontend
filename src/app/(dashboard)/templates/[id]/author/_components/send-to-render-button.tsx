@@ -52,7 +52,7 @@ export function SendToRenderButton({
   selectedFormats,
   isFormValid,
   projectId = DEMO_PROJECT_ID,
-  onJobsCreated,
+  onJobsCreated
 }: SendToRenderButtonProps) {
   const { mutateAsync } = useCreateSingleRender(projectId);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,7 +71,7 @@ export function SendToRenderButton({
           templateId,
           compositionId: `${compositionIdPrefix}-${format.replace(':', '-')}`,
           compositionProps,
-          format,
+          format
         })
       )
     );
@@ -80,7 +80,7 @@ export function SendToRenderButton({
       if (result.status === 'fulfilled') {
         return result.value.jobIds.map(jobId => ({
           jobId,
-          format: selectedFormats[i],
+          format: selectedFormats[i]
         }));
       }
       return [];
@@ -114,8 +114,8 @@ export function SendToRenderButton({
   const disabledHint = !isFormValid
     ? t.renderButtonDisabledMissingFields
     : selectedFormats.length === 0
-    ? t.formatSelectorHint
-    : undefined;
+      ? t.formatSelectorHint
+      : undefined;
 
   return (
     <div className="flex flex-col gap-2">
@@ -126,7 +126,9 @@ export function SendToRenderButton({
         aria-label={disabledHint ?? buttonLabel}
         aria-busy={isSubmitting}
       >
-        {isSubmitting && <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />}
+        {isSubmitting && (
+          <Loader2 className="mr-2 size-4 animate-spin" aria-hidden />
+        )}
         {buttonLabel}
       </Button>
 

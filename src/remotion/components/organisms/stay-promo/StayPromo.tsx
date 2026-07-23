@@ -28,7 +28,6 @@
 import React from 'react';
 import {
   AbsoluteFill,
-  Sequence,
   useCurrentFrame,
   useVideoConfig,
   interpolate,
@@ -45,12 +44,13 @@ import type { BrandConfig } from '@/remotion/types/brand-config.types';
 // Brand token values ALWAYS override — no identity value is hardcoded in the
 // brand-present path.
 
-const FALLBACK_BG = '#F2F2F2';         // neutral light grey (not any brand color)
-const FALLBACK_PRIMARY = '#6B7280';    // neutral mid-grey (not #4361EF OP, not Airbnb coral)
+const FALLBACK_BG = '#F2F2F2'; // neutral light grey (not any brand color)
+const FALLBACK_PRIMARY = '#6B7280'; // neutral mid-grey (not #4361EF OP, not Airbnb coral)
 const FALLBACK_TEXT = '#111111';
 const FALLBACK_TEXT_INVERSE = '#F5F5F5';
-const FALLBACK_FONT = 'sans-serif';    // generic (not Nunito/Poppins/Mulish)
-const FALLBACK_LOGO_URL = 'https://placehold.co/200x66/6B7280/FFFFFF?text=BRAND';
+const FALLBACK_FONT = 'sans-serif'; // generic (not Nunito/Poppins/Mulish)
+const FALLBACK_LOGO_URL =
+  'https://placehold.co/200x66/6B7280/FFFFFF?text=BRAND';
 const FALLBACK_LOGO_W = 200;
 const FALLBACK_LOGO_H = 66;
 const FALLBACK_RADIUS_BUTTON = 8;
@@ -162,12 +162,12 @@ export function resolveStayBrand(brandConfig?: BrandConfig): ResolvedStayBrand {
 const BG_FADE_END = 15;
 const HERO_DELAY = 0;
 const LOGO_DELAY = 8;
-const CARD_DELAY = 12;       // info card background appears
-const NAME_DELAY = 18;       // listing name slides up
-const LOCATION_DELAY = 26;   // location fades in
-const RATING_DELAY = 32;     // rating pops in
-const PRICE_DELAY = 40;      // price per night reveals
-const CTA_DELAY = 50;        // CTA button bounces in
+const CARD_DELAY = 12; // info card background appears
+const NAME_DELAY = 18; // listing name slides up
+const LOCATION_DELAY = 26; // location fades in
+const RATING_DELAY = 32; // rating pops in
+const PRICE_DELAY = 40; // price per night reveals
+const CTA_DELAY = 50; // CTA button bounces in
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
@@ -381,7 +381,8 @@ function RatingRow({
         gap: 8,
         opacity: frame < delay ? 0 : opacity,
         transform: `scale(${frame < delay ? 0.8 : scale})`,
-        transformOrigin: textAlign === 'center' ? 'center center' : 'left center'
+        transformOrigin:
+          textAlign === 'center' ? 'center center' : 'left center'
       }}
     >
       {/* Star icon — pure SVG to avoid asset dependency */}
@@ -464,7 +465,14 @@ function PriceBlock({
         transform: `translateY(${frame < delay ? 24 : translateY}px)`
       }}
     >
-      <span style={{ fontFamily, fontSize: fontSize * 0.65, fontWeight: 700, color: primaryColor }}>
+      <span
+        style={{
+          fontFamily,
+          fontSize: fontSize * 0.65,
+          fontWeight: 700,
+          color: primaryColor
+        }}
+      >
         {currency}
       </span>
       {/* tabular-nums on price to prevent layout shift (principle 9) */}
@@ -539,7 +547,8 @@ function CtaButton({
         justifyContent: textAlign === 'center' ? 'center' : 'flex-start',
         opacity: frame < delay ? 0 : opacity,
         transform: `scale(${frame < delay ? 0 : scale})`,
-        transformOrigin: textAlign === 'center' ? 'center center' : 'left center'
+        transformOrigin:
+          textAlign === 'center' ? 'center center' : 'left center'
       }}
     >
       <div
@@ -614,27 +623,12 @@ function LogoLayer({
   );
 }
 
-// ─── Absolute position helper ─────────────────────────────────────────────────
-
-function abs(
-  box: { x: number; y: number; width: number; height: number }
-): React.CSSProperties {
-  return {
-    position: 'absolute',
-    left: box.x,
-    top: box.y,
-    width: box.width,
-    height: box.height
-  };
-}
-
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export const StayPromo: React.FC<StayPromoProps> = ({
   brandConfig,
   format,
-  slots,
-  timing
+  slots
 }) => {
   const layout = getStayPromoLayout(format);
   const brand = resolveStayBrand(brandConfig);
@@ -656,29 +650,32 @@ export const StayPromo: React.FC<StayPromoProps> = ({
 
   // ─── Semantic ink resolution ────────────────────────────────────────────────
   // Use brand-declared inks per surface; fall back to legacy fields for compat.
-  const inkOnBackground = brand.textOnBackground ?? brand.textColor;
   const inkOnSurface = brand.textOnSurface ?? brand.textColor;
   const inkOnPrimary = brand.textOnPrimary ?? brand.textInverse;
-  const borderColor = brand.borderColor ?? '#CCCCCC';
-  const strokeButton = brand.stroke?.button ?? 1;
-  const strokeCard = brand.stroke?.card ?? 1;
 
   // ─── Structural defaults ────────────────────────────────────────────────────
+  // showClosingCortinilla / promoBarStyle are tracked for future structural
+  // routing (see commented ClosingCortinilla usage below) — not yet wired
+  // into JSX. void keeps the audit trail without tripping no-unused-vars.
   const showClosingCortinilla = brand.defaults?.cortinillaCierre !== 'none';
   const promoBarStyle = brand.defaults?.promoBarStyle ?? 'bottom';
+  void showClosingCortinilla;
+  void promoBarStyle;
 
   // InfoCard surface: brand.surfaceColor is distinct from bgColor — fixes floating text.
   // If brand has no surface token, derive a subtle elevated surface from background
   // (slightly lighter on dark brands, slightly darker on light brands) so cards always
   // read as elevated above the canvas. Never identical to the page background.
-  const infoCardBg = brand.surfaceColor ?? (() => {
-    // Simple elevation: treat background as hex, nudge lightness
-    // This fallback is used ONLY when brand has no surface token.
-    // Prefer declaring surface in the brand for precise control.
-    return brand.bgColor.toLowerCase() === '#ffffff'
-      ? '#F5F5F5'  // white canvas → slightly off-white surface
-      : '#2A2A2A'; // dark canvas → slightly lighter surface
-  })();
+  const infoCardBg =
+    brand.surfaceColor ??
+    (() => {
+      // Simple elevation: treat background as hex, nudge lightness
+      // This fallback is used ONLY when brand has no surface token.
+      // Prefer declaring surface in the brand for precise control.
+      return brand.bgColor.toLowerCase() === '#ffffff'
+        ? '#F5F5F5' // white canvas → slightly off-white surface
+        : '#2A2A2A'; // dark canvas → slightly lighter surface
+    })();
 
   // Info card inner padding
   const innerPadding = isLandscape ? 40 : 48;
@@ -697,11 +694,7 @@ export const StayPromo: React.FC<StayPromoProps> = ({
       />
 
       {/* 3. Logo — overlaid on hero */}
-      <LogoLayer
-        logoUrl={brand.logoUrl}
-        box={layout.logo}
-        delay={LOGO_DELAY}
-      />
+      <LogoLayer logoUrl={brand.logoUrl} box={layout.logo} delay={LOGO_DELAY} />
 
       {/* 4. Info card panel — uses surface color (NOT background) to avoid floating text */}
       <InfoCard

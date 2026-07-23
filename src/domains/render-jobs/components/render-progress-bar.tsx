@@ -53,7 +53,7 @@ export function RenderProgressBar({
   framesTotal,
   estimatedTimeRemaining,
   speed,
-  compact = false,
+  compact = false
 }: RenderProgressBarProps) {
   const colorClass = getProgressColor(status);
   const isProcessing = status === 'processing';
@@ -73,7 +73,9 @@ export function RenderProgressBar({
       {!compact && (
         <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs">
           {framesCurrent != null && framesTotal != null && (
-            <span>{renderJobsTextMaps.framesProgress(framesCurrent, framesTotal)}</span>
+            <span>
+              {renderJobsTextMaps.framesProgress(framesCurrent, framesTotal)}
+            </span>
           )}
           {isProcessing && speed != null && (
             <span>{renderJobsTextMaps.renderSpeed(speed)}</span>

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const SpacingBox = ({
   label,
-  size,
+  size
 }: {
   label: string;
   size: number;
@@ -12,7 +12,7 @@ const SpacingBox = ({
       display: 'flex',
       alignItems: 'center',
       gap: 12,
-      marginBottom: 8,
+      marginBottom: 8
     }}
   >
     <div
@@ -22,7 +22,7 @@ const SpacingBox = ({
         background: 'rgba(67,97,239,0.35)',
         borderRadius: 4,
         minWidth: 2,
-        border: '1px solid rgba(67,97,239,0.5)',
+        border: '1px solid rgba(67,97,239,0.5)'
       }}
     />
     <span style={{ fontSize: 11, color: '#8C8C8C', fontFamily: 'monospace' }}>
@@ -33,7 +33,7 @@ const SpacingBox = ({
 
 const Section = ({
   title,
-  children,
+  children
 }: {
   title: string;
   children: React.ReactNode;
@@ -44,7 +44,7 @@ const Section = ({
         fontSize: 16,
         fontWeight: 600,
         color: '#8C8C8C',
-        marginBottom: 16,
+        marginBottom: 16
       }}
     >
       {title}
@@ -60,7 +60,7 @@ function SpacingPage() {
         background: '#000',
         color: '#F5F5F5',
         padding: 32,
-        fontFamily: 'Mulish, sans-serif',
+        fontFamily: 'Mulish, sans-serif'
       }}
     >
       <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>
@@ -151,8 +151,8 @@ const meta = {
   title: 'Design Tokens/Spacing',
   component: SpacingPage,
   parameters: {
-    layout: 'fullscreen',
-  },
+    layout: 'fullscreen'
+  }
 } satisfies Meta<typeof SpacingPage>;
 
 export default meta;
