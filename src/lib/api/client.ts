@@ -11,47 +11,19 @@
 
 import type { AxiosError } from 'axios';
 import axios from 'axios';
-import { sendTelemetryEvent } from '@/lib/telemetry/client';
-import {
-  createTelemetryEvent,
-  markTelemetryRecorded,
-  type TelemetryRecoveryClass
-} from '@/lib/telemetry/contracts';
 import { getMockResponse } from './mock-client';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 /* ========================================
  * Telemetry
- * Emits exactly one coarse, allowlisted diagnostic per boundary
- * outcome. Never alters the error thrown to the caller.
+ * This interceptor runs once PER HTTP ATTEMPT, so it MUST NOT emit
+ * telemetry itself — with React Query's `retry: 1`, a single logical
+ * query outcome can trigger 2+ attempts, producing duplicate events.
+ * The single source of truth for API/query boundary outcome telemetry
+ * is `QueryCache`/`MutationCache.onError` in `@/lib/providers`, which
+ * fires exactly once per outcome, after retries are exhausted.
  * ======================================== */
-export function recordApiBoundaryTelemetry(params: {
-  route?: string;
-  status: number;
-  isAuthEndpoint: boolean;
-}): void {
-  try {
-    const attemptsAutomaticRetry =
-      params.status === 401 && !params.isAuthEndpoint;
-    const recoveryClass: TelemetryRecoveryClass = attemptsAutomaticRetry
-      ? 'retry'
-      : 'none';
-
-    // Always 'unrecovered': recorded before any refresh/retry resolves.
-    const event = createTelemetryEvent({
-      name: 'apiContractFailure',
-      route: params.route,
-      boundary: 'apiClient',
-      outcome: 'unrecovered',
-      recoveryClass
-    });
-
-    sendTelemetryEvent(event);
-  } catch {
-    // Telemetry must never affect the API boundary contract.
-  }
-}
 
 /* ========================================
  * Custom Error Class
@@ -65,17 +37,6 @@ export class ApiError extends Error {
     super(message);
     this.name = 'ApiError';
   }
-}
-
-/** Builds an `ApiError` tagged as already-recorded to prevent a duplicate. */
-function createRecordedApiError(
-  message: string,
-  status: number,
-  code?: string
-): ApiError {
-  const apiError = new ApiError(message, status, code);
-  markTelemetryRecorded(apiError);
-  return apiError;
 }
 
 /* ========================================
@@ -130,14 +91,8 @@ httpClient.interceptors.response.use(
     // Only attempt refresh on 401, and not for auth endpoints themselves
     const isAuthEndpoint = originalRequest?.url?.startsWith('/auth/');
     const sessionExpiredError = () =>
-      createRecordedApiError('Session expired', 401, 'SESSION_EXPIRED');
+      new ApiError('Session expired', 401, 'SESSION_EXPIRED');
 
-    // Exactly one diagnostic per boundary outcome, before any recovery logic runs.
-    recordApiBoundaryTelemetry({
-      route: originalRequest?.url,
-      status,
-      isAuthEndpoint: Boolean(isAuthEndpoint)
-    });
     if (status === 401 && !isAuthEndpoint && originalRequest) {
       if (isRefreshing) {
         // Another refresh is in progress — queue this request
@@ -179,7 +134,7 @@ httpClient.interceptors.response.use(
     // AuthProvider catches the error and sets isAuthenticated: false.
     // Do NOT redirect here or it causes an infinite loop on /login.
 
-    throw createRecordedApiError(message, status, code);
+    throw new ApiError(message, status, code);
   }
 );
 
